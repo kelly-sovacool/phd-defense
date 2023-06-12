@@ -1,0 +1,15 @@
+[submodule "papers/severe-cdi"]
+	path = papers/severe-cdi
+	url = https://github.com/SchlossLab/severe-CDI
+[submodule "papers/optifit"]
+	path = papers/optifit
+	url = https://github.com/SchlossLab/Sovacool_OptiFit_mSphere_2022
+[submodule "papers/software-carpentry"]
+	path = papers/software-carpentry
+	url = https://github.com/umcarpentries/intro-curriculum-r
+[submodule "papers/girls-who-code"]
+	path = papers/girls-who-code
+	url = https://github.com/GWC-DCMB/curriculum-notebooks
+[submodule "papers/mikropml"]
+	path = papers/mikropml
+	url = https://github.com/SchlossLab/mikropml
