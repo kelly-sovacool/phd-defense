@@ -1,0 +1,767 @@
+---
+title: "Improving machine learning models of the human gut microbiome"
+subtitle: "and democratizing data science along the way"
+author: "Kelly Sovacool"
+date: 2023-04-05
+date-format: MMM DD, YYYY
+mainfont: Helvetica
+format:
+  revealjs:
+    theme: custom.scss
+    embed-resources: false
+    logo: img/block_m-hex.png
+execute:
+  eval: true
+  echo: false
+knitr:
+  opts_chunk:
+    fig.path: figures/
+---
+
+```{r deps}
+library(ggsankey)
+library(glue)
+library(knitr)
+library(schtools)
+library(tidyverse)
+library(yaml)
+
+metadat_cases <- read_csv('severe-CDI/data/process/cases_full_metadata.csv') %>% 
+    filter(!(is.na(idsa) & is.na(allcause) & is.na(attrib) & is.na(pragmatic)))
+perf_dat <- read_csv('severe-CDI/results/performance_results_aggregated.csv') %>% 
+    rename(AUROC = AUC,
+           AUPRC = prAUC)  %>%
+  mutate(
+    outcome = factor(case_when(outcome == 'idsa' ~ 'IDSA\n severity',
+                        outcome == 'attrib' ~ 'Attributable\n severity',
+                        outcome == 'allcause' ~ 'All-cause\n severity',
+                        outcome == 'pragmatic' ~ 'Pragmatic\n severity',
+                        TRUE ~ NA_character_), levels = c('IDSA\n severity',
+                           'All-cause\n severity',
+                           'Attributable\n severity',
+                           'Pragmatic\n severity'))
+  )
+feat_dat <- read_csv('severe-CDI/results/feature-importance_results_aggregated.csv')
+sensspec_dat <- read_csv('severe-CDI/results/sensspec_results_aggregated.csv')
+```
+
+## Projects
+
+:::{.column width="72%"}
+1. Open source data science & education
+    - Girls Who Code, Software Carpentry, mikropml + Snakemake workflow
+2. OptiFit
+    - Benchmarking an improved algorithm for reference-based OTU clustering
+3. Severe CDIs
+    - Can we use the composition of the gut microbiome (OTUs) to predict CDI severity?
+:::
+
+::::{.column width="27%" .fragment .small}
+:::{.frame-box}
+✅ _published x3_
+:::
+<br>
+<br>
+
+:::{.frame-box}
+✅ _published_
+:::
+
+<br>
+<br>
+
+:::{.frame-box}
+⏩️ _in progress_
+:::
+::::
+
+## Main papers (First / co-first) {.smaller .scrollable}
+
+```{r pubs}
+read_yaml_as_tbl <- function(filepath) {
+  read_yaml(filepath) %>%
+    map_dfr(function(x) {
+      sapply(names(x), function(y) {
+        # wrap elements in list if length > 1
+        if (length(x[[y]]) > 1) {
+          x[[y]] <<- list(x[[y]])
+        }
+      })
+      return(as_tibble_row(x))
+    }) %>%
+    return()
+}
+
+is_first_auth <- function(x) {
+  stringr::str_starts(x, '\\*\\*Sovacool KL') | stringr::str_detect(x, "\\\\\\*Sovacool KL")
+}
+
+is_ug <- function(x) {
+  stringr::str_starts(x, 'Goodin') | stringr::str_starts(x, 'Everson')
+}
+
+pubs <- read_yaml_as_tbl('src/pubs.yml') %>%
+  mutate(is_first = is_first_auth(authors_md),
+         is_ug = is_ug(authors_md),
+         pretty_title = glue("{title_md} <br> {authors_md}"),
+         journal_year = glue("{year} <br> {journal}")) %>%
+  filter(!is_ug) %>%
+  arrange(desc(year_mo))
+```
+
+
+```{r first}
+pubs %>% filter(is_first) %>%
+  select(pretty_title, journal_year) %>%
+  add_row(pretty_title="Predicting severe _C. difficile_ infections from the taxonomic composition of the gut microbiome<br> **Sovacool KL**, Tomkovich SE, Coden ML, Rao KR, Young VB, Wiens J, Schloss PD", 
+          journal_year="**2023? <br> ???**", .before = 1) %>%
+  kable(col.names = c("Title, Authors", "Year, Journal")) 
+```
+
+
+## Other papers {.smaller .scrollable}
+
+```{r collab}
+pubs %>% filter(!is_first) %>%
+  select(pretty_title, journal_year) %>%
+  add_row(pretty_title="Characterizing microbiota features of _C. difficile_ infections with machine learning <br> Tomkovich SE, **Sovacool KL**, Bishop L, McBride K, Lesniak NA, Rao KR, Young VB, Schloss PD", 
+          journal_year="**2023? <br> ???**", .before=1) %>%
+  kable(col.names = c("Title, Authors", "Year, Journal"))
+```
+
+## PhD Timeline
+
+![](phd-timeline/figures/custom_no_papers-1.png)
+
+## Severe CDI project
+
+<br>
+
+:::{.big-text}
+Can we use the composition of the gut microbiome (OTUs) to predict CDI severity?
+:::
+
+## The gut microbiome changes during gut diseases
+
+- _Clostridioides difficile_ Infection (CDI) - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing _C. diff_ to colonize the gut.
+- Colorectal cancer (CRC) - enrichment for bacteria that produce enterotoxins have been observed in CRC gut microbiomes.
+
+:::{.notes}
+- Changes in the taxonomic composition and metabolic activity of human microbiomes have been observed in several diseases including colorectal cancer (CRC) and Clostridioides difficile infection (CDI).
+- Taxonomic composition is commonly defined by amplicon sequencing the 16S rRNA gene and clustering sequences into Operational Taxonomic Units (OTUs).
+- The OTU abundances can then be used to train supervised machine learning models for tasks such as classifying samples as CRC or normal, or predicting the severity of CDI outcomes.
+- Such models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.
+- Dieterle (2020): "Each year in the United States, Clostridioides difficile causes nearly 500,000 gastrointestinal infections that range from mild diarrhea to severe colitis and death."
+:::
+
+## EHR data for predicting complicated CDI
+
+:::{.column width="60%"}
+![](img/li_ehr_auroc.jpeg)
+
+::::{.smaller-text}
+Day of diagnosis
+
+median AUROC: **0.69**
+::::
+:::
+
+:::{.column width="35%" .smaller-text}
+<br>
+
+- Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
+- Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
+:::
+
+:::{.aside}
+[Li _et al._ (2019). OFID](https://doi.org/10.1093/ofid/ofz186)
+:::
+
+:::{.notes}
+Papers by Vince, Jenna, & Krishna looking at EHR data to predict CDI complications.
+
+CDI treatment. Li et al. (2019). https://academic.oup.com/ofid/article/6/5/ofz186/5475497
+"The development and validation of EHR-based risk stratification models for predicting complicated CDI could eventually help clinicians tailor treatments to individuals. On the day of CDI diagnosis, a patient’s estimated risk for complications could serve as an adjunct, easily obtainable resource for clinical decision support. Treatment decisions such as whether to use high-dose vancomycin or perform a loop ileostomy with antegrade vancomycin infusions [23] often do not occur until complicated CDI has already set in. In severe cases, early aggressive therapy can positively impact the course. However, invasive treatments such as enemas (fecal microbiota transplantation or vancomycin) and surgery are optimally used in only select patients, and such decisions lack the rigorous guidelines associated with initial treatment."
+
+Would help clinicians tailor treatment options early on. Whether to go with an aggressive treatment plan or not.
+:::
+
+## How to define CDI severity {.smaller}
+
+<br>
+
+```{mermaid severity_flowchart}
+flowchart TB
+    classDef outcome fill:#F7FBFF
+    subgraph invis1
+        direction TB
+
+        cases[(CDI cases)]
+
+        idsa_lab{{"Serum creatinine ≥ 1.5 mg/dL \n & WBC count ≥ 15 k/μL"}}
+        idsa_lab --> yes_idsa
+        idsa_lab --> no_idsa
+        subgraph IDSA
+            yes_idsa[Yes]:::outcome
+            no_idsa[No]:::outcome
+        end
+
+        unattrib{{One of 3 adverse outcomes occurs within 30 days:\nICU admission, colectomy, or death}}
+        unattrib --> yes_un
+        unattrib --> no_un
+        subgraph All-cause
+            yes_un[Yes]:::outcome
+            no_un[No]:::outcome
+        end
+        All-cause --> chart
+
+        chart{{physician chart review:\nthe adverse outcome was attributable to the CDI}}
+        chart --> yes_at
+        chart --> no_at
+        subgraph attrib[Attrib]
+            direction TB
+            yes_at[Yes]:::outcome
+            no_at[No]:::outcome
+        end
+
+        cases --> unattrib
+        cases --> idsa_lab
+    end
+    style IDSA fill:#bacbc6
+    style attrib fill:#bacbc6
+    style All-cause fill:#bacbc6
+    style invis1 fill:#FFFFFF,stroke:#FFFFFF,color:#FFFFFF
+```
+
+:::{.absolute width="35%" top=70 left=300 .narrow-frame .fragment}
+`r format_number(nrow(metadat_cases))` CDI patient stool samples collected on the day of diagnosis
+:::
+
+:::{.notes}
+What do physicians review when reviewing charts for non-severe outcomes?
+Is chart review important for those cases?
+:::
+
+## Defining a "pragmatic" severity definition
+
+```{r alluvial_idsa_allcause}
+metadat_cases_alluv <- metadat_cases %>%
+    mutate(
+        IDSA = if_else(is.na(idsa), 'missing_data', idsa),
+        `All-cause` = if_else(is.na(allcause), 'missing_data', allcause),
+        Attrib = if_else(is.na(attrib), 'missing_data', attrib),
+        Pragmatic = if_else(is.na(pragmatic), 'missing_data', pragmatic)
+    )
+plot_alluvial <- function(dat_long) {
+    dat_long %>%
+    rename(is_severe = node,
+           severity_definition = x) %>%
+    left_join(
+        metadat_cases_alluv %>%
+            pivot_longer(
+                c(IDSA, `All-cause`, Attrib, Pragmatic),
+                names_to = 'severity_definition',
+                values_to = 'is_severe'
+            ) %>%
+            count(severity_definition, is_severe),
+        by = c('severity_definition', 'is_severe')
+    ) %>% 
+    mutate(severity_definition = factor(severity_definition,
+           levels = c('IDSA', 'All-cause', 'Attrib', 'Pragmatic'))) %>%
+    ggplot(aes(
+        x = severity_definition,
+        next_x = next_x,
+        node = is_severe,
+        next_node = next_node,
+        fill = is_severe,
+        label = n
+    )) +
+    geom_sankey(flow.alpha = .6) +
+    geom_sankey_label(color = 'white', show.legend = FALSE) +
+    scale_fill_manual(values = c(yes="#860967", no="#0f2a4b", 
+                                 'missing_data'="#BDBDBD")) +
+    labs(x = 'Severity Definition') +
+    theme_sankey() +
+    theme(text = element_text(size = 14))
+}
+metadat_cases_alluv %>%
+    make_long(c(IDSA, `All-cause`)) %>% 
+    plot_alluvial()
+```
+
+## Defining a "pragmatic" severity definition
+
+```{r alluvial_attrib}
+metadat_cases_alluv %>%
+    make_long(c(IDSA, `All-cause`, Attrib)) %>%
+    plot_alluvial()
+```
+
+## Defining a "pragmatic" severity definition
+
+```{r alluvial_pragmatic}
+metadat_cases_alluv %>%
+    make_long(c(IDSA, `All-cause`, Attrib, Pragmatic)) %>%
+    plot_alluvial()
+```
+
+
+:::{.fragment .filled-box .absolute left=260}
+```{r sample_counts}
+counts <- metadat_cases %>%
+  pivot_longer(c(idsa,attrib,allcause,pragmatic),
+               names_to = 'severity_definition', values_to = 'is_severe') %>%
+  count(severity_definition, is_severe) %>%
+  filter(!is.na(is_severe))
+
+counts_wide <- counts %>%
+  pivot_wider(names_from = severity_definition, values_from = n) %>%
+  select(is_severe, idsa, attrib, allcause, pragmatic)
+
+totals <- counts %>%
+    left_join(counts %>%
+                  group_by(severity_definition) %>%
+                  summarise(total = sum(n))) %>%
+    mutate(percent = round(n / total * 100, 1)) %>%
+    filter(is_severe == 'yes') %>%
+    select(severity_definition, total, percent)
+percents <- totals %>% select(severity_definition, percent) %>%
+    pivot_wider(names_from = severity_definition, values_from = percent)%>%
+    mutate(stat = '% pos.', .before = allcause)
+totals_percents <- totals %>%
+    select(-percent) %>%
+    pivot_wider(names_from = severity_definition, values_from = total) %>%
+    mutate(stat = 'n', .before = allcause) %>%
+    add_row(percents) %>%
+    select(stat, idsa, attrib, allcause, pragmatic)
+totals_percents %>%
+    kable(col.names = c(' ', 'IDSA', 'Attrib', 'All-cause', "Pragmatic"),
+          format.args = list(big.mark = ',')) %>% 
+    kableExtra::kable_styling(font_size = 16)
+```
+:::
+
+## Training machine learning models
+
+![](img/topcuoglu_framework.jpeg){height=600px}
+
+:::{.aside}
+[Topçuoğlu _et al._ (2020). mBio](https://doi.org/10.1128/mBio.00434-20)
+:::
+
+## Reproducible ML pipelines with mikropml
+
+:::{.column width="75%"}
+![](img/mikropml-pipeline.png)
+:::
+
+:::{.column width="20%"}
+![](img/mikropml-snakemake.png){height=400px}
+:::
+
+:::{.aside}
+[Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). JOSS](https://doi.org/10.21105/joss.03073)
+:::
+
+## Model performance {.smaller}
+Random Forests trained on 100x train/test splits of each dataset
+
+```{r auroc_full}
+perf_dat %>% 
+    filter(dataset == 'full') %>% 
+    rename(trainset = cv_metric_AUC,
+           testset = AUROC) %>% 
+    pivot_longer(c(trainset, testset),
+                 names_to = "data_partition",
+                 values_to = 'AUROC'
+                 )  %>%
+    ggplot(aes(x = AUROC, y = outcome, color = data_partition)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median, 
+                 geom = "text", 
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.2, y = c(-0.1, 0.1))) +
+    scale_color_grey() +
+    xlim(0.3,1) +
+    theme_bw() +
+    theme(
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'top',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+```
+
+
+:::{.absolute bottom=0 left=0 width="250" height="80" .medium-text .frame-box .fragment}
+EHR-based models from Li _et al._
+
+Median AUROC: **0.69**
+:::
+
+:::{.absolute right=0 bottom=0 .filled-box .fragment}
+```{r counts_vertical}
+totals_vert <- totals_percents %>% 
+    pivot_longer(c(idsa, attrib, allcause, pragmatic), 
+                 names_to = 'severity') %>% 
+    pivot_wider(names_from = 'stat', values_from = value) %>% 
+    mutate(severity = factor(severity, 
+                             levels = c('pragmatic','attrib','allcause','idsa'))) %>% 
+    arrange(by = severity)
+totals_vert %>% 
+    kable(format.args = list(big.mark = ','),
+          col.names = c(' ', 'n', '%pos.')) %>% 
+    kableExtra::kable_styling(font_size = 20)
+```
+:::
+
+:::{.aside}
+:::
+
+## A more fair comparison? {.smaller}
+
+```{r auroc_facet}
+auroc_facet_plot <- perf_dat %>%
+    rename(trainset = cv_metric_AUC,
+           testset = AUROC) %>%
+    pivot_longer(c(trainset, testset),
+                 names_to = "data_partition",
+                 values_to = 'AUROC'
+                 )  %>%
+    ggplot(aes(x = AUROC, y = outcome, color = data_partition)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median,
+                 geom = "text",
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.2, y = c(-0.1, 0.1))) +
+    facet_wrap('dataset', ncol = 2) +
+    scale_color_grey() +
+    xlim(0.3,1) +
+    theme_bw() +
+    theme(
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'top',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+
+auroc_facet_plot
+```
+
+```{r int}
+ncases_int <- read_csv('severe-CDI/data/process/cases_int_metadata.csv') %>% nrow()
+```
+
+
+:::{.absolute bottom=5 left=100 width="40%" .color-ash}
+**full** - all samples available; different number of samples between outcomes.
+:::
+
+:::{.absolute bottom=5 right=50 width="40%" .color-ash}
+**int** - intersection, i.e. only samples that have all three outcome labels (n=`r ncases_int`).
+:::
+
+
+## Permutation feature importance {visibility="hidden"}
+
+## Limitation: class imbalance
+
+- Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).
+- The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.
+
+:::{.absolute right=2 bottom=5 width="45%"}
+![](img/wiki-conf-mat.png)
+:::
+
+:::{.absolute left=2 bottom=200 width="52%" .filled-box}
+```{r positives}
+totals_percents %>%
+    kable(col.names = c(' ', 'IDSA', 'Attrib', 'All-cause', "Pragmatic"),
+          format.args = list(big.mark = ',')) %>% 
+    kableExtra::kable_styling(font_size = 22)
+```
+:::
+
+:::{.notes}
+https://en.wikipedia.org/wiki/Confusion_matrix
+
+precision: out of samples predicted to be positive, how many are correct
+
+recall: out of positively labelled samples, how many are predicted positive
+:::
+
+## Solution: calculate the balanced precision
+
+Introduced by
+[Wu _et al._ (2021). AJHG.](https://doi.org/10.1016/j.ajhg.2021.08.012) Improved pathogenicity prediction for rare human missense variants.
+
+<br>
+
+#### Equation 7
+
+$$
+AUBPRC = \frac{AUPRC \times (1 - prior)}
+{AUPRC \times (1 - prior) + (1 - AUPRC) \times prior}
+$$
+
+:::{.aside}
+_prior_ = frequency of positives
+
+_AUBPRC_ = area under the **balanced precision**-recall curve
+:::
+
+:::{.notes}
+https://en.wikipedia.org/wiki/Bayes%27_theorem
+
+TODO: how to interpret precision and recall vs roc
+:::
+
+## Balanced Precision
+
+```{r aubprc_box}
+aubprc_box <- perf_dat %>%
+    ggplot(aes(x = aubprc, y = outcome)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median,
+                 geom = "text",
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.04, y = 0.1)) +
+    facet_wrap('dataset', ncol = 2) +
+    labs(x = 'AUBPRC') +
+    xlim(0.5, 1) +
+    theme_bw() +
+    theme(
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'top',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+aubprc_box
+```
+
+:::{.aside}
+Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
+:::
+
+:::{.notes}
+TODO statistical test
+
+TODO: how to interpret precision and recall vs roc
+:::
+
+## AUROC & AUBPRC {visibility="hidden"}
+
+```{r auroc_aubprc}
+cowplot::plot_grid(auroc_facet_plot, aubprc_box, 
+                   ncol = 1)
+```
+
+## ROC & bPRC curves {visibility="hidden"}
+
+```{r bprc_curve}
+sensspec_dat %>% head()
+```
+
+
+## Performance for OTU vs EHR models
+
+:::{}
+```{r auroc_facet_ehr}
+auroc_facet_plot
+```
+:::
+
+:::{.absolute bottom=0 left=0 width="250" height="80" .medium-text .frame-box .fragment}
+EHR-based models from Li _et al._
+
+Median AUROC: **0.69**
+:::
+
+## Severe CDI project
+
+<br>
+
+:::{.big-text}
+Can we use the composition of the gut microbiome (OTUs) to predict CDI severity?
+:::
+
+<br>
+
+. . .
+
+:::{.big-text}
+Can we improve model performance by using both OTUs + EHRs as features?
+:::
+
+## Including EHR data {.smaller}
+
+- Li _et al._ used 900 features extracted from the EHR
+    - Manually excluded variables that are a proxy for attributable severity or encode clinician suspicion, e.g. antibiotics.
+
+. . .
+
+- Alternative idea (thanks Jenna!) - extract **M-CURES** score
+    - Uses 9 variables from the EHR to predict clinical deterioration in COVID-19 patients.
+    - Include maximum M-CURES score on day of CDI diagnosis as a feature.
+
+. . .
+
+> **Variables for M-CURES score:**
+>
+> age, respiratory rate, oxygen saturation, oxygen flow rate, pulse oximetry type
+> (eg, continuous, intermittent), head-of-bed position (eg, at 30°),
+> position of patient during blood pressure measurement (standing, sitting, lying),
+> venous blood gas pH, and partial pressure of carbon dioxide in arterial blood
+
+
+:::{.notes}
+"The model was trained to predict a composite outcome of clinical deterioration, defined as in-hospital mortality or any of three treatments indicating severe illness: invasive mechanical ventilation, heated high flow nasal cannula, or intravenous vasopressors. The outcome time was defined as the earliest (if any) of these events within the first five days of hospital admission. Supplemental eMethods 2 describes additional implementation details. As critical care treatments can often be administered throughout a hospital, we focused on a definition centered around what care indicates potential critical illness and deterioration rather than intensive care unit (ICU) transfers. In a sensitivity analysis, we also considered a stricter definition of deterioration where heated high flow nasal cannulation was not included among the outcomes (see supplemental eFigure 4)."
+
+"age, respiratory rate, oxygen saturation, oxygen flow rate, pulse oximetry type (eg, continuous, intermittent), head-of-bed position (eg, at 30°), position of patient during blood pressure measurement (standing, sitting, lying), venous blood gas pH, and partial pressure of carbon dioxide in arterial blood"
+
+We used FIDDLE (Flexible Data Driven Pipeline), an open source preprocessing pipeline for structured electronic health record data, to map the nine data elements to 88 binary features (each with a value of 0 or 1) describing every four hour window.
+:::
+
+
+## Conclusions {visibility="hidden"}
+
+## Next Steps
+
+- EHRs
+    - Submit request to data office to pull 9 EHR variables from the day of diagnosis for these CDIs
+    - Calculate max M-CURES scores on the day of diagnosis
+    - Build models with M-CURES alone and M-CURES + OTUs to predict CDI severity.
+
+. . .
+
+- Draft manuscript + finalize figures
+- Draft intro & discussion for dissertation
+
+## post-PhD plans
+
+Next position as a **Bioinformatics Engineer/Scientist** in an academic core, national lab,
+nonprofit institute, or biotech/pharma company contributing to open source tools.
+
+. . .
+
+<br>
+
+Submitted 16 job apps. Landed interviews with 2 potential employers:
+
+- Qiagen
+- Frederick National Lab (NIH/NCI)
+
+:::{.notes}
+I'm a fan of:
+
+- Open science + open source software
+- Building software tools to enable biomedical research
+
+Not a fan of:
+
+- Grant writing
+- Data science without tool development
+:::
+
+## post-PhD plans
+
+Next position as a **Bioinformatics Engineer/Scientist** in an academic core, national lab,
+nonprofit institute, or biotech/pharma company contributing to open source tools.
+
+<br>
+
+Submitted 16 job apps. Landed interviews with 2 potential employers:
+
+- Qiagen
+- Frederick National Lab (NIH/NCI) - **verbal offer received!**
+
+## Congratulations! &nbsp; 🎉
+
+:::{.big-center}
+_You've unlocked the backup slides_
+:::
+
+## 5-fold cross validation
+
+![](img/grid_search_cross_validation.png){height=500px}
+
+::: {.aside}
+sklearn docs: <https://scikit-learn.org/stable/modules/cross_validation.html>
+:::
+
+## Decision trees
+
+![](img/decision-trees.png)
+
+## Random forest
+
+![](img/random-forest.png)
+
+## Precision-Recall without balancing
+
+```{r auprc_box}
+perf_dat %>%
+    ggplot(aes(x = AUPRC, y = outcome)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median,
+                 geom = "text",
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.04, y = 0.1)) +
+    geom_point(data = totals_vert %>%
+  mutate(
+    outcome = factor(case_when(severity == 'idsa' ~ 'IDSA\n severity',
+                        severity == 'attrib' ~ 'Attributable\n severity',
+                        severity == 'allcause' ~ 'All-cause\n severity',
+                        severity == 'pragmatic' ~ 'Pragmatic\n severity',
+                        TRUE ~ NA_character_), levels = c('IDSA\n severity',
+                           'All-cause\n severity',
+                           'Attributable\n severity',
+                           'Pragmatic\n severity'))
+  ),
+               mapping = aes(x = `% pos.`/100, y = outcome, color = outcome)) +
+    facet_wrap('dataset', ncol = 2) +
+    labs(x = 'AUPRC') +
+    theme_bw() +
+    theme(
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'none',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+```
+
+## Why not do a postdoc? {visibility="hidden"}
+
+- Every PhD I know who is not a professor and has given me advice: **don't do a postdoc!**
+
+  > "I will talk you out of it if you try to do a postdoc."
+  >
+  > "You already have the skills for a senior-level role in industry!"
+
+- Economic reality
+  - Postdoc salary: $54,840.
+  - Post-PhD Bioinformatician salary: $110,000+
+
+:::{.notes}
+- I don't want to have housemates at the age of 30.
+- I need a real retirement plan beyond "die young in a climate disaster".
+- A postdoc would make sense if I:
+  Wanted to become a professor, or could not get a job I really wanted without one.
+- Any skills I would gain in a postdoc, I could learn in a job earning 2x the salary.
+:::
