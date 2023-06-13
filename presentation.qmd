@@ -60,7 +60,13 @@ sensspec_dat <- read_csv('papers/severe-CDI/results/sensspec_results_aggregated.
 - Dieterle (2020): "Each year in the United States, Clostridioides difficile causes nearly 500,000 gastrointestinal infections that range from mild diarrhea to severe colitis and death."
 :::
 
-## How to characterize microbiomes
+## How to characterize microbial communities
+
+![](img/amplicon-vs-metagenomics.png)
+
+:::{.aside}
+[Lee (2019). JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
+:::
 
 ## Machine learning for microbiome research
 
@@ -78,6 +84,10 @@ diagnosis and prognosis
 :::
 
 ## OptiFit
+
+make nice diagrams to explain otu clustering
+
+## optifit conclusions / follow-up study
 
 ## _C. difficile_ infections are on the rise
 
