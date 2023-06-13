@@ -26,9 +26,9 @@ library(schtools)
 library(tidyverse)
 library(yaml)
 
-metadat_cases <- read_csv('papers/severe-CDI/data/process/cases_full_metadata.csv') %>%
+metadat_cases <- read_csv('papers/severe-cdi/data/process/cases_full_metadata.csv') %>%
     filter(!(is.na(idsa) & is.na(allcause) & is.na(attrib) & is.na(pragmatic)))
-perf_dat <- read_csv('papers/severe-CDI/results/performance_results_aggregated.csv') %>%
+perf_dat <- read_csv('papers/severe-cdi/results/performance_results_aggregated.csv') %>%
     rename(AUROC = AUC,
            AUPRC = prAUC)  %>%
   mutate(
@@ -41,8 +41,8 @@ perf_dat <- read_csv('papers/severe-CDI/results/performance_results_aggregated.c
                            'Attributable\n severity',
                            'Pragmatic\n severity'))
   )
-feat_dat <- read_csv('papers/severe-CDI/results/feature-importance_results_aggregated.csv')
-sensspec_dat <- read_csv('papers/severe-CDI/results/sensspec_results_aggregated.csv')
+feat_dat <- read_csv('papers/severe-cdi/results/feature-importance_results_aggregated.csv')
+sensspec_dat <- read_csv('papers/severe-cdi/results/sensspec_results_aggregated.csv')
 ```
 
 ## What is a microbiome?
@@ -88,9 +88,6 @@ Created with [BioRender](biorender.com){fig-align="center"}
     - https://medicalxpress.com/news/2019-10-commonly-drugs-profoundly-affecting-gut.html
 - ML models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.
 :::
-## Machine learning for health care
-
-diagnosis and prognosis
 
 ## How to study the gut microbiome
 
@@ -103,6 +100,10 @@ Created with [BioRender](biorender.com)
 :::{.notes}
 and do it all reproducibly
 :::
+
+## Machine learning for health care
+
+diagnosis and prognosis
 
 
 ## Overview
@@ -456,7 +457,7 @@ auroc_facet_plot
 ```
 
 ```{r int}
-ncases_int <- read_csv('papers/severe-CDI/data/process/cases_int_metadata.csv') %>% nrow()
+ncases_int <- read_csv('papers/severe-cdi/data/process/cases_int_metadata.csv') %>% nrow()
 ```
 
 
