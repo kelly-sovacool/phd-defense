@@ -47,9 +47,11 @@ feat_dat <- read_csv('papers/severe-cdi/results/feature-importance_results_aggre
 sensspec_dat <- read_csv('papers/severe-cdi/results/sensspec_results_aggregated.csv')
 ```
 
-## What is a microbiome?
+## What is a microbiome? {.hidden}
 
 Community of microorganisms that inhabit a shared ecosystem
+
+TODO
 
 ## The human gut microbiome changes during diseases
 
@@ -97,10 +99,40 @@ Created with [BioRender](biorender.com)
 and do it all reproducibly
 :::
 
-## Machine learning for health care
+## Machine learning for health care {.hidden}
 
-diagnosis and prognosis
+TODO diagnosis and prognosis
 
+Possible causative role of the microbiome in disease etiology
+
+:::{.notes}
+mechanisms are not entirely understood.
+not always clear whether the disease causes the microbiome to change, the
+change in the microbiome causes the disease, or some combination.
+
+- CDI: antibiotics disrupts the community and allows cdiff to colonize, but what
+causes some people to develop severe outcomes vs clear the infection easily?
+    - Bile acids metabolized by the gut bacteria can inhibit C. difficile growth and affect toxin production (4, 10, 11). Bacteria in the gut also can compete more directly with C. difficile through antibiotic production or nutrient consumption
+- CRC: some CRC patients have strains of _E. coli_ that produce enterotoxins, but not all.
+    - FIT cartridge sensitivity (true pos rate): 70% (early stage) to 80% (late stage)
+    - colonoscopy sensitivity: 78% to 93%
+    - detecting CRC early improves prognosis, but colonoscopies are invasive.
+- Baxter et al: "The microbiota-based random forest model detected 91.7 % of cancers and 45.5 % of adenomas while FIT alone detected 75.0 % and 15.7 %, respectively. Of the colonic lesions missed by FIT, the model detected 70.0 % of cancers and 37.7 % of adenomas. We confirmed known associations of Porphyromonas assaccharolytica, Peptostreptococcus stomatis, Parvimonas micra, and Fusobacterium nucleatum with CRC. Yet, we found that the loss of potentially beneficial organisms, such as members of the Lachnospiraceae, was more predictive for identifying patients with adenomas when used in combination with FIT."
+
+- However, these changes are not universal across individuals or datasets.
+- Mouse experiments indicate a possible causative role of the microbiome.
+    - fecal matter transplant from susceptible to germ-free mice
+    - predict colonization following Cdiff challenge
+
+- Open problems, and opportunities:
+    - Understand the role of the gut microbiome in gut diseases.
+    - Identify biomarkers to improve diagnostic and prognostic tools.
+
+Traditional microbial ecology methods aren't sufficient to distinguish between disease states.
+individual microbes aren't enough to explain it; something more complex is going on
+
+- high dimensionality: 20k OTUs
+:::
 
 ## Overview
 
@@ -132,38 +164,67 @@ note different taxa: archaea, bacteria, fungi, protists, viruses
 - Amplicon sequences do not contain enough information to identify bacteria at the species level.
 - Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+:::{.notes}
+why OTUs?
 
-#### _De novo_
-
-![](img/de-novo-clustering-0.png){fig-align="center"}
-
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
-
-#### _De novo_
-
-![](img/de-novo-clustering-1.png){fig-align="center"}
+- Some bacteria have multiple copies of the 16S rRNA gene. Using every sequence (ASV level) as a feature would split them into separate taxonomic groups.
+- Database-independent clustering methods allow exploring microbial "dark matter".
+- Case study in classifying colorectal cancer patients: the OTU, genus, and family levels perform best.
+:::
 
 ## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
 
 #### _De novo_
 
-![](img/de-novo-clustering-2.png){fig-align="center"}
+![](img/de-novo-clustering-0.png){fig-align="center" height=500px}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+
+#### _De novo_
+
+![](img/de-novo-clustering-1.png){fig-align="center" height=500px}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+
+#### _De novo_
+
+![](img/de-novo-clustering-2.png){fig-align="center" height=500px}
+
+:::{.aside}
+
+Created with [BioRender](biorender.com)
+:::
 
 ## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
 
 #### Reference-based
 
-![](img/reference-clustering-1.png){fig-align="center"}
+![](img/reference-clustering-1.png){fig-align="center" height=500px}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
 
 ## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
 
 #### Reference-based
 
-![](img/reference-clustering-2.png){fig-align="center"}
+![](img/reference-clustering-2.png){fig-align="center" height=500px}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
 
 :::{.notes}
-## Limitations of existing clustering methods
+Limitations of existing clustering methods
 
 - _De novo_ clustering results in inconsistent OTUs when adding new data.
 - Reference-based clustering results in lower quality OTUs than _de novo_.
@@ -172,12 +233,20 @@ note different taxa: archaea, bacteria, fungi, protists, viruses
 ## OptiFit
 ### reference-based clustering to _de novo_ OTUs
 
-![](img/optifit-clustering-1.png){fig-align="center"}
+![](img/optifit-clustering-1.png){fig-align="center" height=500px}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
 
 ## OptiFit
 ### reference-based clustering to _de novo_ OTUs
 
-![](img/optifit-clustering-2.png){fig-align="center"}
+![](img/optifit-clustering-2.png){fig-align="center" height=500px}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
 
 ```{r optifit}
 mutate_perf <- function(dat) {
@@ -404,7 +473,7 @@ Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299)
 [cdc.gov/cdiff](https://www.cdc.gov/cdiff/)
 :::
 
-## Clinical data for predicting complicated CDI
+## Clinical data predict complicated CDI
 
 :::{.column width="60%"}
 ![](img/li_ehr_auroc.jpeg)
@@ -416,7 +485,6 @@ median AUROC: **0.69**
 
 :::{.column width="35%" .smaller-text}
 <br>
-TODO summarize dieterle & rao papers too
 - Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
 - Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
 :::
@@ -426,15 +494,13 @@ Li _et al._ (2019). [OFID](https://doi.org/10.1093/ofid/ofz186)
 :::
 
 :::{.notes}
-Papers by Vince, Jenna, & Krishna looking at EHR data to predict CDI complications.
+TODO summarize dieterle & rao papers too
 
 CDI treatment. Li et al. (2019). https://academic.oup.com/ofid/article/6/5/ofz186/5475497
-"The development and validation of EHR-based risk stratification models for predicting complicated CDI could eventually help clinicians tailor treatments to individuals. On the day of CDI diagnosis, a patient’s estimated risk for complications could serve as an adjunct, easily obtainable resource for clinical decision support. Treatment decisions such as whether to use high-dose vancomycin or perform a loop ileostomy with antegrade vancomycin infusions [23] often do not occur until complicated CDI has already set in. In severe cases, early aggressive therapy can positively impact the course. However, invasive treatments such as enemas (fecal microbiota transplantation or vancomycin) and surgery are optimally used in only select patients, and such decisions lack the rigorous guidelines associated with initial treatment."
+"The development and validation of EHR-based risk stratification models for predicting complicated CDI could eventually help clinicians tailor treatments to individuals. On the day of CDI diagnosis, a patient's estimated risk for complications could serve as an adjunct, easily obtainable resource for clinical decision support. Treatment decisions such as whether to use high-dose vancomycin or perform a loop ileostomy with antegrade vancomycin infusions [23] often do not occur until complicated CDI has already set in. In severe cases, early aggressive therapy can positively impact the course. However, invasive treatments such as enemas (fecal microbiota transplantation or vancomycin) and surgery are optimally used in only select patients, and such decisions lack the rigorous guidelines associated with initial treatment."
 
 Would help clinicians tailor treatment options early on. Whether to go with an aggressive treatment plan or not.
 :::
-
-## Models to predict severity
 
 ## {}
 
@@ -749,11 +815,9 @@ Out of all positive samples, how many correctly predicted positive.
 
 ## Clinical value of severity prediction models
 
-## Conclusions
-
-. . .
-
-### Future work
+- The pragmatic severity model performed just as well as an EHR-based model.
+- Decent model performance is not enough to justify model deployment.
+- Open question: would deploying EHR and OTU-based models improve clinical outcomes?
 
 ## Overview
 
@@ -769,13 +833,99 @@ Out of all positive samples, how many correctly predicted positive.
 - Disseminate user-friendly tools & curricula with OSI-approved licenses.
 - Promote diversity, equity, and inclusion in data science.
 
-## Intro to Python for Data Science
+## Addressing the gender gap in STEM
 
-Girls Who Code
+- 18% of CS degrees are awarded to women.
+- U-M Bioinf PhD graduates: 25% women. The disparity begins at the application stage.
+- Most of us (women in U-M bioinf) didn't learn to code until college or later.
+
+:::{.fragment}
+**Solution:** start a Girls Who Code club focused on teaching data science to high schoolers.
+:::
+
+## Intro to Python for Data Science
+### for Girls Who Code at U-M DCMB
+
+![](papers/girls-who-code/paper/lesson-modules.png)
+
+:::{.aside}
+Duda^\*^ and Sovacool^\*^ _et al._ (2021). [JOSE](https://doi.org/10.21105/jose.00138)
+:::
+
+:::{.notes}
+teach high schoolers the basics of coding in Python for data science.
+from knowing no programming to being able to analyze a data science and present
+findings at the end of the club.
+
+live coding. hands on lessons and practice notebooks.
+pivot to flipped format for pandemic.
+
+1. Each lesson begins with a recapping of the relevant core skills presented in the
+previous lessons.
+2. All lessons are designed to be taught via 15-minute live-coding sessions. This method
+is used by The Carpentries and is demonstrated to be an effective method that
+engages learners (Nederbragt et al., 2020; Wilson, 2016) since learners must actively
+engage with the material and deal with errors and bugs as they arise.
+3. Each lesson ends with a summary of core skills presented within the material.
+4. Each short lesson is also accompanied by a subsequent 10-minute independent practice, providing further opportunity for practical experience implementing the coding
+skill at hand and testing learners' understanding of the content.
+:::
+
+## Impact of Girls Who Code
+
+- 135+ graduates of the club & summer camp.
+- Graduates improve skills in coding, problem solving, collaboration, and self-confidence.
+
+> Because of GWC, I learned about bioinformatics. I was very interested in it,
+> because it combined my interests in programming and research...
+> I'm pretty certain I want to go into bioinformatics now.
+
+<br>
+
+> I plan to go to college for Computer Science and get a robotics minor when
+> my college offers it.
+> GWC has inspired me to consider pursuing a Masters or PhD in
+> CS as well as take some electives in Data Science.
 
 ## Coding for Reproducible Research
 
-Software Carpentry
+- Over 34,000 learners have attended Software Carpentry workshops worldwide since 2010, ranging from biologists to physicists to engineers and economists.
+- U-M instance of Software Carpentry active since 2016.
+
+![](img/swc-lessons.png)
+
+:::{.aside}
+https://software-carpentry.org/lessons/
+:::
+
+:::{.notes}
+
+- Software Carpentry is an international non-profit that teaches grad students, postdocs, and other researchers how to perform reproducible computational science via interactive coding workshops.
+- Over 34,000 learners have attended since 2010, ranging from biologists to physicists to engineers and economists.
+- U-M instance of Software Carpentry active since 2016.
+:::
+
+## Integrated curriculum teaching R, Unix shell, & Git for reproducible research
+
+![](papers/software-carpentry/paper/curriculum-overview.png)
+
+:::{.aside}
+Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.00144)
+:::
+
+## Impact of Software Carpentry
+
+Pilot workshop pre & post survey
+
+![](papers/software-carpentry/paper/survey-results.png)
+
+:::{.aside}
+Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.00144)
+:::
+
+:::{.notes}
+New curriculum used in 7 workshops to date.
+:::
 
 ## Reproducible ML pipelines with mikropml
 
@@ -795,6 +945,30 @@ Software Carpentry
 
 :::{.aside}
 Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). [JOSS](https://doi.org/10.21105/joss.03073)
+:::
+
+:::{.notes}
+
+- Typical microbiologist lacks ML expertise
+- Many microbiologists have enough computational skills to be "dangerous"
+- Common pitfalls
+  - Lack of transparency in method implementation
+  - No separate held-out test data
+  - Not reporting variation in the predictive performance on different folds of cross-validation, or cross-validation vs. testing performances
+
+Goals
+
+- Restructure our ML framework to improve reusability, scalability, & reproducibility.
+- Strike a balance between easy-to-use interface for beginners with reasonable default options,
+  with enough flexibility for advanced users to customize options.
+
+best practices in swe
+
+- GitFlow, issue tracking, peer review
+- Unit tests + CI
+- Document functions & vignettes
+- Semantic versioning, changelog
+
 :::
 
 ## mikropml impact {.smaller}
@@ -818,11 +992,75 @@ conda-forge: ![](https://anaconda.org/conda-forge/r-mikropml/badges/downloads.sv
 
 :::
 
+
+:::{.notes}
+:::{.column width="48%"}
+**In the lab**
+
+- CRC classification across taxonimic levels
+- Mouse _C. diff_ colonization & clearance
+- Mouse models of colitis
+:::
+
+:::{.column width="48%"}
+**In the wild**
+
+- Diet and antimicrobial resistance
+- Evolution of grasses
+- Psychology research
+- Political science
+:::
+:::
+
 ## Summary
 
-## Acknowledgements
+- Improved OTU clustering algorithms to enable ML for microbiome research.
+- Applied ML to predict severe CDIs, demonstrating similar performance as EHR models.
+- Contributed to democratizing data science for three key audiences: high schoolers, researchers, and novice ML practitioners.
+
+![](img/frontispiece.png){fig-align="center"}
+
+## Acknowledgements {.smaller}
 
 TODO
+
+:::{.column width="45%"}
+**Schloss Lab**
+
+Advisor: Pat Schloss <br>
+Mentee: Megan Coden <br>
+Sarah Lucas <br>
+Courtney Armour <br>
+Allison Mason <br>
+Adena Collens
+
+**alumni**
+
+Nick Lesniak <br>
+Sarah Tomkovich <br>
+Katie McBride <br>
+Jay Moltzau <br>
+Begüm Topçuoğlu <br>
+Will Close <br>
+Joshua Stough <br>
+Ada Hagan <br>
+Kaitlin Flynn <br>
+:::
+
+::::{.column width="45%"}
+**Collaborators**
+
+Jenna Wiens <br>
+Vince Young <br>
+Krishna Rao <br>
+
+**Funding**
+
+:::{.small}
+NIH T32 GM070449 <br>
+NIH U01AI124255 <br>
+:::
+::::
 
 ## post-PhD plans
 
