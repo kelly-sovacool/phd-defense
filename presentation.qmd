@@ -22,6 +22,7 @@ knitr:
 library(cowplot)
 library(ggsankey)
 library(glue)
+library(ggtext)
 library(knitr)
 library(schtools)
 library(tidyverse)
@@ -79,14 +80,8 @@ Created with [BioRender](biorender.com){fig-align="center"}
 :::
 
 :::{.notes}
-- Changes in the taxonomic composition and metabolic activity of human microbiomes have been observed in several diseases including colorectal cancer (CRC) and Clostridioides difficile infection (CDI).
-- **CRC** - enrichment for bacteria that produce enterotoxins in CRC gut microbiomes.
 - **CDI** - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing _C. diff_ to colonize the gut.
-
-- For depictions of gut microbiome:
-    - https://norgenbiotek.com/blog/gut-microbiome-and-its-effects-human-health
-    - https://commonfund.nih.gov/sites/default/files/Vector%20intestines%20with%20bacteria%2C%20germs%20and%20magnifier%20-467885302.jpg
-    - https://medicalxpress.com/news/2019-10-commonly-drugs-profoundly-affecting-gut.html
+- mouse studies have found differences resistance to colonization, time to clearance, and severe outcomes based on the initial state of the gut microbiome.
 - ML models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.
 :::
 
@@ -127,19 +122,238 @@ Lee (2019). [JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
 pros & cons of amplicon sequencing vs metagenomics
 
 fundamentally different questions
+
+note different taxa: archaea, bacteria, fungi, protists, viruses
 :::
 
 ## Difficulties in bacterial taxonomy
 
-there is no consensus definition of a bacterial species
+- There is no consensus definition of a bacterial species.
+- Amplicon sequences do not contain enough information to identify bacteria at the species level.
+- Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.
 
-amplicon sequences do not contain enough information to identify at the species level
-
-## Clustering OTUs
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
 
 make nice diagrams to explain otu clustering
 
-## optifit conclusions / follow-up study
+## OptiFit: reference-based clustering to _de novo_ OTUs
+
+```{r optifit}
+mutate_perf <- function(dat) {
+  dat %>%
+    mutate(
+      mem_mb = max_rss,
+      mem_gb = mem_mb / 1024
+    ) %>%
+    rename(sec = s)
+}
+select_cols <- function(dat) {
+  dat %>%
+    select(dataset, strategy, method, tool, mcc, sec, mem_gb, fraction_mapped)
+}
+
+opticlust <- read_tsv("papers/optifit/subworkflows/1_prep_samples/results/opticlust_results.tsv") %>%
+  full_join(read_tsv("papers/optifit/subworkflows/1_prep_samples/results/dataset_sizes.tsv")) %>%
+  mutate_perf() %>%
+  mutate(strategy = method, fraction_mapped = NA)
+optifit_dbs <- read_tsv("papers/optifit/subworkflows/2_fit_reference_db/results/optifit_dbs_results.tsv") %>%
+  mutate_perf()
+optifit_split <- read_tsv("papers/optifit/subworkflows/3_fit_sample_split/results/optifit_split_results.tsv") %>%
+  filter(ref_frac == 0.5, ref_weight == "simple") %>%
+  mutate_perf()
+optifit_all <- list(
+  optifit_dbs %>%
+    mutate(strategy = glue("database_{ref}")),
+  optifit_split %>%
+    mutate(strategy = "self-split")
+) %>%
+  reduce(full_join)
+vsearch <- read_tsv("papers/optifit/subworkflows/4_vsearch/results/vsearch_results.tsv") %>%
+  mutate_perf() %>%
+  mutate(strategy = case_when(
+    method == "de_novo" ~ method,
+    TRUE ~ as.character(glue("database_{ref}"))
+  ))
+mothur_vsearch <- list(optifit_all, opticlust, vsearch) %>%
+  lapply(select_cols) %>%
+  reduce(bind_rows) %>%
+  mutate(
+    method = as.character(method),
+    strategy = as.character(strategy)
+  ) %>%
+  mutate(fraction_mapped = case_when(
+    method %>% as.character() != "closed" ~ NA_real_,
+    TRUE ~ fraction_mapped
+  )) %>%
+  pivot_longer(c(mcc, fraction_mapped, sec),
+    names_to = "metric"
+  ) %>%
+  mutate(
+    metric = factor(
+      case_when(
+        metric == "mcc" ~ "MCC",
+        metric == "fraction_mapped" ~ "Fraction Mapped",
+        metric == "sec" ~ "Runtime (sec)",
+        TRUE ~ metric
+      ),
+      levels = c("MCC", "Fraction Mapped", "Runtime (sec)")
+    ),
+    strategy = factor(
+      case_when(
+        strategy == "de_novo" ~ "_de novo_",
+        strategy == "database_rdp" ~ "db: RDP",
+        strategy == "database_silva" ~ "db: SILVA",
+        strategy == "database_gg" ~ "db: Greengenes",
+        TRUE ~ strategy
+      ),
+      levels = c(
+        "db: RDP", "db: SILVA", "db: Greengenes",
+        "self-split", "_de novo_"
+      )
+    ),
+    method = factor(
+      case_when(
+        method == "de_novo" ~ "_de novo_",
+        TRUE ~ method
+      ),
+      levels = c("open", "closed", "_de novo_")
+    )
+  )
+
+med_iqr <- function(x) {
+  return(data.frame(
+    y = median(x),
+    ymin = quantile(x)[2],
+    ymax = quantile(x)[4]
+  ))
+}
+
+color_list <- list(
+  `OptiClust (_de novo_) or OptiFit` = RColorBrewer::brewer.pal(3, "Set1")[1],
+  VSEARCH = RColorBrewer::brewer.pal(3, "Set1")[2]
+)
+color_labels <- lapply(
+  names(color_list),
+  function(name) {
+    glue("<span style = 'color:{color_list[[name]]};'>{name}</span>")
+  }
+) %>% unlist()
+
+plot_results_sum <- function(metric_str) { mothur_vsearch %>%
+  filter(dataset == 'human', metric == metric_str) %>%
+  mutate(tool = case_when(
+    tool == "vsearch" ~ "VSEARCH",
+    tool == "mothur" ~ "OptiClust (_de novo_) or OptiFit"
+  )) %>%
+  ggplot(aes(value, strategy, color = tool, shape = method)) +
+  # stat_summary(geom = "linerange",
+  #              fun.data = med_iqr,
+  #              position = position_dodge(width = 0.4)) +
+  stat_summary(
+    geom = "point",
+    fun = median,
+    size = 3,
+    position = position_dodge(width = 0.4)
+  ) +
+  scale_shape_manual(values = list(open = 1, closed = 19, `_de novo_` = 17),
+    guide = guide_legend(label.position = 'top')) +
+  scale_color_manual(
+    values = color_list,
+    labels = color_labels,
+    guide = guide_legend(label.position = 'top')
+  ) +
+  labs(x = metric_str, y = "") +
+  theme_bw() +
+  theme(
+    strip.placement = "outside",
+    strip.background = element_blank(),
+    axis.text.y = element_markdown(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    legend.title = element_blank(),
+    legend.text = element_markdown(),
+    legend.position = "top",
+    legend.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "pt"),
+    legend.spacing.x = unit(0.5, "pt"),
+    plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+    text = element_text(size = 14, family = 'Helvetica')
+  ) +
+  guides(
+    shape = guide_legend(order = 1),
+    colour = guide_legend(
+      override.aes = list(size = -1)
+    )
+  )
+}
+mcc <- plot_results_sum('MCC')
+optifit_legend <- get_legend(mcc)
+mcc <- mcc + theme(legend.position = 'none')
+frac <- plot_results_sum("Fraction Mapped") +
+    theme(axis.text.y = element_blank(), legend.position = 'none')
+sec <- plot_results_sum('Runtime (sec)') +
+    theme(axis.text.y = element_blank(), legend.position = 'none')
+```
+
+## OptiFit benchmarking results
+
+```{r mcc}
+#| out-width: 1000px
+#| out-height: 450px
+plot_grid(optifit_legend,
+    plot_grid(mcc, NULL, NULL, nrow = 1, rel_widths = c(1.3, 1, 1)),
+    ncol = 1, rel_heights = c(0.1, 1)
+)
+```
+
+:::{.aside}
+Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
+:::
+
+## OptiFit benchmarking results
+
+```{r frac}
+#| out-width: 1000px
+#| out-height: 450px
+plot_grid(optifit_legend,
+    plot_grid(mcc, frac, NULL, nrow = 1, rel_widths = c(1.3, 1, 1)),
+    ncol = 1, rel_heights = c(0.1, 1)
+)
+```
+
+:::{.aside}
+Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
+:::
+
+## OptiFit benchmarking results
+
+```{r sec}
+#| out-width: 1000px
+#| out-height: 450px
+plot_grid(optifit_legend,
+    plot_grid(mcc, frac, sec, nrow = 1, rel_widths = c(1.3, 1, 1)),
+    ncol = 1, rel_heights = c(0.1, 1)
+)
+```
+
+:::{.aside}
+Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
+:::
+
+## OptiFit for ML applications
+
+![](img/armour_optifit_ml.png)
+
+:::{.aside}
+Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299)
+:::
+
+## Overview
+
+:::{.column width="72%"}
+1. Improve methods for processing microbiome data.
+1. **Predict severe _C. difficile_ infections from gut microbiome composition.**
+1. Contribute to democratizing data science.
+:::
 
 ## _C. difficile_ infection (CDI)
 
@@ -285,7 +499,7 @@ roc_plot <- roc_dat %>%
   coord_equal() +
   labs(x = "Specificity", y = "Sensitivity") +
   theme_sovacool() +
-  theme(text = element_text(size = 10, family = 'Helvetica'),
+  theme(text = element_text(size = 14, family = 'Helvetica'),
         legend.position = 'top',
         legend.title = element_blank(),
         strip.background = element_blank(),
@@ -318,11 +532,28 @@ auroc_plot <- perf_dat %>%
         legend.position = 'top',
         legend.margin = margin(0, 0, 0, 0, unit = "pt"),
         legend.title = element_blank(),
-        text = element_text(size = 14)
+        text = element_text(size = 14, family = 'Helvetica'),
     )
 plot_grid(roc_plot, NULL, nrow = 1, rel_widths = c(0.8,1),
           align = 'h', axis = 'tb')
 ```
+
+
+:::{.notes}
+ROC = trade-off between correctly predicting positive vs negative samples.
+
+sensitivity/recall = $TPR = \frac{TP}{TP + FN}$
+
+Out of all positive samples, how many correctly predicted positive.
+
+specificity = $TNR = \frac{TN}{TN + FP} = 1 - FPR$
+
+Out of all negative samples, how many correctly predicted negative.
+
+$FPR = \frac{FP}{FP + TN}$
+
+Out of all negative samples, how many incorrectly predicited positive.
+:::
 
 ## Model performance {.smaller}
 Random Forests trained on 100x train/test splits of each dataset
@@ -339,54 +570,141 @@ EHR-based models from Li _et al._
 Median AUROC: **0.69**
 :::
 
-## perf vs ehr
+:::{.notes}
+ROC = trade-off between correctly predicting positive vs negative samples.
 
+sensitivity/recall = $TPR = \frac{TP}{TP + FN}$
 
-:::{.absolute right=0 bottom=0 .filled-box .fragment}
-```{r counts_vertical}
-counts %>%
-    kable(format.args = list(big.mark = ','),
-          col.names = c(' ', 'n', '%pos.')) %>%
-    kableExtra::kable_styling(font_size = 20)
-```
+Out of all positive samples, how many correctly predicted positive.
+
+specificity = $TNR = \frac{TN}{TN + FP} = 1 - FPR$
+
+Out of all negative samples, how many correctly predicted negative.
+
+$FPR = \frac{FP}{FP + TN}$
+
+Out of all negative samples, how many incorrectly predicited positive.
 :::
 
-:::{.aside}
-:::
+## Model performance on severe cases {.smaller}
+Random Forests trained on 100x train/test splits of each dataset
 
-
-## Permutation feature importance
-
-## Balanced Precision
-
-```{r aubprc_box}
-aubprc_box <- perf_dat %>%
-    ggplot(aes(x = aubprc, y = outcome)) +
-    geom_vline(xintercept = 0.5, linetype = "dashed") +
-    geom_boxplot() +
-    stat_summary(fun = median,
-                 geom = "text",
-                 show.legend = FALSE,
-                 mapping = aes(label = round(after_stat(x),2)),
-                 position = position_nudge(x = 0.04, y = 0.1)) +
-    facet_wrap('dataset', ncol = 2) +
-    labs(x = 'AUBPRC') +
-    xlim(0.5, 1) +
-    theme_bw() +
-    theme(
-        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
-        axis.title.y = element_blank(),
-        legend.position = 'top',
-        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
-        legend.title = element_blank(),
-        text = element_text(size = 14)
+```{r prc}
+prcurve_dat <- read_csv('papers/severe-cdi/results/prcurve_results_aggregated.csv') %>%
+  mutate(outcome = factor(outcome, levels = c('idsa', 'allcause', 'attrib', 'pragmatic'))) %>%
+  mutate(dataset = case_when(dataset == 'full' ~ 'Full datasets',
+                             dataset == 'int' ~ 'Intersection',
+                             TRUE ~ NA_character_)) %>%
+  dplyr::mutate(recall = round(recall, 2)) %>%
+  dplyr::group_by(recall, dataset, outcome) %>%
+  dplyr::summarise(
+    mean_precision = mean(precision),
+    upper = quantile(precision, 0.95),
+    lower = quantile(precision, 0.05)
+  ) %>%
+  dplyr::mutate(
+    upper = dplyr::case_when(
+      upper > 1 ~ 1,
+      TRUE ~ upper
+    ),
+    lower = dplyr::case_when(
+      lower < 0 ~ 0,
+      TRUE ~ lower
     )
-aubprc_box
+  )
+
+color_names <- c("IDSA"="#1B9E77", 'All-cause'="#7570B3",
+                 'Attributable'="#D95F02", 'Pragmatic'="#E7298A")
+
+priors <- sensspec_dat %>%
+  select(outcome, dataset, prior) %>%
+  dplyr::distinct() %>%
+  mutate(outcome = factor(case_when(outcome == 'idsa' ~ 'IDSA',
+                                    outcome == 'allcause' ~ 'All-cause',
+                                    outcome == 'attrib' ~ 'Attributable',
+                                    outcome == 'pragmatic' ~ 'Pragmatic',
+                                    TRUE ~ NA_character_),
+                          levels = c("IDSA", 'All-cause', 'Attributable', 'Pragmatic')),
+         prior = round(prior, 2)
+  )
+
+auprc_medians <- perf_dat %>%
+  group_by(dataset, outcome) %>%
+  summarize(med_auprc = median(pr_auc) %>% round(.,2)) %>%
+  mutate(lower = med_auprc, upper = med_auprc) %>%
+  mutate(outcome = factor(str_remove(outcome, "\n severity"),
+                          levels = c("IDSA", 'All-cause', 'Attributable', 'Pragmatic')
+                          ),
+         dataset = case_when(dataset == 'Intersection of samples with all labels available' ~ "Intersection",
+                             TRUE ~ dataset)
+  )
+
+prc_plot_grid <- prcurve_dat %>%
+  filter(dataset != 'Intersection') %>%
+  mutate(outcome = factor(case_when(
+         outcome == 'idsa' ~ 'IDSA',
+         outcome == 'allcause' ~ 'All-cause',
+         outcome == 'attrib' ~ 'Attributable',
+         outcome == 'pragmatic' ~ 'Pragmatic',
+         TRUE ~ NA_character_
+         ),
+         levels = c("IDSA", 'All-cause', 'Attributable', 'Pragmatic'))
+         ) %>%
+  ggplot(aes(x = recall, y = mean_precision)) +
+  geom_ribbon(aes(fill = outcome, ymin = lower, ymax = upper),
+              alpha = 0.15) +
+  geom_line(aes(color = outcome)) +
+  geom_hline(data = priors %>% filter(dataset != 'int'),
+             mapping = aes(yintercept = prior),
+             linetype = 'dashed') +
+  geom_text(data = priors %>% filter(dataset != 'int'),
+            mapping = aes(x = 0.5, y = 0.78,
+                          label = glue("baseline = {prior}")
+            ),
+            show.legend = FALSE,
+            size = 3
+            ) +
+  geom_text(data = auprc_medians %>% filter(dataset != 'int'),
+            mapping = aes(x = 0.5, y = 0.9,
+                          label = glue('  AUPRC = {med_auprc}')
+                          ),
+            show.legend = FALSE,
+            size = 3
+            ) +
+  scale_color_manual(values = color_names,
+                     guide = guide_legend(label.position = "top")) +
+  scale_fill_manual(values = color_names,
+  ) +
+  scale_y_continuous(expand = c(0, 0), limits = c(-0.01, 1.01)) +
+  scale_x_continuous(expand = c(0, 0), limits = c(-0.01, 1.01)) +
+  coord_equal() +
+  labs(x = "Recall", y = "Precision") +
+  facet_wrap("outcome",nrow=1) +
+  theme_sovacool() +
+  theme(text = element_text(size = 14, family = 'Helvetica'),
+        legend.title = element_blank(),
+        legend.position = 'none',
+        strip.background = element_blank(),
+        panel.spacing = unit(8, 'pt'),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+prc_plot_grid
 ```
 
-:::{.aside}
-Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
+:::{.notes}
+ROC = trade-off between correctly predicting positive vs negative samples.
+
+precision = $PPV = \frac{TP}{TP + FP}$
+
+Out of samples predicted positive, how many correctly predicted positive.
+
+sensitivity/recall = $TPR = \frac{TP}{TP + FN}$
+
+Out of all positive samples, how many correctly predicted positive.
 :::
+
+
+## Top features contributing to performance
+
 
 ## Clinical value of severity prediction models
 
@@ -396,6 +714,13 @@ Performance on the test set for Random Forest models trained on 100x train/test 
 
 ### Future work
 
+## Overview
+
+:::{.column width="72%"}
+1. Improve methods for processing microbiome data.
+1. Predict severe _C. difficile_ infections from gut microbiome composition.
+1. **Contribute to democratizing data science.**
+:::
 
 ## Democratizing reproducible data science
 
@@ -415,7 +740,11 @@ Software Carpentry
 
 ## Reproducible ML pipelines with mikropml
 
-`meek-rope em el`
+:::{.absolute right=100 top=50}
+`"meek-rope em el"`
+:::
+
+<br>
 
 :::{.column width="75%"}
 ![](img/mikropml-pipeline.png)
@@ -426,12 +755,29 @@ Software Carpentry
 :::
 
 :::{.aside}
-[Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). JOSS](https://doi.org/10.21105/joss.03073)
+Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). [JOSS](https://doi.org/10.21105/joss.03073)
 :::
 
-## mikropml impact
+## mikropml impact {.smaller}
 
-![](img/plot-downloads-time-1.png)
+<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+<script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+
+:::{.column width="70%"}
+![](img/plot-downloads-time_no-badge-1.png){height=550px}
+:::
+
+:::{.column width="15%"}
+<br>
+<br>
+
+CRAN: <img src="https://cranlogs.r-pkg.org/badges/grand-total/mikropml">
+
+conda-forge: ![](https://anaconda.org/conda-forge/r-mikropml/badges/downloads.svg)
+
+<span class="__dimensions_badge_embed__" data-doi="10.21105/joss.03073" data-hide-zero-citations="true" data-style="large_rectangle" data-legend="hover-right"></span>
+
+:::
 
 ## Summary
 
@@ -465,7 +811,52 @@ sklearn docs: <https://scikit-learn.org/stable/modules/cross_validation.html>
 
 ![](img/random-forest.png)
 
-## Precision-Recall without balancing
+## A more fair comparison? {.smaller}
+
+```{r auroc_facet}
+auroc_facet_plot <- perf_dat %>%
+    rename(trainset = cv_metric_AUC,
+           testset = AUROC) %>%
+    pivot_longer(c(trainset, testset),
+                 names_to = "data_partition",
+                 values_to = 'AUROC'
+                 )  %>%
+    ggplot(aes(x = AUROC, y = outcome, color = data_partition)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median,
+                 geom = "text",
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.2, y = c(-0.1, 0.1))) +
+    facet_wrap('dataset', ncol = 2) +
+    scale_color_grey() +
+    scale_x_continuous(expand = c(0, 0), limits = c(0.3, 1.01)) +
+    theme_sovacool() +
+    theme(
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'top',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+
+auroc_facet_plot
+```
+
+```{r int}
+ncases_int <- read_csv('papers/severe-cdi/data/process/cases_int_metadata.csv') %>% nrow()
+```
+
+:::{.absolute bottom=5 left=100 width="40%" .color-ash}
+**full** - all samples available; different number of samples between outcomes.
+:::
+
+:::{.absolute bottom=5 right=50 width="40%" .color-ash}
+**int** - intersection, i.e. only samples that have all three outcome labels (n=`r ncases_int`).
+:::
+
 
 ## Limitation: class imbalance
 
@@ -514,28 +905,23 @@ _AUBPRC_ = area under the **balanced precision**-recall curve
 https://en.wikipedia.org/wiki/Bayes%27_theorem
 :::
 
-## A more fair comparison? {.smaller}
+## Balanced Precision {.smaller}
+Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
 
-```{r auroc_facet}
-auroc_facet_plot <- perf_dat %>%
-    rename(trainset = cv_metric_AUC,
-           testset = AUROC) %>%
-    pivot_longer(c(trainset, testset),
-                 names_to = "data_partition",
-                 values_to = 'AUROC'
-                 )  %>%
-    ggplot(aes(x = AUROC, y = outcome, color = data_partition)) +
+```{r aubprc_box}
+aubprc_box <- perf_dat %>%
+    filter(dataset != 'int') %>%
+    ggplot(aes(x = bpr_auc, y = outcome)) +
     geom_vline(xintercept = 0.5, linetype = "dashed") +
     geom_boxplot() +
     stat_summary(fun = median,
                  geom = "text",
                  show.legend = FALSE,
                  mapping = aes(label = round(after_stat(x),2)),
-                 position = position_nudge(x = 0.2, y = c(-0.1, 0.1))) +
-    facet_wrap('dataset', ncol = 2) +
-    scale_color_grey() +
-    xlim(0.3,1) +
-    theme_bw() +
+                 position = position_nudge(x = 0.04, y = 0.1)) +
+    labs(x = 'AUBPRC') +
+    scale_x_continuous(expand = c(0, 0), limits = c(0.3, 1.01)) +
+    theme_sovacool() +
     theme(
         plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
         axis.title.y = element_blank(),
@@ -544,19 +930,6 @@ auroc_facet_plot <- perf_dat %>%
         legend.title = element_blank(),
         text = element_text(size = 14)
     )
-
-auroc_facet_plot
+aubprc_box
 ```
 
-```{r int}
-ncases_int <- read_csv('papers/severe-cdi/data/process/cases_int_metadata.csv') %>% nrow()
-```
-
-
-:::{.absolute bottom=5 left=100 width="40%" .color-ash}
-**full** - all samples available; different number of samples between outcomes.
-:::
-
-:::{.absolute bottom=5 right=50 width="40%" .color-ash}
-**int** - intersection, i.e. only samples that have all three outcome labels (n=`r ncases_int`).
-:::
