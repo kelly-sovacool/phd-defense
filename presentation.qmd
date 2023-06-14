@@ -134,9 +134,50 @@ note different taxa: archaea, bacteria, fungi, protists, viruses
 
 ## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
 
-make nice diagrams to explain otu clustering
+#### _De novo_
 
-## OptiFit: reference-based clustering to _de novo_ OTUs
+![](img/de-novo-clustering-0.png){fig-align="center"}
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+
+#### _De novo_
+
+![](img/de-novo-clustering-1.png){fig-align="center"}
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+
+#### _De novo_
+
+![](img/de-novo-clustering-2.png){fig-align="center"}
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+
+#### Reference-based
+
+![](img/reference-clustering-1.png){fig-align="center"}
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+
+#### Reference-based
+
+![](img/reference-clustering-2.png){fig-align="center"}
+
+:::{.notes}
+## Limitations of existing clustering methods
+
+- _De novo_ clustering results in inconsistent OTUs when adding new data.
+- Reference-based clustering results in lower quality OTUs than _de novo_.
+:::
+
+## OptiFit
+### reference-based clustering to _de novo_ OTUs
+
+![](img/optifit-clustering-1.png){fig-align="center"}
+
+## OptiFit
+### reference-based clustering to _de novo_ OTUs
+
+![](img/optifit-clustering-2.png){fig-align="center"}
 
 ```{r optifit}
 mutate_perf <- function(dat) {
@@ -563,7 +604,6 @@ plot_grid(roc_plot, auroc_plot, nrow = 1, rel_widths = c(0.8,1),
           align = 'h', axis = 'tb')
 ```
 
-
 :::{.absolute top=20 right=100 width="250" height="80" .medium-text .frame-box .fragment}
 EHR-based models from Li _et al._
 
@@ -703,8 +743,9 @@ Out of all positive samples, how many correctly predicted positive.
 :::
 
 
-## Top features contributing to performance
+## Top OTUs contributing to model performance
 
+![](papers/severe-cdi/figures/feature-importance_full.png)
 
 ## Clinical value of severity prediction models
 
@@ -727,8 +768,6 @@ Out of all positive samples, how many correctly predicted positive.
 - Make data science tools more accessible to researchers from non-computational backgrounds.
 - Disseminate user-friendly tools & curricula with OSI-approved licenses.
 - Promote diversity, equity, and inclusion in data science.
-
-gwc, swc, mikropml
 
 ## Intro to Python for Data Science
 
