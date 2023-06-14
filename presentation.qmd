@@ -19,6 +19,7 @@ knitr:
 ---
 
 ```{r deps}
+library(cowplot)
 library(ggsankey)
 library(glue)
 library(knitr)
@@ -114,14 +115,18 @@ diagnosis and prognosis
 1. Contribute to democratizing data science.
 :::
 
-## OptiFit
-
-## Characterize taxonomic composition
+## How to characterize microbiomes
 
 ![](img/amplicon-vs-metagenomics.png){height=600px fig-align="center"}
 
 :::{.aside}
-[Lee (2019). JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
+Lee (2019). [JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
+:::
+
+:::{.notes}
+pros & cons of amplicon sequencing vs metagenomics
+
+fundamentally different questions
 :::
 
 ## Difficulties in bacterial taxonomy
@@ -144,37 +149,25 @@ make nice diagrams to explain otu clustering
 [cdc.gov/cdiff](https://www.cdc.gov/cdiff/)
 :::
 
-## Models to predict severity
-
-## {}
-
-<br>
-
-:::{.big-text}
-Can we use the composition of the gut microbiome (OTUs) to predict CDI severity?
-:::
-
-## EHR data for predicting complicated CDI
+## Clinical data for predicting complicated CDI
 
 :::{.column width="60%"}
 ![](img/li_ehr_auroc.jpeg)
 
 ::::{.smaller-text}
-Day of diagnosis
-
 median AUROC: **0.69**
 ::::
 :::
 
 :::{.column width="35%" .smaller-text}
 <br>
-
+TODO summarize dieterle & rao papers too
 - Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
 - Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
 :::
 
 :::{.aside}
-[Li _et al._ (2019). OFID](https://doi.org/10.1093/ofid/ofz186)
+Li _et al._ (2019). [OFID](https://doi.org/10.1093/ofid/ofz186)
 :::
 
 :::{.notes}
@@ -186,158 +179,42 @@ CDI treatment. Li et al. (2019). https://academic.oup.com/ofid/article/6/5/ofz18
 Would help clinicians tailor treatment options early on. Whether to go with an aggressive treatment plan or not.
 :::
 
+## Models to predict severity
+
+## {}
+
+<br>
+
+:::{.big-middle}
+Can we use the composition of the gut microbiome to predict CDI severity?
+:::
+
 ## How to define CDI severity {.smaller}
 
 <br>
 
-```{mermaid severity_flowchart}
-flowchart TB
-    classDef outcome fill:#F7FBFF
-    subgraph invis1
-        direction TB
+![](papers/severe-cdi/figures/severity_flowchart.png){height=600px}
 
-        cases[(CDI cases)]
-
-        idsa_lab{{"Serum creatinine ≥ 1.5 mg/dL \n & WBC count ≥ 15 k/μL"}}
-        idsa_lab --> yes_idsa
-        idsa_lab --> no_idsa
-        subgraph IDSA
-            yes_idsa[Yes]:::outcome
-            no_idsa[No]:::outcome
-        end
-
-        unattrib{{One of 3 adverse outcomes occurs within 30 days:\nICU admission, colectomy, or death}}
-        unattrib --> yes_un
-        unattrib --> no_un
-        subgraph All-cause
-            yes_un[Yes]:::outcome
-            no_un[No]:::outcome
-        end
-        All-cause --> chart
-
-        chart{{physician chart review:\nthe adverse outcome was attributable to the CDI}}
-        chart --> yes_at
-        chart --> no_at
-        subgraph attrib[Attrib]
-            direction TB
-            yes_at[Yes]:::outcome
-            no_at[No]:::outcome
-        end
-
-        cases --> unattrib
-        cases --> idsa_lab
-    end
-    style IDSA fill:#bacbc6
-    style attrib fill:#bacbc6
-    style All-cause fill:#bacbc6
-    style invis1 fill:#FFFFFF,stroke:#FFFFFF,color:#FFFFFF
-```
-
-:::{.absolute width="35%" top=70 left=300 .narrow-frame .fragment}
+:::{.absolute width="35%" top=70 left=180 .narrow-frame .fragment}
 `r format_number(nrow(metadat_cases))` CDI patient stool samples collected on the day of diagnosis
 :::
 
-:::{.notes}
-What do physicians review when reviewing charts for non-severe outcomes?
-Is chart review important for those cases?
+:::{.fragment .filled-box .absolute top=300 left=850}
+```{r sample_counts}
+counts <- read_csv('papers/severe-cdi/results/count_table_full.csv') %>%
+  mutate(Severity = factor(Severity, levels = c('IDSA', 'All-cause', 'Attributable', 'Pragmatic')))
+counts %>%
+    filter(Severity != 'Pragmatic') %>%
+    kable(format.args = list(big.mark = ',')) %>%
+    kableExtra::kable_styling(font_size = 20)
+```
 :::
 
-## Defining a "pragmatic" severity definition
-
-```{r alluvial_idsa_allcause}
-metadat_cases_alluv <- metadat_cases %>%
-    mutate(
-        IDSA = if_else(is.na(idsa), 'missing_data', idsa),
-        `All-cause` = if_else(is.na(allcause), 'missing_data', allcause),
-        Attrib = if_else(is.na(attrib), 'missing_data', attrib),
-        Pragmatic = if_else(is.na(pragmatic), 'missing_data', pragmatic)
-    )
-plot_alluvial <- function(dat_long) {
-    dat_long %>%
-    rename(is_severe = node,
-           severity_definition = x) %>%
-    left_join(
-        metadat_cases_alluv %>%
-            pivot_longer(
-                c(IDSA, `All-cause`, Attrib, Pragmatic),
-                names_to = 'severity_definition',
-                values_to = 'is_severe'
-            ) %>%
-            count(severity_definition, is_severe),
-        by = c('severity_definition', 'is_severe')
-    ) %>% 
-    mutate(severity_definition = factor(severity_definition,
-           levels = c('IDSA', 'All-cause', 'Attrib', 'Pragmatic'))) %>%
-    ggplot(aes(
-        x = severity_definition,
-        next_x = next_x,
-        node = is_severe,
-        next_node = next_node,
-        fill = is_severe,
-        label = n
-    )) +
-    geom_sankey(flow.alpha = .6) +
-    geom_sankey_label(color = 'white', show.legend = FALSE) +
-    scale_fill_manual(values = c(yes="#860967", no="#0f2a4b", 
-                                 'missing_data'="#BDBDBD")) +
-    labs(x = 'Severity Definition') +
-    theme_sankey() +
-    theme(text = element_text(size = 14))
-}
-metadat_cases_alluv %>%
-    make_long(c(IDSA, `All-cause`)) %>% 
-    plot_alluvial()
-```
-
-## Defining a "pragmatic" severity definition
-
-```{r alluvial_attrib}
-metadat_cases_alluv %>%
-    make_long(c(IDSA, `All-cause`, Attrib)) %>%
-    plot_alluvial()
-```
-
-## Defining a "pragmatic" severity definition
-
-```{r alluvial_pragmatic}
-metadat_cases_alluv %>%
-    make_long(c(IDSA, `All-cause`, Attrib, Pragmatic)) %>%
-    plot_alluvial()
-```
-
-
-:::{.fragment .filled-box .absolute left=260}
-```{r sample_counts}
-counts <- metadat_cases %>%
-  pivot_longer(c(idsa,attrib,allcause,pragmatic),
-               names_to = 'severity_definition', values_to = 'is_severe') %>%
-  count(severity_definition, is_severe) %>%
-  filter(!is.na(is_severe))
-
-counts_wide <- counts %>%
-  pivot_wider(names_from = severity_definition, values_from = n) %>%
-  select(is_severe, idsa, attrib, allcause, pragmatic)
-
-totals <- counts %>%
-    left_join(counts %>%
-                  group_by(severity_definition) %>%
-                  summarise(total = sum(n))) %>%
-    mutate(percent = round(n / total * 100, 1)) %>%
-    filter(is_severe == 'yes') %>%
-    select(severity_definition, total, percent)
-percents <- totals %>% select(severity_definition, percent) %>%
-    pivot_wider(names_from = severity_definition, values_from = percent)%>%
-    mutate(stat = '% pos.', .before = allcause)
-totals_percents <- totals %>%
-    select(-percent) %>%
-    pivot_wider(names_from = severity_definition, values_from = total) %>%
-    mutate(stat = 'n', .before = allcause) %>%
-    add_row(percents) %>%
-    select(stat, idsa, attrib, allcause, pragmatic)
-totals_percents %>%
-    kable(col.names = c(' ', 'IDSA', 'Attrib', 'All-cause', "Pragmatic"),
-          format.args = list(big.mark = ',')) %>% 
-    kableExtra::kable_styling(font_size = 16)
+:::{.fragment .filled-box .absolute top=300 left=850}
+```{r sample_counts_pragmatic}
+counts %>%
+    kable(format.args = list(big.mark = ',')) %>%
+    kableExtra::kable_styling(font_size = 20)
 ```
 :::
 
@@ -346,10 +223,199 @@ totals_percents %>%
 ![](img/topcuoglu_framework.jpeg){height=600px}
 
 :::{.aside}
-[Topçuoğlu _et al._ (2020). mBio](https://doi.org/10.1128/mBio.00434-20)
+Topçuoğlu _et al._ (2020). [mBio](https://doi.org/10.1128/mBio.00434-20)
 :::
 
+## Model performance {.smaller}
+Random Forests trained on 100x train/test splits of each dataset
+
+```{r roc_curves}
+#| out-width: 100%
+roc_dat <- read_csv('papers/severe-cdi/results/roccurve_results_aggregated.csv') %>%
+  mutate(outcome = factor(outcome, levels = c('idsa', 'allcause', 'attrib', 'pragmatic'))) %>% 
+  mutate(dataset = case_when(dataset == 'full' ~ 'Full datasets',
+                             dataset == 'int' ~ 'Intersection',
+                             TRUE ~ NA_character_)) %>% 
+  dplyr::mutate(specificity = round(specificity, 1)) %>%
+  dplyr::group_by(specificity, dataset, outcome) %>%
+  dplyr::summarise(
+    mean_sensitivity = mean(sensitivity),
+    upper = quantile(sensitivity, 0.95),
+    lower = quantile(sensitivity, 0.05)
+  ) %>%
+  dplyr::mutate(
+    upper = dplyr::case_when(
+      upper > 1 ~ 1,
+      TRUE ~ upper
+    ),
+    lower = dplyr::case_when(
+      lower < 0 ~ 0,
+      TRUE ~ lower
+    )
+  )
+
+roc_plot <- roc_dat %>%
+  filter(dataset != 'Intersection')  %>%
+  ggplot() +
+  geom_ribbon(aes(x = specificity, ymin = lower, ymax = upper, fill = outcome), 
+              alpha = 0.08) +
+  geom_line(aes(x = specificity, y = mean_sensitivity, color = outcome), alpha=0.6) +
+  #geom_point(data = roc_risk_pct, aes(x = Specificity, y = mean_sensitivity, color = outcome)) +
+  geom_abline(
+    intercept = 1,
+    slope = 1,
+    linetype = "dashed",
+    color = "grey50"
+  ) +
+  scale_color_manual(values = c(idsa = "#1B9E77", 
+                                attrib = "#D95F02", 
+                                allcause = "#7570B3", 
+                                pragmatic = "#E7298A"),
+                     guide = guide_legend(label.position = 'top')) +
+  scale_fill_manual(values = c(idsa = "#1B9E77", 
+                               attrib = "#D95F02", 
+                               allcause = "#7570B3", 
+                               pragmatic = "#E7298A"),
+                    labels = c(idsa='IDSA', attrib='Attributable', 
+                               allcause='All-cause', pragmatic='Pragmatic')
+  ) +
+  guides(fill = 'none') +
+  scale_y_continuous(expand = c(0, 0), limits = c(-0.01, 1.01)) +
+  scale_x_reverse(expand = c(0, 0), limits = c(1.01,-0.01)) +
+  coord_equal() +
+  labs(x = "Specificity", y = "Sensitivity") +
+  theme_sovacool() +
+  theme(text = element_text(size = 10, family = 'Helvetica'),
+        legend.position = 'top',
+        legend.title = element_blank(),
+        strip.background = element_blank(),
+        panel.spacing = unit(10, 'pt'),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.margin = margin(0,5,0,0))
+
+auroc_plot <- perf_dat %>%
+    filter(dataset == 'full') %>%
+    rename(trainset = cv_metric_AUC,
+           testset = AUROC) %>%
+    pivot_longer(c(trainset, testset),
+                 names_to = "data_partition",
+                 values_to = 'AUROC'
+                 )  %>%
+    ggplot(aes(x = AUROC, y = outcome, color = data_partition)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median,
+                 geom = "text",
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.2, y = c(-0.1, 0.1))) +
+    scale_color_grey() +
+    scale_x_continuous(expand = c(0, 0), limits = c(0.3, 1.01)) +
+    theme_sovacool() +
+    theme(
+        plot.margin = unit(x = c(0, 5, 0, 10), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'top',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+plot_grid(roc_plot, NULL, nrow = 1, rel_widths = c(0.8,1),
+          align = 'h', axis = 'tb')
+```
+
+## Model performance {.smaller}
+Random Forests trained on 100x train/test splits of each dataset
+
+```{r auroc}
+plot_grid(roc_plot, auroc_plot, nrow = 1, rel_widths = c(0.8,1),
+          align = 'h', axis = 'tb')
+```
+
+
+:::{.absolute top=20 right=100 width="250" height="80" .medium-text .frame-box .fragment}
+EHR-based models from Li _et al._
+
+Median AUROC: **0.69**
+:::
+
+## perf vs ehr
+
+
+:::{.absolute right=0 bottom=0 .filled-box .fragment}
+```{r counts_vertical}
+counts %>%
+    kable(format.args = list(big.mark = ','),
+          col.names = c(' ', 'n', '%pos.')) %>%
+    kableExtra::kable_styling(font_size = 20)
+```
+:::
+
+:::{.aside}
+:::
+
+
+## Permutation feature importance
+
+## Balanced Precision
+
+```{r aubprc_box}
+aubprc_box <- perf_dat %>%
+    ggplot(aes(x = aubprc, y = outcome)) +
+    geom_vline(xintercept = 0.5, linetype = "dashed") +
+    geom_boxplot() +
+    stat_summary(fun = median,
+                 geom = "text",
+                 show.legend = FALSE,
+                 mapping = aes(label = round(after_stat(x),2)),
+                 position = position_nudge(x = 0.04, y = 0.1)) +
+    facet_wrap('dataset', ncol = 2) +
+    labs(x = 'AUBPRC') +
+    xlim(0.5, 1) +
+    theme_bw() +
+    theme(
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
+        axis.title.y = element_blank(),
+        legend.position = 'top',
+        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
+        legend.title = element_blank(),
+        text = element_text(size = 14)
+    )
+aubprc_box
+```
+
+:::{.aside}
+Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
+:::
+
+## Clinical value of severity prediction models
+
+## Conclusions
+
+. . .
+
+### Future work
+
+
+## Democratizing reproducible data science
+
+- Make data science tools more accessible to researchers from non-computational backgrounds.
+- Disseminate user-friendly tools & curricula with OSI-approved licenses.
+- Promote diversity, equity, and inclusion in data science.
+
+gwc, swc, mikropml
+
+## Intro to Python for Data Science
+
+Girls Who Code
+
+## Coding for Reproducible Research
+
+Software Carpentry
+
 ## Reproducible ML pipelines with mikropml
+
+`meek-rope em el`
 
 :::{.column width="75%"}
 ![](img/mikropml-pipeline.png)
@@ -363,63 +429,89 @@ totals_percents %>%
 [Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). JOSS](https://doi.org/10.21105/joss.03073)
 :::
 
-## Model performance {.smaller}
-Random Forests trained on 100x train/test splits of each dataset
+## mikropml impact
 
-```{r auroc_full}
-perf_dat %>% 
-    filter(dataset == 'full') %>% 
-    rename(trainset = cv_metric_AUC,
-           testset = AUROC) %>% 
-    pivot_longer(c(trainset, testset),
-                 names_to = "data_partition",
-                 values_to = 'AUROC'
-                 )  %>%
-    ggplot(aes(x = AUROC, y = outcome, color = data_partition)) +
-    geom_vline(xintercept = 0.5, linetype = "dashed") +
-    geom_boxplot() +
-    stat_summary(fun = median, 
-                 geom = "text", 
-                 show.legend = FALSE,
-                 mapping = aes(label = round(after_stat(x),2)),
-                 position = position_nudge(x = 0.2, y = c(-0.1, 0.1))) +
-    scale_color_grey() +
-    xlim(0.3,1) +
-    theme_bw() +
-    theme(
-        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
-        axis.title.y = element_blank(),
-        legend.position = 'top',
-        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
-        legend.title = element_blank(),
-        text = element_text(size = 14)
-    )
-```
+![](img/plot-downloads-time-1.png)
 
+## Summary
 
-:::{.absolute bottom=0 left=0 width="250" height="80" .medium-text .frame-box .fragment}
-EHR-based models from Li _et al._
+## Acknowledgements
 
-Median AUROC: **0.69**
+TODO
+
+## post-PhD plans
+
+Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
+
+## Congratulations! &nbsp; 🎉
+
+:::{.big-center}
+_You've unlocked the backup slides_
 :::
 
-:::{.absolute right=0 bottom=0 .filled-box .fragment}
-```{r counts_vertical}
-totals_vert <- totals_percents %>% 
-    pivot_longer(c(idsa, attrib, allcause, pragmatic), 
-                 names_to = 'severity') %>% 
-    pivot_wider(names_from = 'stat', values_from = value) %>% 
-    mutate(severity = factor(severity, 
-                             levels = c('pragmatic','attrib','allcause','idsa'))) %>% 
-    arrange(by = severity)
-totals_vert %>% 
-    kable(format.args = list(big.mark = ','),
-          col.names = c(' ', 'n', '%pos.')) %>% 
-    kableExtra::kable_styling(font_size = 20)
+## 5-fold cross validation
+
+![](img/grid_search_cross_validation.png){height=500px}
+
+::: {.aside}
+sklearn docs: <https://scikit-learn.org/stable/modules/cross_validation.html>
+:::
+
+## Decision trees
+
+![](img/decision-trees.png)
+
+## Random forest
+
+![](img/random-forest.png)
+
+## Precision-Recall without balancing
+
+## Limitation: class imbalance
+
+- Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).
+- The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.
+
+:::{.absolute right=2 bottom=5 width="45%"}
+![](img/wiki-conf-mat.png)
+:::
+
+:::{.absolute left=2 bottom=200 width="52%" .filled-box}
+```{r positives}
+counts %>%
+    kable(format.args = list(big.mark = ',')) %>%
+    kableExtra::kable_styling(font_size = 22)
 ```
 :::
+
+:::{.notes}
+precision: out of samples predicted to be positive, how many are correct
+
+recall: out of positively labelled samples, how many are predicted positive
+:::
+
+## Solution: calculate the balanced precision
+
+Introduced by
+[Wu _et al._ (2021). AJHG.](https://doi.org/10.1016/j.ajhg.2021.08.012) Improved pathogenicity prediction for rare human missense variants.
+
+<br>
+
+#### Equation 7
+
+$$
+AUBPRC = \frac{AUPRC \times (1 - prior)}
+{AUPRC \times (1 - prior) + (1 - AUPRC) \times prior}
+$$
 
 :::{.aside}
+_prior_ = frequency of positives
+
+_AUBPRC_ = area under the **balanced precision**-recall curve
+:::
+
+:::{.notes}
+https://en.wikipedia.org/wiki/Bayes%27_theorem
 :::
 
 ## A more fair comparison? {.smaller}
@@ -467,222 +559,4 @@ ncases_int <- read_csv('papers/severe-cdi/data/process/cases_int_metadata.csv') 
 
 :::{.absolute bottom=5 right=50 width="40%" .color-ash}
 **int** - intersection, i.e. only samples that have all three outcome labels (n=`r ncases_int`).
-:::
-
-
-## Permutation feature importance {visibility="hidden"}
-
-## Limitation: class imbalance
-
-- Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).
-- The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.
-
-:::{.absolute right=2 bottom=5 width="45%"}
-![](img/wiki-conf-mat.png)
-:::
-
-:::{.absolute left=2 bottom=200 width="52%" .filled-box}
-```{r positives}
-totals_percents %>%
-    kable(col.names = c(' ', 'IDSA', 'Attrib', 'All-cause', "Pragmatic"),
-          format.args = list(big.mark = ',')) %>% 
-    kableExtra::kable_styling(font_size = 22)
-```
-:::
-
-:::{.notes}
-https://en.wikipedia.org/wiki/Confusion_matrix
-
-precision: out of samples predicted to be positive, how many are correct
-
-recall: out of positively labelled samples, how many are predicted positive
-:::
-
-## Solution: calculate the balanced precision
-
-Introduced by
-[Wu _et al._ (2021). AJHG.](https://doi.org/10.1016/j.ajhg.2021.08.012) Improved pathogenicity prediction for rare human missense variants.
-
-<br>
-
-#### Equation 7
-
-$$
-AUBPRC = \frac{AUPRC \times (1 - prior)}
-{AUPRC \times (1 - prior) + (1 - AUPRC) \times prior}
-$$
-
-:::{.aside}
-_prior_ = frequency of positives
-
-_AUBPRC_ = area under the **balanced precision**-recall curve
-:::
-
-:::{.notes}
-https://en.wikipedia.org/wiki/Bayes%27_theorem
-
-TODO: how to interpret precision and recall vs roc
-:::
-
-## Balanced Precision
-
-```{r aubprc_box}
-aubprc_box <- perf_dat %>%
-    ggplot(aes(x = aubprc, y = outcome)) +
-    geom_vline(xintercept = 0.5, linetype = "dashed") +
-    geom_boxplot() +
-    stat_summary(fun = median,
-                 geom = "text",
-                 show.legend = FALSE,
-                 mapping = aes(label = round(after_stat(x),2)),
-                 position = position_nudge(x = 0.04, y = 0.1)) +
-    facet_wrap('dataset', ncol = 2) +
-    labs(x = 'AUBPRC') +
-    xlim(0.5, 1) +
-    theme_bw() +
-    theme(
-        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
-        axis.title.y = element_blank(),
-        legend.position = 'top',
-        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
-        legend.title = element_blank(),
-        text = element_text(size = 14)
-    )
-aubprc_box
-```
-
-:::{.aside}
-Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
-:::
-
-
-## AUROC & AUBPRC {visibility="hidden"}
-
-```{r auroc_aubprc}
-cowplot::plot_grid(auroc_facet_plot, aubprc_box, 
-                   ncol = 1)
-```
-
-## ROC & bPRC curves {visibility="hidden"}
-
-```{r bprc_curve}
-sensspec_dat %>% head()
-```
-
-
-## Performance for OTU vs EHR models
-
-:::{}
-```{r auroc_facet_ehr}
-auroc_facet_plot
-```
-:::
-
-:::{.absolute bottom=0 left=0 width="250" height="80" .medium-text .frame-box .fragment}
-EHR-based models from Li _et al._
-
-Median AUROC: **0.69**
-:::
-
-## Conclusions
-
-. . .
-
-### Future work
-
-
-## Democratizing reproducible data science
-
-- Make data science tools more accessible to researchers from non-computational backgrounds.
-- Disseminate user-friendly tools & curricula with OSI-approved licenses.
-- Promote diversity, equity, and inclusion in data science.
-
-
-gwc, swc, mikropml
-
-## Summary
-
-## post-PhD plans
-
-Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
-
-## Acknowledgements
-
-## Congratulations! &nbsp; 🎉
-
-:::{.big-center}
-_You've unlocked the backup slides_
-:::
-
-## 5-fold cross validation
-
-![](img/grid_search_cross_validation.png){height=500px}
-
-::: {.aside}
-sklearn docs: <https://scikit-learn.org/stable/modules/cross_validation.html>
-:::
-
-## Decision trees
-
-![](img/decision-trees.png)
-
-## Random forest
-
-![](img/random-forest.png)
-
-## Precision-Recall without balancing
-
-```{r auprc_box}
-perf_dat %>%
-    ggplot(aes(x = AUPRC, y = outcome)) +
-    geom_vline(xintercept = 0.5, linetype = "dashed") +
-    geom_boxplot() +
-    stat_summary(fun = median,
-                 geom = "text",
-                 show.legend = FALSE,
-                 mapping = aes(label = round(after_stat(x),2)),
-                 position = position_nudge(x = 0.04, y = 0.1)) +
-    geom_point(data = totals_vert %>%
-  mutate(
-    outcome = factor(case_when(severity == 'idsa' ~ 'IDSA\n severity',
-                        severity == 'attrib' ~ 'Attributable\n severity',
-                        severity == 'allcause' ~ 'All-cause\n severity',
-                        severity == 'pragmatic' ~ 'Pragmatic\n severity',
-                        TRUE ~ NA_character_), levels = c('IDSA\n severity',
-                           'All-cause\n severity',
-                           'Attributable\n severity',
-                           'Pragmatic\n severity'))
-  ),
-               mapping = aes(x = `% pos.`/100, y = outcome, color = outcome)) +
-    facet_wrap('dataset', ncol = 2) +
-    labs(x = 'AUPRC') +
-    theme_bw() +
-    theme(
-        plot.margin = unit(x = c(0, 0, 0, 0), units = "pt"),
-        axis.title.y = element_blank(),
-        legend.position = 'none',
-        legend.margin = margin(0, 0, 0, 0, unit = "pt"),
-        legend.title = element_blank(),
-        text = element_text(size = 14)
-    )
-```
-
-## Why not do a postdoc? {visibility="hidden"}
-
-- Every PhD I know who is not a professor and has given me advice: **don't do a postdoc!**
-
-  > "I will talk you out of it if you try to do a postdoc."
-  >
-  > "You already have the skills for a senior-level role in industry!"
-
-- Economic reality
-  - Postdoc salary: $54,840.
-  - Post-PhD Bioinformatician salary: $110,000+
-
-:::{.notes}
-- I don't want to have housemates at the age of 30.
-- I need a real retirement plan beyond "die young in a climate disaster".
-- A postdoc would make sense if I:
-  Wanted to become a professor, or could not get a job I really wanted without one.
-- Any skills I would gain in a postdoc, I could learn in a job earning 2x the salary.
 :::

@@ -44,10 +44,6 @@ $link-color: $arb-blue; // Arboretum blue
     color: $body-color !important;
 }
 
-.big-text {
-    font-size: xxx-large !important;
-}
-
 .small-text {
     font-size: small !important;
 }
@@ -69,8 +65,15 @@ $link-color: $arb-blue; // Arboretum blue
 }
 
 .big-center {
-    font-size: 70px !important;
+    font-size: xxx-large !important;
+    color: $michigan-blue !important;
     text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.big-middle {
+    font-size: xxx-large !important;
+    color: $michigan-blue !important;
     vertical-align: middle !important;
     padding: 70px !important;
 }
@@ -94,10 +97,11 @@ $link-color: $arb-blue; // Arboretum blue
     border-radius: 2px !important;
 }
 .narrow-frame {
-    border: 2px solid $rackham-green !important;
+    border: 1.5px solid !important;
     border-radius: 2px !important;
     //padding: 0.5px !important;
     text-align: center !important;
-    background: $white !important;
+    font-size: large !important;
+    background: #CCCCCC !important;
     color: $body-color !important;
 }

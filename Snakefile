@@ -17,3 +17,11 @@ rule trim_stool:
         """
         magick {input.png} -trim {output.png}
         """
+
+rule download_downloads:
+    output:
+        png='img/plot-downloads-time-1.png'
+    shell:
+        '''
+        wget https://raw.githubusercontent.com/kelly-sovacool/pkg-downloads/main/figures/plot-downloads-time-1.png -O {output.png}
+        '''
