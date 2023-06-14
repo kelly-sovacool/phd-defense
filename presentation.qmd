@@ -47,18 +47,25 @@ feat_dat <- read_csv('papers/severe-cdi/results/feature-importance_results_aggre
 sensspec_dat <- read_csv('papers/severe-cdi/results/sensspec_results_aggregated.csv')
 ```
 
-## What is a microbiome? {.hidden}
+## What is a microbiome?
 
-Community of microorganisms that inhabit a shared ecosystem
+![](img/microbiome-definition.png){height="500px" fig-align="center"}
 
-TODO
+:::{.aside}
+Berg _et al._ (2020). [Microbiome](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00875-0)
+:::
 
 ## The human gut microbiome changes during diseases
 
-:::{.smaller}
 - Irritable bowel diseases
 - Colorectal cancer
 - _Clostridioides difficile_ infection
+
+:::{.fragment}
+##### Open problems and opportunities
+
+- Understand the mechanistic role of the gut microbiome in gut diseases.
+- Identify biomarkers to improve diagnostic and prognostic tools.
 :::
 
 :::{.notes}
@@ -66,46 +73,7 @@ TODO
 - **CRC** - enrichment for bacteria that produce enterotoxins in CRC gut microbiomes.
 - **CDI** - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing _C. diff_ to colonize the gut.
 
-- For depictions of gut microbiome:
-    - https://norgenbiotek.com/blog/gut-microbiome-and-its-effects-human-health
-    - https://commonfund.nih.gov/sites/default/files/Vector%20intestines%20with%20bacteria%2C%20germs%20and%20magnifier%20-467885302.jpg
-    - https://medicalxpress.com/news/2019-10-commonly-drugs-profoundly-affecting-gut.html
-- ML models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.
-:::
-
-## The human gut microbiome changes during _C. difficile_ infection
-
-![](img/cdiff-infection.png)
-
-:::{.aside}
-Created with [BioRender](biorender.com){fig-align="center"}
-:::
-
-:::{.notes}
-- **CDI** - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing _C. diff_ to colonize the gut.
-- mouse studies have found differences resistance to colonization, time to clearance, and severe outcomes based on the initial state of the gut microbiome.
-- ML models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.
-:::
-
-## How to study the gut microbiome
-
-![](img/microbiome-research.png){height=600px fig-align="center"}
-
-:::{.aside}
-Created with [BioRender](biorender.com)
-:::
-
-:::{.notes}
-and do it all reproducibly
-:::
-
-## Machine learning for health care {.hidden}
-
-TODO diagnosis and prognosis
-
-Possible causative role of the microbiome in disease etiology
-
-:::{.notes}
+Possible causative role of the microbiome in disease etiology.
 mechanisms are not entirely understood.
 not always clear whether the disease causes the microbiome to change, the
 change in the microbiome causes the disease, or some combination.
@@ -125,8 +93,47 @@ causes some people to develop severe outcomes vs clear the infection easily?
     - predict colonization following Cdiff challenge
 
 - Open problems, and opportunities:
-    - Understand the role of the gut microbiome in gut diseases.
+    - Understand the mechanistic role of the gut microbiome in gut diseases.
     - Identify biomarkers to improve diagnostic and prognostic tools.
+
+:::
+
+## The human gut microbiome changes during _C. difficile_ infection
+
+![](img/cdiff-infection.png)
+
+:::{.aside}
+Created with [BioRender](biorender.com){fig-align="center"}
+:::
+
+:::{.notes}
+- **CDI** - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing _C. diff_ to colonize the gut.
+- mouse studies have found differences resistance to colonization, time to clearance, and severe outcomes based on the initial state of the gut microbiome.
+:::
+
+## How to study the gut microbiome
+
+![](img/microbiome-research.png){height=600px fig-align="center"}
+
+:::{.aside}
+Created with [BioRender](biorender.com)
+:::
+
+:::{.notes}
+and do it all reproducibly
+:::
+
+## Machine learning for science & health care
+
+Supervised machine learning (ML) - computational techniques that identify patterns in large datasets to classify samples or predict outcomes.
+
+##### Applications:
+
+- Diagnose CRC early and less invasively than colonoscopy.
+- Predict severe outcomes of _C. difficile_ infections.
+- Identify COVID-19 patients at risk of clinical deterioration.
+
+:::{.notes}
 
 Traditional microbial ecology methods aren't sufficient to distinguish between disease states.
 individual microbes aren't enough to explain it; something more complex is going on
@@ -448,6 +455,12 @@ plot_grid(optifit_legend,
 :::{.aside}
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
+
+## OptiFit improves reference-based clustering
+
+- Clusters sequnces at the same quality as _de novo_ methods.
+- Outperforms other reference-based methods in terms of quality and fraction mapped.
+- Trade-off: longer run time.
 
 ## OptiFit for ML applications
 
