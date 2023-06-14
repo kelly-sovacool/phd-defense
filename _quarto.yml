@@ -3,3 +3,7 @@ project:
   output-dir: docs
   render:
     - presentation.qmd
+execute:
+  cache: true
+  eval: true
+  echo: false

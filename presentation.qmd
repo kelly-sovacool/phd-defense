@@ -10,9 +10,6 @@ format:
     theme: custom.scss
     embed-resources: false
     logo: img/block_m-hex.png
-execute:
-  eval: true
-  echo: false
 knitr:
   opts_chunk:
     fig.path: figures/
@@ -51,7 +48,7 @@ sensspec_dat <- read_csv('papers/severe-cdi/results/sensspec_results_aggregated.
 
 ![](img/microbiome-definition.png){height="500px" fig-align="center"}
 
-:::{.aside}
+::: footer
 Berg _et al._ (2020). [Microbiome](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00875-0)
 :::
 
@@ -102,7 +99,7 @@ causes some people to develop severe outcomes vs clear the infection easily?
 
 ![](img/cdiff-infection.png)
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com){fig-align="center"}
 :::
 
@@ -115,7 +112,7 @@ Created with [BioRender](biorender.com){fig-align="center"}
 
 ![](img/microbiome-research.png){height=600px fig-align="center"}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -153,7 +150,7 @@ individual microbes aren't enough to explain it; something more complex is going
 
 ![](img/amplicon-vs-metagenomics.png){height=600px fig-align="center"}
 
-:::{.aside}
+::: footer
 Lee (2019). [JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
 :::
 
@@ -185,7 +182,7 @@ why OTUs?
 
 ![](img/de-novo-clustering-0.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -195,7 +192,7 @@ Created with [BioRender](biorender.com)
 
 ![](img/de-novo-clustering-1.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -205,7 +202,7 @@ Created with [BioRender](biorender.com)
 
 ![](img/de-novo-clustering-2.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 
 Created with [BioRender](biorender.com)
 :::
@@ -216,7 +213,7 @@ Created with [BioRender](biorender.com)
 
 ![](img/reference-clustering-1.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -226,7 +223,7 @@ Created with [BioRender](biorender.com)
 
 ![](img/reference-clustering-2.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -242,7 +239,7 @@ Limitations of existing clustering methods
 
 ![](img/optifit-clustering-1.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -251,7 +248,7 @@ Created with [BioRender](biorender.com)
 
 ![](img/optifit-clustering-2.png){fig-align="center" height=500px}
 
-:::{.aside}
+::: footer
 Created with [BioRender](biorender.com)
 :::
 
@@ -422,7 +419,7 @@ plot_grid(optifit_legend,
 )
 ```
 
-:::{.aside}
+::: footer
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
@@ -437,7 +434,7 @@ plot_grid(optifit_legend,
 )
 ```
 
-:::{.aside}
+::: footer
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
@@ -452,7 +449,7 @@ plot_grid(optifit_legend,
 )
 ```
 
-:::{.aside}
+::: footer
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
@@ -466,7 +463,7 @@ Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 
 ![](img/armour_optifit_ml.png)
 
-:::{.aside}
+::: footer
 Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299)
 :::
 
@@ -482,7 +479,7 @@ Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299)
 
 ![](img/Cdiff-Factsheet-P_impact-risk.png){height=500px}
 
-:::{.aside}
+::: footer
 [cdc.gov/cdiff](https://www.cdc.gov/cdiff/)
 :::
 
@@ -502,7 +499,7 @@ median AUROC: **0.69**
 - Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
 :::
 
-:::{.aside}
+::: footer
 Li _et al._ (2019). [OFID](https://doi.org/10.1093/ofid/ofz186)
 :::
 
@@ -530,7 +527,7 @@ Can we use the composition of the gut microbiome to predict CDI severity?
 ![](papers/severe-cdi/figures/severity_flowchart.png){height=600px}
 
 :::{.absolute width="35%" top=70 left=180 .narrow-frame .fragment}
-`r format_number(nrow(metadat_cases))` CDI patient stool samples collected on the day of diagnosis
+`r schtools::format_number(nrow(metadat_cases))` CDI patient stool samples collected on the day of diagnosis
 :::
 
 :::{.fragment .filled-box .absolute top=300 left=850}
@@ -556,7 +553,7 @@ counts %>%
 
 ![](img/topcuoglu_framework.jpeg){height=600px}
 
-:::{.aside}
+::: footer
 Topçuoğlu _et al._ (2020). [mBio](https://doi.org/10.1128/mBio.00434-20)
 :::
 
@@ -861,7 +858,7 @@ Out of all positive samples, how many correctly predicted positive.
 
 ![](papers/girls-who-code/paper/lesson-modules.png)
 
-:::{.aside}
+::: footer
 Duda^\*^ and Sovacool^\*^ _et al._ (2021). [JOSE](https://doi.org/10.21105/jose.00138)
 :::
 
@@ -907,7 +904,7 @@ skill at hand and testing learners' understanding of the content.
 
 ![](img/swc-lessons.png)
 
-:::{.aside}
+::: footer
 https://software-carpentry.org/lessons/
 :::
 
@@ -922,7 +919,7 @@ https://software-carpentry.org/lessons/
 
 ![](papers/software-carpentry/paper/curriculum-overview.png)
 
-:::{.aside}
+::: footer
 Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.00144)
 :::
 
@@ -932,7 +929,7 @@ Pilot workshop pre & post survey
 
 ![](papers/software-carpentry/paper/survey-results.png)
 
-:::{.aside}
+::: footer
 Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.00144)
 :::
 
@@ -956,7 +953,7 @@ New curriculum used in 7 workshops to date.
 ![](img/mikropml-snakemake.png){height=400px}
 :::
 
-:::{.aside}
+::: footer
 Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). [JOSS](https://doi.org/10.21105/joss.03073)
 :::
 
@@ -983,6 +980,10 @@ best practices in swe
 - Semantic versioning, changelog
 
 :::
+
+## mikropml follows best practices in software engineering
+
+TODO
 
 ## mikropml impact {.smaller}
 
@@ -1079,29 +1080,29 @@ NIH U01AI124255 <br>
 
 Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
 
-## Congratulations! &nbsp; 🎉
+## Congratulations! &nbsp; 🎉 {visibility="uncounted"}
 
 :::{.big-center}
 _You've unlocked the backup slides_
 :::
 
-## 5-fold cross validation
+## 5-fold cross validation {visibility="uncounted"}
 
 ![](img/grid_search_cross_validation.png){height=500px}
 
-::: {.aside}
+:::  footer
 sklearn docs: <https://scikit-learn.org/stable/modules/cross_validation.html>
 :::
 
-## Decision trees
+## Decision trees {visibility="uncounted"}
 
 ![](img/decision-trees.png)
 
-## Random forest
+## Random forest {visibility="uncounted"}
 
 ![](img/random-forest.png)
 
-## A more fair comparison? {.smaller}
+## A more fair comparison? {.smaller visibility="uncounted"}
 
 ```{r auroc_facet}
 auroc_facet_plot <- perf_dat %>%
@@ -1148,7 +1149,7 @@ ncases_int <- read_csv('papers/severe-cdi/data/process/cases_int_metadata.csv') 
 :::
 
 
-## Limitation: class imbalance
+## Limitation: class imbalance {visibility="uncounted"}
 
 - Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).
 - The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.
@@ -1171,10 +1172,7 @@ precision: out of samples predicted to be positive, how many are correct
 recall: out of positively labelled samples, how many are predicted positive
 :::
 
-## Solution: calculate the balanced precision
-
-Introduced by
-[Wu _et al._ (2021). AJHG.](https://doi.org/10.1016/j.ajhg.2021.08.012) Improved pathogenicity prediction for rare human missense variants.
+## Solution: calculate the balanced precision {visibility="uncounted"}
 
 <br>
 
@@ -1185,17 +1183,21 @@ AUBPRC = \frac{AUPRC \times (1 - prior)}
 {AUPRC \times (1 - prior) + (1 - AUPRC) \times prior}
 $$
 
-:::{.aside}
+::: {.aside}
 _prior_ = frequency of positives
 
 _AUBPRC_ = area under the **balanced precision**-recall curve
+:::
+
+::: footer
+Wu _et al._ (2021). [AJHG](https://doi.org/10.1016/j.ajhg.2021.08.012)
 :::
 
 :::{.notes}
 https://en.wikipedia.org/wiki/Bayes%27_theorem
 :::
 
-## Balanced Precision {.smaller}
+## Balanced Precision {.smaller visibility="uncounted"}
 Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
 
 ```{r aubprc_box}
