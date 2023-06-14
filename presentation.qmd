@@ -497,7 +497,7 @@ median AUROC: **0.69**
 :::
 
 :::{.column width="35%" .smaller-text}
-<br>
+
 - Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
 - Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
 :::
