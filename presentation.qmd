@@ -1068,9 +1068,9 @@ Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
 
 
 
-## Acknowledgements {.smaller}
+## Acknowledgements
 
-:::{.column width="30%"}
+:::{.column width="30%" .large-text}
 **Schloss Lab** <br>
 Patrick Schloss <br>
 Megan Coden <br>
@@ -1092,7 +1092,7 @@ Ada Hagan <br>
 Kaitlin Flynn <br>
 :::
 
-:::{.column width="30%"}
+:::{.column width="30%" .large-text}
 **Curricula contributors** <br>
 Marlena Duda <br>
 Zena Lapp <br>
@@ -1118,7 +1118,7 @@ Maya Lapp <br>
 Jason Tallant <br>
 :::
 
-:::{.column width="30%"}
+:::{.column width="30%" .large-text}
 **Collaborators** <br>
 Jenna Wiens <br>
 Vince Young <br>
@@ -1131,15 +1131,42 @@ NIH U01AI124255 <br>
 
 ## {}
 
+:::{.column width=70%}
 ![](projects/best-tally/figures/plot_blank-1.png)
-
+:::
 ## {}
 
+:::{.column width=70%}
 ![](projects/best-tally/figures/plot_line-1.png)
+:::
+
+:::{.column width=25% .large-text .fragment}
+<br>
+
+#### Phrases included
+
+- "Pat's the best"
+- "Pat is a _delight_."
+- "Wow this is incredible. Pat is literally a hero!"
+- "Your PI is amazing"
+:::
 
 ## {}
 
+:::{.column width=70%}
 ![](projects/best-tally/figures/plot_line_dry-1.png)
+:::
+
+:::{.column width=25% .large-text}
+<br>
+
+#### Phrases included
+
+- "Pat's the best"
+- "Pat is a _delight_."
+- "Wow this is incredible. Pat is literally a hero!"
+- "Your PI is amazing"
+:::
 
 ## {}
 
