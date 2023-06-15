@@ -13,3 +13,6 @@
 [submodule "papers/mikropml"]
 	path = projects/mikropml
 	url = https://github.com/SchlossLab/mikropml
+[submodule "projects/best-tally"]
+	path = projects/best-tally
+	url = https://github.com/kelly-sovacool/best-tally
