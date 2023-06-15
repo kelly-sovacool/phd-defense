@@ -1012,7 +1012,7 @@ TODO
 <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
 
 :::{.column width="70%"}
-![](img/plot-downloads-time_no-badge-1.png){height=550px}
+![](projects/pkg-downloads/figures/plot-downloads-time_no-badge-1.png){height=550px}
 :::
 
 :::{.column width="15%"}

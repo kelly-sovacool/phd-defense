@@ -16,3 +16,6 @@
 [submodule "projects/best-tally"]
 	path = projects/best-tally
 	url = https://github.com/kelly-sovacool/best-tally
+[submodule "projects/pkg-downloads"]
+	path = projects/pkg-downloads
+	url = https://github.com/kelly-sovacool/pkg-downloads
