@@ -1135,7 +1135,11 @@ NIH U01AI124255 <br>
 
 ## {}
 
-![](projects/best-tally/figures/plot_line_text-1.png)
+![](projects/best-tally/figures/plot_line-1.png)
+
+## {}
+
+![](projects/best-tally/figures/plot_line_dry-1.png)
 
 ## {}
 
