@@ -722,6 +722,8 @@ Out of all negative samples, how many incorrectly predicited positive.
 ## Model performance on severe cases {.smaller}
 Random Forests trained on 100x train/test splits of each dataset
 
+TODO does plot have extra whitespace around top/bottom margins?
+
 ```{r prc}
 prcurve_dat <- read_csv('projects/severe-cdi/results/prcurve_results_aggregated.csv') %>%
   mutate(outcome = factor(outcome, levels = c('idsa', 'allcause', 'attrib', 'pragmatic'))) %>%
@@ -876,7 +878,7 @@ TODO image or diagram here?
 ![](img/logo/gwc.png){width=500px fig-align="center"}
 :::
 
-## Intro to Python for Data Science {background-image="img/logo/gwc.png" background-size="300px" background-position="top 20px right 20px"}
+## Intro to Python for Data Science {background-image="img/logo/gwc.png" background-size="250px" background-position="top 20px right 20px"}
 ### for Girls Who Code at U-M DCMB
 
 ![](projects/girls-who-code/paper/lesson-modules.png)
@@ -904,7 +906,7 @@ engage with the material and deal with errors and bugs as they arise.
 skill at hand and testing learners' understanding of the content.
 :::
 
-## Impact of Girls Who Code {background-image="img/logo/gwc.png" background-size="300px" background-position="top 20px right 20px"}
+## Impact of Girls Who Code {background-image="img/logo/gwc.png" background-size="250px" background-position="top 20px right 20px"}
 
 - 135+ graduates of the club & summer camp.
 - Graduates improve skills in coding, problem solving, collaboration, and self-confidence.
@@ -938,7 +940,8 @@ https://software-carpentry.org/lessons/
 - U-M instance of Software Carpentry active since 2016.
 :::
 
-## Integrated curriculum teaching R, Unix shell, & Git for reproducible research {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
+## Integrated workshop curriculum {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
+### teaching R, the Unix shell, & Git for reproducible research
 
 ![](projects/software-carpentry/paper/curriculum-overview.png)
 
@@ -1168,9 +1171,11 @@ NIH U01AI124255 <br>
 - "Your PI is amazing"
 :::
 
-## {}
+## TODO friends {background-image="img/acknowledgements.png" background-size="contain"}
 
-TODO friends, family, etc
+
+
+## TODO family and David {}
 
 ## Congratulations! &nbsp; 🎉 {visibility="uncounted"}
 
