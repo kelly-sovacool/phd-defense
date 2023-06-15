@@ -29,6 +29,7 @@ $link-color: $arb-blue; // Arboretum blue
     width: auto !important;
     max-width: unset !important;
     max-height: unset !important;
+    position: fixed;
   }
 
 .reveal .subtitle {
@@ -69,6 +70,10 @@ $link-color: $arb-blue; // Arboretum blue
     color: $michigan-blue !important;
     text-align: center !important;
     vertical-align: middle !important;
+}
+
+.align-center {
+    text-align: center !important;
 }
 
 .align-right {

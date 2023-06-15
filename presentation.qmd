@@ -168,6 +168,8 @@ note different taxa: archaea, bacteria, fungi, protists, viruses
 - Amplicon sequences do not contain enough information to identify bacteria at the species level.
 - Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.
 
+TODO diagram / images to replace text. keep text to just main points.
+
 :::{.notes}
 why OTUs?
 
@@ -176,9 +178,10 @@ why OTUs?
 - Case study in classifying colorectal cancer patients: the OTU, genus, and family levels perform best.
 :::
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-#### _De novo_
+
+#### _De novo_ OptiClust algorithm
 
 ![](img/de-novo-clustering-0.png){fig-align="center" height=500px}
 
@@ -186,9 +189,9 @@ why OTUs?
 Created with [BioRender](biorender.com)
 :::
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-#### _De novo_
+#### _De novo_ OptiClust algorithm
 
 ![](img/de-novo-clustering-1.png){fig-align="center" height=500px}
 
@@ -196,9 +199,13 @@ Created with [BioRender](biorender.com)
 Created with [BioRender](biorender.com)
 :::
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+:::{.section-logo}
+![](img/hex/logo_mothur.png)
+:::
 
-#### _De novo_
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
+
+#### _De novo_ OptiClust algorithm
 
 ![](img/de-novo-clustering-2.png){fig-align="center" height=500px}
 
@@ -207,7 +214,9 @@ Created with [BioRender](biorender.com)
 Created with [BioRender](biorender.com)
 :::
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+TODO highlight limitations here
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 #### Reference-based
 
@@ -217,7 +226,7 @@ Created with [BioRender](biorender.com)
 Created with [BioRender](biorender.com)
 :::
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs)
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 #### Reference-based
 
@@ -234,7 +243,7 @@ Limitations of existing clustering methods
 - Reference-based clustering results in lower quality OTUs than _de novo_.
 :::
 
-## OptiFit
+## OptiFit {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 ### reference-based clustering to _de novo_ OTUs
 
 ![](img/optifit-clustering-1.png){fig-align="center" height=500px}
@@ -243,7 +252,7 @@ Limitations of existing clustering methods
 Created with [BioRender](biorender.com)
 :::
 
-## OptiFit
+## OptiFit {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 ### reference-based clustering to _de novo_ OTUs
 
 ![](img/optifit-clustering-2.png){fig-align="center" height=500px}
@@ -408,7 +417,7 @@ sec <- plot_results_sum('Runtime (sec)') +
     theme(axis.text.y = element_blank(), legend.position = 'none')
 ```
 
-## OptiFit benchmarking results
+## OptiFit benchmarking results {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 ```{r mcc}
 #| out-width: 1000px
@@ -418,12 +427,13 @@ plot_grid(optifit_legend,
     ncol = 1, rel_heights = c(0.1, 1)
 )
 ```
+TODO just show closed reference vs de novo
 
 ::: footer
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
-## OptiFit benchmarking results
+## OptiFit benchmarking results {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 ```{r frac}
 #| out-width: 1000px
@@ -438,7 +448,7 @@ plot_grid(optifit_legend,
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
-## OptiFit benchmarking results
+## OptiFit benchmarking results {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 ```{r sec}
 #| out-width: 1000px
@@ -453,7 +463,7 @@ plot_grid(optifit_legend,
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
-## OptiFit improves reference-based clustering
+## OptiFit improves reference-based clustering {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 - Clusters sequnces at the same quality as _de novo_ methods.
 - Outperforms other reference-based methods in terms of quality and fraction mapped.
@@ -549,9 +559,16 @@ counts %>%
 ```
 :::
 
+## Dataset TODO better header
+
+TODO diagram how otus clustered to create relabun table
+
+![](img/mikropml-snakemake.png){height=400px}
+
 ## Training machine learning models
 
-![](img/topcuoglu_framework.jpeg){height=600px}
+![](img/topcuoglu_framework.jpeg)
+
 
 ::: footer
 Topçuoğlu _et al._ (2020). [mBio](https://doi.org/10.1128/mBio.00434-20)
@@ -829,6 +846,8 @@ Out of all positive samples, how many correctly predicted positive.
 - Decent model performance is not enough to justify model deployment.
 - Open question: would deploying EHR and OTU-based models improve clinical outcomes?
 
+TODO image / plot / table instead of text / reduce text to main points
+
 ## Overview
 
 :::{.column width="72%"}
@@ -843,6 +862,8 @@ Out of all positive samples, how many correctly predicted positive.
 - Disseminate user-friendly tools & curricula with OSI-approved licenses.
 - Promote diversity, equity, and inclusion in data science.
 
+TODO image or diagram here?
+
 ## Addressing the gender gap in STEM
 
 - 18% of CS degrees are awarded to women.
@@ -851,9 +872,11 @@ Out of all positive samples, how many correctly predicted positive.
 
 :::{.fragment}
 **Solution:** start a Girls Who Code club focused on teaching data science to high schoolers.
+
+![](img/logo/gwc.png){width=500px fig-align="center"}
 :::
 
-## Intro to Python for Data Science
+## Intro to Python for Data Science {background-image="img/logo/gwc.png" background-size="300px" background-position="top 20px right 20px"}
 ### for Girls Who Code at U-M DCMB
 
 ![](papers/girls-who-code/paper/lesson-modules.png)
@@ -881,7 +904,7 @@ engage with the material and deal with errors and bugs as they arise.
 skill at hand and testing learners' understanding of the content.
 :::
 
-## Impact of Girls Who Code
+## Impact of Girls Who Code {background-image="img/logo/gwc.png" background-size="300px" background-position="top 20px right 20px"}
 
 - 135+ graduates of the club & summer camp.
 - Graduates improve skills in coding, problem solving, collaboration, and self-confidence.
@@ -897,10 +920,10 @@ skill at hand and testing learners' understanding of the content.
 > GWC has inspired me to consider pursuing a Masters or PhD in
 > CS as well as take some electives in Data Science.
 
-## Coding for Reproducible Research
+## Coding for Reproducible Research {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
 
 - Over 34,000 learners have attended Software Carpentry workshops worldwide since 2010, ranging from biologists to physicists to engineers and economists.
-- U-M instance of Software Carpentry active since 2016.
+- U-M instance of Software Carpentry active since 2016. TODO revise text for succinctness
 
 ![](img/swc-lessons.png)
 
@@ -915,7 +938,7 @@ https://software-carpentry.org/lessons/
 - U-M instance of Software Carpentry active since 2016.
 :::
 
-## Integrated curriculum teaching R, Unix shell, & Git for reproducible research
+## Integrated curriculum teaching R, Unix shell, & Git for reproducible research {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
 
 ![](papers/software-carpentry/paper/curriculum-overview.png)
 
@@ -923,7 +946,7 @@ https://software-carpentry.org/lessons/
 Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.00144)
 :::
 
-## Impact of Software Carpentry
+## Impact of Software Carpentry {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
 
 Pilot workshop pre & post survey
 
@@ -937,7 +960,7 @@ Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.
 New curriculum used in 7 workshops to date.
 :::
 
-## Reproducible ML pipelines with mikropml
+## Reproducible ML pipelines with mikropml {background-image="img/hex/logo_mikropml.png" background-size="150px" background-position="top 20px right 20px"}
 
 :::{.absolute right=100 top=50}
 `"meek-rope em el"`
@@ -945,13 +968,7 @@ New curriculum used in 7 workshops to date.
 
 <br>
 
-:::{.column width="75%"}
-![](img/mikropml-pipeline.png)
-:::
-
-:::{.column width="20%"}
-![](img/mikropml-snakemake.png){height=400px}
-:::
+![](img/mikropml-pipeline.png){fig-align="center"}
 
 ::: footer
 Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). [JOSS](https://doi.org/10.21105/joss.03073)
@@ -981,11 +998,15 @@ best practices in swe
 
 :::
 
-## mikropml follows best practices in software engineering
+## mikropml follows best practices in software engineering {background-image="img/hex/logo_mikropml.png" background-size="150px" background-position="top 20px right 20px"}
 
 TODO
 
-## mikropml impact {.smaller}
+:::{.column width="20%"}
+![](img/mikropml-snakemake.png){height=400px}
+:::
+
+## mikropml impact {.smaller background-image="img/hex/logo_mikropml.png" background-size="150px" background-position="top 20px right 20px"}
 
 <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
@@ -1032,7 +1053,20 @@ conda-forge: ![](https://anaconda.org/conda-forge/r-mikropml/badges/downloads.sv
 - Applied ML to predict severe CDIs, demonstrating similar performance as EHR models.
 - Contributed to democratizing data science for three key audiences: high schoolers, researchers, and novice ML practitioners.
 
-![](img/frontispiece.png){fig-align="center"}
+:::{.column width="50%"}
+![](img/frontispiece.png){height=350px fig-align="left"}
+:::
+
+:::{.column width="40%" .smaller-text .align-center .fragment}
+<br>
+
+##### post-PhD plans
+Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
+
+![](img/logo/fnlcr.png){fig-align="center"}
+:::
+
+
 
 ## Acknowledgements {.smaller}
 
@@ -1084,7 +1118,6 @@ Maya Lapp <br>
 Jason Tallant <br>
 :::
 
-
 :::{.column width="30%"}
 **Collaborators** <br>
 Jenna Wiens <br>
@@ -1099,10 +1132,6 @@ NIH U01AI124255 <br>
 ## Acknowledgements
 
 TODO friends, family, etc
-
-## post-PhD plans
-
-Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
 
 ## Congratulations! &nbsp; 🎉 {visibility="uncounted"}
 
