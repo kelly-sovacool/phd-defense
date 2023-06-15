@@ -1036,45 +1036,69 @@ conda-forge: ![](https://anaconda.org/conda-forge/r-mikropml/badges/downloads.sv
 
 ## Acknowledgements {.smaller}
 
-TODO
-
-:::{.column width="45%"}
-**Schloss Lab**
-
-Advisor: Pat Schloss <br>
-Mentee: Megan Coden <br>
+:::{.column width="30%"}
+**Schloss Lab** <br>
+Patrick Schloss <br>
+Megan Coden <br>
 Sarah Lucas <br>
 Courtney Armour <br>
 Allison Mason <br>
 Adena Collens
 
-**alumni**
-
+**alumni** <br>
 Nick Lesniak <br>
 Sarah Tomkovich <br>
+Sarah Westcott <br>
 Katie McBride <br>
 Jay Moltzau <br>
 Begüm Topçuoğlu <br>
-Will Close <br>
 Joshua Stough <br>
+Will Close <br>
 Ada Hagan <br>
 Kaitlin Flynn <br>
 :::
 
-::::{.column width="45%"}
-**Collaborators**
+:::{.column width="30%"}
+**Curricula contributors** <br>
+Marlena Duda <br>
+Zena Lapp <br>
+Brooke Wolford <br>
+Negar Farzaneh <br>
+Vy Nguyen <br>
+Sarah Haynes <br>
+Hayley Falk <br>
+Katie Furman <br>
+Logan Walker <br>
+Rucheng Diao <br>
+Morgan Oneka <br>
+Audrey Drotos <br>
+Gabrielle Dotson <br>
+April Kriebel <br>
+Lucy Meng <br>
+Stephanie Theide <br>
+Dana King <br>
+Catherine Barnier <br>
+Matthew Flickinger <br>
+Jule Krüger <br>
+Maya Lapp <br>
+Jason Tallant <br>
+:::
 
+
+:::{.column width="30%"}
+**Collaborators** <br>
 Jenna Wiens <br>
 Vince Young <br>
 Krishna Rao <br>
 
-**Funding**
-
-:::{.small}
+**Funding** <br>
 NIH T32 GM070449 <br>
 NIH U01AI124255 <br>
 :::
-::::
+
+## Acknowledgements
+
+TODO friends, family, etc
 
 ## post-PhD plans
 
