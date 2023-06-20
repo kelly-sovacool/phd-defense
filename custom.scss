@@ -10,7 +10,7 @@ $taubman-teal: #00B2A9;
 $angel-ash: #989C97;
 $white: #FFFFFF;
 
-$presentation-font-size-root: 30px;
+$presentation-font-size-root: 32px;
 $presentation-heading-color: $michigan-blue; // Michigan blue
 $body-color: $puma-black; // Puma black
 $link-color: $arb-blue; // Arboretum blue
@@ -70,10 +70,11 @@ $link-color: $arb-blue; // Arboretum blue
 }
 
 .big-center {
-    font-size: xxx-large !important;
+    font-size: 60px !important;
     color: $michigan-blue !important;
     text-align: center !important;
     vertical-align: middle !important;
+    padding: 200px 0;
 }
 
 .align-center {

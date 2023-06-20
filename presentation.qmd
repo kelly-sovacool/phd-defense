@@ -148,38 +148,40 @@ individual microbes aren't enough to explain it; something more complex is going
 
 ## How to characterize microbiomes
 
-![](img/amplicon-vs-metagenomics.png){height=600px fig-align="center"}
+<br>
+
+![](img/amplicon-vs-metagenomics_edited.png){fig-align="center"}
 
 ::: footer
-Lee (2019). [JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
+Adapted from: Lee (2019). [JOSE](https://astrobiomike.github.io/misc/amplicon_and_metagen)
 :::
 
 :::{.notes}
-pros & cons of amplicon sequencing vs metagenomics
-
-fundamentally different questions
-
 note different taxa: archaea, bacteria, fungi, protists, viruses
 :::
 
 ## Difficulties in bacterial taxonomy
 
+![](img/biological-taxonomy.png){fig-align="center"}
+
+:::{.notes}
+TODO diagram / images to replace text. keep text to just main points.
+why OTUs?
+
+- inconsistent species concept for bacteria...
 - There is no consensus definition of a bacterial species.
 - Amplicon sequences do not contain enough information to identify bacteria at the species level.
 - Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.
-
-TODO diagram / images to replace text. keep text to just main points.
-
-:::{.notes}
-why OTUs?
-
 - Some bacteria have multiple copies of the 16S rRNA gene. Using every sequence (ASV level) as a feature would split them into separate taxonomic groups.
 - Database-independent clustering methods allow exploring microbial "dark matter".
 - Case study in classifying colorectal cancer patients: the OTU, genus, and family levels perform best.
 :::
 
-## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
+::: footer
+Created with [BioRender](biorender.com)
+:::
 
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
 #### _De novo_ OptiClust algorithm
 
@@ -214,11 +216,22 @@ Created with [BioRender](biorender.com)
 Created with [BioRender](biorender.com)
 :::
 
+#### _De novo_ OptiClust algorithm
+
+![](img/de-novo-clustering-3.png){fig-align="center" height=500px}
+
+::: footer
+
+Created with [BioRender](biorender.com)
+:::
+
+:::{.notes}
 TODO highlight limitations here
+:::
 
 ## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-#### Reference-based
+#### Reference-based algorithm
 
 ![](img/reference-clustering-1.png){fig-align="center" height=500px}
 
@@ -228,9 +241,19 @@ Created with [BioRender](biorender.com)
 
 ## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-#### Reference-based
+#### Reference-based algorithm
 
 ![](img/reference-clustering-2.png){fig-align="center" height=500px}
+
+::: footer
+Created with [BioRender](biorender.com)
+:::
+
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
+
+#### Reference-based algorithm
+
+![](img/reference-clustering-3.png){fig-align="center" height=500px}
 
 ::: footer
 Created with [BioRender](biorender.com)
@@ -256,6 +279,15 @@ Created with [BioRender](biorender.com)
 ### reference-based clustering to _de novo_ OTUs
 
 ![](img/optifit-clustering-2.png){fig-align="center" height=500px}
+
+::: footer
+Created with [BioRender](biorender.com)
+:::
+
+## OptiFit {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
+### reference-based clustering to _de novo_ OTUs
+
+![](img/optifit-clustering-3.png){fig-align="center" height=500px}
 
 ::: footer
 Created with [BioRender](biorender.com)
@@ -427,10 +459,13 @@ plot_grid(optifit_legend,
     ncol = 1, rel_heights = c(0.1, 1)
 )
 ```
-TODO just show closed reference vs de novo
 
 ::: footer
 Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
+:::
+
+:::{.notes}
+TODO just show closed reference vs de novo
 :::
 
 ## OptiFit benchmarking results {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
@@ -465,11 +500,12 @@ Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 
 ## OptiFit improves reference-based clustering {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-- Clusters sequnces at the same quality as _de novo_ methods.
-- Outperforms other reference-based methods in terms of quality and fraction mapped.
+- Allows use of _de novo_ OTUs as a reference.
+- Clusters sequences at the same quality as _de novo_ methods.
+- Outperforms other reference-based methods in terms of quality.
 - Trade-off: longer run time.
 
-## OptiFit for ML applications
+## OptiFit is suitable for machine learning
 
 ![](img/armour_optifit_ml.png)
 
@@ -504,9 +540,8 @@ median AUROC: **0.69**
 :::
 
 :::{.column width="35%" .smaller-text}
-
-- Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
 - Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
+- Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
 :::
 
 ::: footer
@@ -514,7 +549,8 @@ Li _et al._ (2019). [OFID](https://doi.org/10.1093/ofid/ofz186)
 :::
 
 :::{.notes}
-TODO summarize dieterle & rao papers too
+TODO revise text.
+TODO summarize dieterle & rao papers too. 
 
 CDI treatment. Li et al. (2019). https://academic.oup.com/ofid/article/6/5/ofz186/5475497
 "The development and validation of EHR-based risk stratification models for predicting complicated CDI could eventually help clinicians tailor treatments to individuals. On the day of CDI diagnosis, a patient's estimated risk for complications could serve as an adjunct, easily obtainable resource for clinical decision support. Treatment decisions such as whether to use high-dose vancomycin or perform a loop ileostomy with antegrade vancomycin infusions [23] often do not occur until complicated CDI has already set in. In severe cases, early aggressive therapy can positively impact the course. However, invasive treatments such as enemas (fecal microbiota transplantation or vancomycin) and surgery are optimally used in only select patients, and such decisions lack the rigorous guidelines associated with initial treatment."
@@ -559,11 +595,10 @@ counts %>%
 ```
 :::
 
-## Dataset TODO better header
-
-TODO diagram how otus clustered to create relabun table
-
-![](img/mikropml-snakemake.png){height=400px}
+:::{.notes}
+TODO diagram how otus clustered to create relabun table.
+transition to next slide by discussing data format
+:::
 
 ## Training machine learning models
 
@@ -631,7 +666,7 @@ roc_plot <- roc_dat %>%
   scale_y_continuous(expand = c(0, 0), limits = c(-0.01, 1.01)) +
   scale_x_reverse(expand = c(0, 0), limits = c(1.01,-0.01)) +
   coord_equal() +
-  labs(x = "Specificity", y = "Sensitivity") +
+  labs(x = "Specificity (1-FPR)", y = "Sensitivity (TPR)") +
   theme_sovacool() +
   theme(text = element_text(size = 14, family = 'Helvetica'),
         legend.position = 'top',
@@ -686,7 +721,7 @@ Out of all negative samples, how many correctly predicted negative.
 
 $FPR = \frac{FP}{FP + TN}$
 
-Out of all negative samples, how many incorrectly predicited positive.
+Out of all negative samples, how many incorrectly predicted positive.
 :::
 
 ## Model performance {.smaller}
@@ -716,13 +751,11 @@ Out of all negative samples, how many correctly predicted negative.
 
 $FPR = \frac{FP}{FP + TN}$
 
-Out of all negative samples, how many incorrectly predicited positive.
+Out of all negative samples, how many incorrectly predicted positive.
 :::
 
 ## Model performance on severe cases {.smaller}
 Random Forests trained on 100x train/test splits of each dataset
-
-TODO does plot have extra whitespace around top/bottom margins?
 
 ```{r prc}
 prcurve_dat <- read_csv('projects/severe-cdi/results/prcurve_results_aggregated.csv') %>%
@@ -813,7 +846,7 @@ prc_plot_grid <- prcurve_dat %>%
   scale_y_continuous(expand = c(0, 0), limits = c(-0.01, 1.01)) +
   scale_x_continuous(expand = c(0, 0), limits = c(-0.01, 1.01)) +
   coord_equal() +
-  labs(x = "Recall", y = "Precision") +
+  labs(x = "Recall (TPR)", y = "Precision (PPV)") +
   facet_wrap("outcome",nrow=1) +
   theme_sovacool() +
   theme(text = element_text(size = 14, family = 'Helvetica'),
@@ -842,13 +875,23 @@ Out of all positive samples, how many correctly predicted positive.
 
 ![](projects/severe-cdi/figures/feature-importance_full.png)
 
-## Clinical value of severity prediction models
+:::{.notes}
+TODO blurb about each OTU
+:::
+
+
+## Clinical value of prediction models
+
+:::{.big-middle}
+Would deploying EHR and/or OTU-based models improve clinical outcomes?
+:::
+
+:::{.notes}
+TODO image / plot / table instead of text / reduce text to main points
 
 - The pragmatic severity model performed just as well as an EHR-based model.
 - Decent model performance is not enough to justify model deployment.
-- Open question: would deploying EHR and OTU-based models improve clinical outcomes?
-
-TODO image / plot / table instead of text / reduce text to main points
+:::
 
 ## Overview
 
@@ -861,21 +904,25 @@ TODO image / plot / table instead of text / reduce text to main points
 ## Democratizing reproducible data science
 
 - Make data science tools more accessible to researchers from non-computational backgrounds.
-- Disseminate user-friendly tools & curricula with OSI-approved licenses.
+- Disseminate user-friendly tools & curricula with open source licenses.
 - Promote diversity, equity, and inclusion in data science.
 
+:::{.notes}
 TODO image or diagram here?
+
+transition: 3 key audiences. high schoolers, academic researchers, novice ML practitioners
+:::
 
 ## Addressing the gender gap in STEM
 
 - 18% of CS degrees are awarded to women.
-- U-M Bioinf PhD graduates: 25% women. The disparity begins at the application stage.
-- Most of us (women in U-M bioinf) didn't learn to code until college or later.
+- U-M Bioinformatics PhD graduates: 25% women. The disparity begins at the application stage.
+- Most of us (women in U-M Bioinformatics) didn't learn to code until college or later.
 
 :::{.fragment}
-**Solution:** start a Girls Who Code club focused on teaching data science to high schoolers.
+**Solution:** start a Girls Who Code club focused on teaching coding for data science to high schoolers.
 
-![](img/logo/gwc.png){width=500px fig-align="center"}
+![](img/logo/gwc.png){width=475px fig-align="center"}
 :::
 
 ## Intro to Python for Data Science {background-image="img/logo/gwc.png" background-size="250px" background-position="top 20px right 20px"}
@@ -924,16 +971,19 @@ skill at hand and testing learners' understanding of the content.
 
 ## Coding for Reproducible Research {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
 
-- Over 34,000 learners have attended Software Carpentry workshops worldwide since 2010, ranging from biologists to physicists to engineers and economists.
-- U-M instance of Software Carpentry active since 2016. TODO revise text for succinctness
+- 34,000+ learners have attended Software Carpentry workshops worldwide since 2010.
+- U-M instance of Software Carpentry active since 2016.
 
+:::{.fragment}
 ![](img/swc-lessons.png)
+:::
 
 ::: footer
 https://software-carpentry.org/lessons/
 :::
 
 :::{.notes}
+TODO revise text for succinctness
 
 - Software Carpentry is an international non-profit that teaches grad students, postdocs, and other researchers how to perform reproducible computational science via interactive coding workshops.
 - Over 34,000 learners have attended since 2010, ranging from biologists to physicists to engineers and economists.
@@ -941,7 +991,7 @@ https://software-carpentry.org/lessons/
 :::
 
 ## Integrated workshop curriculum {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
-### teaching R, the Unix shell, & Git for reproducible research
+### teaching R, the Unix shell, and Git
 
 ![](projects/software-carpentry/paper/curriculum-overview.png)
 
@@ -951,7 +1001,7 @@ Lapp^\*^ and Sovacool^\*^ _et al._ (2022). [JOSE](https://doi.org/10.21105/jose.
 
 ## Impact of Software Carpentry {background-image="img/logo/software-carpentry.png" background-size="200px" background-position="top 30px right 20px"}
 
-Pilot workshop pre & post survey
+### Pilot workshop pre & post survey
 
 ![](projects/software-carpentry/paper/survey-results.png)
 
@@ -971,7 +1021,13 @@ New curriculum used in 7 workshops to date.
 
 <br>
 
-![](img/mikropml-pipeline.png){fig-align="center"}
+:::{.column width="80%"}
+![](img/mikropml-pipeline_crop.png){fig-align="center"}
+:::
+
+:::{.column width="19%" .fragment}
+![](img/mikropml-snakemake.png){fig-align="center"}
+:::
 
 ::: footer
 Topçuoğlu^\*^, Lapp^\*^, Sovacool^\*^ _et al._ (2021). [JOSS](https://doi.org/10.21105/joss.03073)
@@ -1001,13 +1057,6 @@ best practices in swe
 
 :::
 
-## mikropml follows best practices in software engineering {background-image="img/hex/logo_mikropml.png" background-size="150px" background-position="top 20px right 20px"}
-
-TODO
-
-:::{.column width="20%"}
-![](img/mikropml-snakemake.png){height=400px}
-:::
 
 ## mikropml impact {.smaller background-image="img/hex/logo_mikropml.png" background-size="150px" background-position="top 20px right 20px"}
 
@@ -1054,22 +1103,19 @@ conda-forge: ![](https://anaconda.org/conda-forge/r-mikropml/badges/downloads.sv
 
 - Improved OTU clustering algorithms to enable ML for microbiome research.
 - Applied ML to predict severe CDIs, demonstrating similar performance as EHR models.
-- Contributed to democratizing data science for three key audiences: high schoolers, researchers, and novice ML practitioners.
+- Contributed to democratizing data science for three key audiences.
 
-:::{.column width="50%"}
-![](img/frontispiece.png){height=350px fig-align="left"}
-:::
-
-:::{.column width="40%" .smaller-text .align-center .fragment}
-<br>
+:::{.column width="49%" .smaller-text .fragment}
 
 ##### post-PhD plans
 Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
 
-![](img/logo/fnlcr.png){fig-align="center"}
+![](img/logo/fnlcr.png){}
 :::
 
-
+:::{.notes}
+three key audiences: high schoolers, researchers, and novice ML practitioners.
+:::
 
 ## Acknowledgements
 
@@ -1123,13 +1169,19 @@ Jason Tallant <br>
 
 :::{.column width="30%" .large-text}
 **Collaborators** <br>
-Jenna Wiens <br>
-Vince Young <br>
+**& Committee** <br>
 Krishna Rao <br>
+Vince Young <br>
+Jenna Wiens <br>
+Greg Dick <br>
 
 **Funding** <br>
 NIH T32 GM070449 <br>
 NIH U01AI124255 <br>
+:::
+
+:::{.notes}
+schlabbies are wonderful people
 :::
 
 ## {}
@@ -1171,17 +1223,17 @@ NIH U01AI124255 <br>
 - "Your PI is amazing"
 :::
 
-## TODO friends {background-image="img/acknowledgements.png" background-size="contain"}
+## {background-image="img/acknowledgements-schlabbies.jpg" background-size="contain"}
 
+## {background-image="img/acknowledgements-friends.svg" background-size="contain"}
 
+## {background-image="img/acknowledgements-family.svg" background-size="contain"}
 
-## TODO family and David {}
+## {visibility="uncounted"}
 
-## Congratulations! &nbsp; 🎉 {visibility="uncounted"}
+![](img/frontispiece.png){height=500px fig-align="center"}
 
-:::{.big-center}
-_You've unlocked the backup slides_
-:::
+## Supplemental slides {visibility="uncounted"}
 
 ## 5-fold cross validation {visibility="uncounted"}
 
@@ -1251,16 +1303,18 @@ ncases_int <- read_csv('projects/severe-cdi/data/process/cases_int_metadata.csv'
 - Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).
 - The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.
 
-:::{.absolute right=2 bottom=5 width="45%"}
-![](img/wiki-conf-mat.png)
-:::
+<br>
 
-:::{.absolute left=2 bottom=200 width="52%" .filled-box}
+:::{.absolute left=50 bottom=150 width="40%" .filled-box}
 ```{r positives}
 counts %>%
     kable(format.args = list(big.mark = ',')) %>%
     kableExtra::kable_styling(font_size = 22)
 ```
+:::
+
+:::{.absolute right=1 bottom=1 width="48%"}
+![](img/wiki-conf-mat.png)
 :::
 
 :::{.notes}
