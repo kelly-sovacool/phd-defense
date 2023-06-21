@@ -216,6 +216,8 @@ Created with [BioRender](biorender.com)
 Created with [BioRender](biorender.com)
 :::
 
+## Clustering amplicon sequences into Operational Taxonomic Units (OTUs) {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
+
 #### _De novo_ OptiClust algorithm
 
 ![](img/de-novo-clustering-3.png){fig-align="center" height=500px}
@@ -375,11 +377,11 @@ mothur_vsearch <- list(optifit_all, opticlust, vsearch) %>%
     )
   )
 
-med_iqr <- function(x) {
+med_ci <- function(x) {
   return(data.frame(
     y = median(x),
-    ymin = quantile(x)[2],
-    ymax = quantile(x)[4]
+    ymin = quantile(x, 0.95),
+    ymax = quantile(x, 0.05)
   ))
 }
 
@@ -394,21 +396,26 @@ color_labels <- lapply(
   }
 ) %>% unlist()
 
-plot_results_sum <- function(metric_str) { mothur_vsearch %>%
-  filter(dataset == 'human', metric == metric_str) %>%
+plot_results_sum <- function(metric_str) { 
+  mothur_vsearch %>%
+  filter(dataset == 'human', metric == metric_str, method != 'open') %>%
+  mutate(value = case_when(
+      strategy == '_de novo_' & metric == 'Fraction Mapped' & tool == 'mothur' ~ 1,
+      TRUE ~ value
+  )) %>% 
   mutate(tool = case_when(
     tool == "vsearch" ~ "VSEARCH",
     tool == "mothur" ~ "OptiClust (_de novo_) or OptiFit"
   )) %>%
   ggplot(aes(value, strategy, color = tool, shape = method)) +
-  # stat_summary(geom = "linerange",
-  #              fun.data = med_iqr,
+  # stat_summary(geom = "pointrange",
+  #              fun.data = med_ci,
   #              position = position_dodge(width = 0.4)) +
   stat_summary(
     geom = "point",
     fun = median,
     size = 3,
-    position = position_dodge(width = 0.4)
+    #position = position_dodge(width = 0.4)
   ) +
   scale_shape_manual(values = list(open = 1, closed = 19, `_de novo_` = 17),
     guide = guide_legend(label.position = 'top')) +
@@ -434,7 +441,7 @@ plot_results_sum <- function(metric_str) { mothur_vsearch %>%
     text = element_text(size = 14, family = 'Helvetica')
   ) +
   guides(
-    shape = guide_legend(order = 1),
+    shape = 'none',
     colour = guide_legend(
       override.aes = list(size = -1)
     )
@@ -444,6 +451,8 @@ mcc <- plot_results_sum('MCC')
 optifit_legend <- get_legend(mcc)
 mcc <- mcc + theme(legend.position = 'none')
 frac <- plot_results_sum("Fraction Mapped") +
+    scale_x_continuous(limits = c(0.3, 1), expand = c(0, 0.05)
+                       ) +
     theme(axis.text.y = element_blank(), legend.position = 'none')
 sec <- plot_results_sum('Runtime (sec)') +
     theme(axis.text.y = element_blank(), legend.position = 'none')
@@ -901,7 +910,7 @@ TODO image / plot / table instead of text / reduce text to main points
 1. **Contribute to democratizing data science.**
 :::
 
-## Democratizing reproducible data science
+## Democratizing data science
 
 - Make data science tools more accessible to researchers from non-computational backgrounds.
 - Disseminate user-friendly tools & curricula with open source licenses.
