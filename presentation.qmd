@@ -117,18 +117,20 @@ Created with [BioRender](biorender.com)
 :::
 
 :::{.notes}
-and do it all reproducibly
+analyze microbial sequences to determine which microbes are there and how
+abundant they are.
 :::
 
 ## Machine learning for science & health care
 
-Supervised machine learning (ML) - computational techniques that identify patterns in large datasets to classify samples or predict outcomes.
+Supervised machine learning (ML) - computational techniques that identify
+patterns in large datasets to classify samples or predict outcomes.
 
 ##### Applications:
 
-- Diagnose CRC early and less invasively than colonoscopy.
-- Predict severe outcomes of _C. difficile_ infections.
+- Diagnose colorectal cancer early and less invasively than colonoscopy.
 - Identify COVID-19 patients at risk of clinical deterioration.
+- Predict severe outcomes of _C. difficile_ infections.
 
 :::{.notes}
 
@@ -170,14 +172,14 @@ that's not possible with amplicon sequencing.
 
 ## Difficulties in bacterial taxonomy
 
-:::{.column width="45%"}
+:::{.column width="50%"}
 ![](img/biological-taxonomy.png){fig-align="center"}
 :::
 
-:::{.column width="45%"}
-- Inconsistent species concept for bacteria.
-- Bacteria that are difficult to culture are not well-characterized.
-- Multiple copies of target genes for amplicon sequencing in many bacteria.
+:::{.column width="45%" .smaller}
+- Inconsistent species concept for microbes.
+- Most microbes are not easy to culture, thus are not well-characterized.
+- Many bacteria have multiple copies of target genes for amplicon sequencing.
 :::
 
 :::{.notes}
@@ -186,7 +188,9 @@ why OTUs?
 - Inconsistent species concept for bacteria.
     - Binary fission - bacteria reproduce by cloning themselves.
     - Horizontal gene transfer - bacteria can swap genes with each other.
+    - Their phenotypic properties do not reveal common ancestry.
 - Amplicon sequences do not contain enough information to identify bacteria at the species level.
+    - 16S highly conserved; 16S rRNA trees informed classifications at and above the rank of genus (https://www.nature.com/articles/s41396-021-00941-x).
 - Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.
 - Using every sequence (ASV level) as a feature would split them into separate taxonomic groups.
 - Bacteria that are difficult to culture are not well-characterized.
@@ -195,7 +199,8 @@ why OTUs?
     - This leaves holes in public reference databases.
     - Database-independent clustering methods allow exploring microbial "dark matter".
 
-Solution: cluster amplicon sequences into operational taxonomic units (OTU).
+Solution: cluster the amplicon sequences into operational taxonomic units (OTU)
+based on how similar the sequences are to each other.
 OTUs can generally be identified down to the genus level.
 :::
 
@@ -486,7 +491,7 @@ sec <- plot_results_sum('Runtime (sec)') +
 #| out-width: 1000px
 #| out-height: 450px
 plot_grid(optifit_legend,
-    plot_grid(mcc, NULL, NULL, nrow = 1, rel_widths = c(1.3, 1, 1)),
+    plot_grid(mcc, NULL, nrow = 1, rel_widths = c(1.3, 1)),
     ncol = 1, rel_heights = c(0.1, 1)
 )
 ```
@@ -496,22 +501,32 @@ Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 :::
 
 :::{.notes}
-TODO just show closed reference vs de novo
-:::
+so we benchmarked the optifit algorithm alongside a few other clustering
+strategies.
+We tested these algorithms with four public datasets from human gut, mouse gut,
+soil, and marine microbiome samples.
+For the sake of time I'm only showing the results from the human dataset here.
 
-## OptiFit benchmarking results {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
+we used the Matthews Correlation Coefficient (MCC) to measure how well each
+algorithm adhered to the distance threshold.
+The MCC ranges from -1 to 1, with 1 being perfect quality where all pairs of
+sequences that are within the distance threshold are in the same OTU and all
+pairs of sequences that are more dissimilar than the threshold are in different
+OTUs.
 
-```{r frac}
-#| out-width: 1000px
-#| out-height: 450px
-plot_grid(optifit_legend,
-    plot_grid(mcc, frac, NULL, nrow = 1, rel_widths = c(1.3, 1, 1)),
-    ncol = 1, rel_heights = c(0.1, 1)
-)
-```
-
-::: footer
-Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
+on the y-axis we have each clustering strategy.
+first is _de novo_ clustering with OptiClust and _de novo_ clustering with
+another program called VSEARCH.
+we then tested OptiFit with a self-split strategy, where we clustered half of the
+sequences _de novo_ then fit the remaining sequences to the _de novo_ OTUs as a
+reference.
+the self-split strategy with OptiFit performed just as well as OptiClust in terms
+of MCC.
+Despite issues with public databases, traditional reference-based clustering to
+an external database is still fairly common, so we tested OptiFit's ability to
+fit sequences to three databases: greengenes, silva, and the RDP.
+for database-depending clustering was highly dependent on the size of the
+database.
 :::
 
 ## OptiFit benchmarking results {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
@@ -520,7 +535,7 @@ Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 #| out-width: 1000px
 #| out-height: 450px
 plot_grid(optifit_legend,
-    plot_grid(mcc, frac, sec, nrow = 1, rel_widths = c(1.3, 1, 1)),
+    plot_grid(mcc, sec, nrow = 1, rel_widths = c(1.3, 1)),
     ncol = 1, rel_heights = c(0.1, 1)
 )
 ```
@@ -531,17 +546,26 @@ Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 
 ## OptiFit improves reference-based clustering {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-- New method: use _de novo_ OTUs as a reference for new sequences.
+- New method to use _de novo_ OTUs as a reference for new sequences.
 - Clusters sequences at the same quality as _de novo_ methods.
 - Outperforms other reference-based methods in terms of quality.
-- Trade-off: longer run time.
+    - Trade-off: longer run time.
 
-## OptiFit is suitable for machine learning
+:::{.fragment}
+- Follow-up: OptiFit is suitable for machine learning.
+:::
 
-![](img/armour_optifit_ml.png)
+:::: footer
+Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299) <br>
+Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21) 
+::::
 
-::: footer
-Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299)
+:::{.notes}
+So in conclusion for this project, we found that OptiFit is a new method that improves reference-based clustering.
+
+In a follow-up study, Courtney Armour demonstrated that you can use OptiFit to
+fit new data to existing OTUs and machine learning models tested with the new
+data performed just as well as if all of the data had been clustered _de novo_.
 :::
 
 ## Overview
@@ -560,6 +584,13 @@ Armour _et al._ (2023). [bioRxiv](10.1101/2022.09.01.506299)
 [cdc.gov/cdiff](https://www.cdc.gov/cdiff/)
 :::
 
+:::{.notes}
+_Clostridioides difficile_ is a bacterium that causes infection.
+
+CDI has a mortality rate of about 8% and that risk is higher in older patients.
+CDI is a significant burden on the US health care system.
+:::
+
 ## Clinical data predict complicated CDI
 
 :::{.column width="60%"}
@@ -571,7 +602,7 @@ median AUROC: **0.69**
 :::
 
 :::{.column width="35%" .smaller-text}
-- Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.
+- Motivation: inform clinicians on which CDI patients may be most at risk of severe outcomes in order to tailor treatments.
 - Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.
 :::
 
@@ -580,8 +611,9 @@ Li _et al._ (2019). [OFID](https://doi.org/10.1093/ofid/ofz186)
 :::
 
 :::{.notes}
-TODO revise text.
-TODO summarize dieterle & rao papers too. 
+Area under the receiver-operator characteristic curve (AUROC) - given a randomly
+selected severe case and a not severe case, what is the probability that the model
+correctly ranks the severe case as having a higher risk.
 
 CDI treatment. Li et al. (2019). https://academic.oup.com/ofid/article/6/5/ofz186/5475497
 "The development and validation of EHR-based risk stratification models for predicting complicated CDI could eventually help clinicians tailor treatments to individuals. On the day of CDI diagnosis, a patient's estimated risk for complications could serve as an adjunct, easily obtainable resource for clinical decision support. Treatment decisions such as whether to use high-dose vancomycin or perform a loop ileostomy with antegrade vancomycin infusions [23] often do not occur until complicated CDI has already set in. In severe cases, early aggressive therapy can positively impact the course. However, invasive treatments such as enemas (fecal microbiota transplantation or vancomycin) and surgery are optimally used in only select patients, and such decisions lack the rigorous guidelines associated with initial treatment."
@@ -594,6 +626,14 @@ Would help clinicians tailor treatment options early on. Whether to go with an a
 <br>
 
 :::{.big-middle}
+Can we use the composition of the gut microbiome to predict CDI severity?
+:::
+
+:::{.notes}
+Clinical factors have been used to predict CDI severity, and the initial state
+of the gut microbiome plays a role in colonization resistance and clearance.
+
+Our central question is: 
 Can we use the composition of the gut microbiome to predict CDI severity?
 :::
 
@@ -610,7 +650,8 @@ Can we use the composition of the gut microbiome to predict CDI severity?
 :::{.fragment .filled-box .absolute top=300 left=850}
 ```{r sample_counts}
 counts <- read_csv('projects/severe-cdi/results/count_table_full.csv') %>%
-  mutate(Severity = factor(Severity, levels = c('IDSA', 'All-cause', 'Attributable', 'Pragmatic')))
+  mutate(Severity = factor(Severity, levels = c('IDSA', 'All-cause', 'Attributable', 'Pragmatic'))) %>% 
+  arrange(Severity)
 counts %>%
     filter(Severity != 'Pragmatic') %>%
     kable(format.args = list(big.mark = ',')) %>%
@@ -627,8 +668,22 @@ counts %>%
 :::
 
 :::{.notes}
-TODO diagram how otus clustered to create relabun table.
-transition to next slide by discussing data format
+First we need to talk about how to define CDI severity. There are a number of
+ways to do it.
+Following this branch to the left, you can consider serum biomarkers like 
+creatinine level and white blood cell count. The Infectious Diseases Society of
+America uses elevated creatinine and wbc count as a measure of CDI severity.
+It effectively tells clinicians "how sick is this patient right now".
+These data are also relatively easy to obtain.
+
+On the other hand, we can look at the ultimate outcomes of the infection at
+30 days since diagnosis.
+
+
+So for each patient sample collected on the day of diagnosis, we performed
+amplicon sequencing and clustered sequences into operational taxonomic units.
+We used the relative abundances of our OTUs as features for training machine
+learning models to predict severe CDI outcomes.
 :::
 
 ## Training machine learning models
@@ -741,6 +796,7 @@ plot_grid(roc_plot, NULL, nrow = 1, rel_widths = c(0.8,1),
 
 :::{.notes}
 ROC = trade-off between correctly predicting positive vs negative samples.
+The baseline is 0.5 for a model that performs no better than random.
 
 sensitivity/recall = $TPR = \frac{TP}{TP + FN}$
 
@@ -770,6 +826,8 @@ Median AUROC: **0.69**
 :::
 
 :::{.notes}
+We can also summarize ROC curves with the area under the roc curve (AUROC).
+
 ROC = trade-off between correctly predicting positive vs negative samples.
 
 sensitivity/recall = $TPR = \frac{TP}{TP + FN}$
@@ -890,15 +948,19 @@ prc_plot_grid
 ```
 
 :::{.notes}
+To ensure the AUROC isn't artificially inflated due to the high proportion of
+negative samples in our dataset, we also plotted precision-recall curves.
+
+
 ROC = trade-off between correctly predicting positive vs negative samples.
 
 precision = $PPV = \frac{TP}{TP + FP}$
 
-Out of samples predicted positive, how many correctly predicted positive.
+Out of the samples that were predicted positive, how many were correctly predicted.
 
 sensitivity/recall = $TPR = \frac{TP}{TP + FN}$
 
-Out of all positive samples, how many correctly predicted positive.
+Out of all positive samples, how many correctly predicted.
 :::
 
 
@@ -907,21 +969,32 @@ Out of all positive samples, how many correctly predicted positive.
 ![](projects/severe-cdi/figures/feature-importance_full.png)
 
 :::{.notes}
-TODO blurb about each OTU
+Each of the most important OTUs were more abundant in severe cases, and each have
+been associated with loss of colonization resistance or longer time to clearance
+in mouse studies of CDI.
+In particular, Enterococcus has been found to be associated with increased risk
+of severe outcomes in mouse studies.
 :::
 
 
 ## Clinical value of prediction models
 
-:::{.big-middle}
-Would deploying EHR and/or OTU-based models improve clinical outcomes?
-:::
+- The pragmatic severity model performed just as well as an EHR-based model.
+- The most important OTUs for model performance concord with prior studies.
+- Open question: would deploying EHR or OTU-based models improve clinical outcomes?
 
 :::{.notes}
-TODO image / plot / table instead of text / reduce text to main points
-
 - The pragmatic severity model performed just as well as an EHR-based model.
-- Decent model performance is not enough to justify model deployment.
+- The most important OTUs for model performance concord with prior studies.
+- However, decent model performance is not enough to justify model deployment.
+- Open question: would deploying EHR or OTU-based models improve clinical outcomes?
+    - A better comparison would extract EHRs from this same dataset and compare
+      performance for models trained on EHRs, OTUs, or both.
+    - Clinical value of prediction models is also highly dependent on treatment
+      options available to help patients identified as high risk.
+    - To assess clinical value, we need to consider the trade-offs of the
+      resources required to train and deploy these models versus the potential
+      benefit gained for patients.
 :::
 
 ## Overview
@@ -939,19 +1012,19 @@ TODO image / plot / table instead of text / reduce text to main points
 - Promote diversity, equity, and inclusion in data science.
 
 :::{.notes}
-TODO image or diagram here?
-
-transition: 3 key audiences. high schoolers, academic researchers, novice ML practitioners
+To these ends, we developed resources targeting 3 key audiences. high schoolers,
+academic researchers, novice ML practitioners
 :::
 
 ## Addressing the gender gap in STEM
 
-- 18% of CS degrees are awarded to women.
-- U-M Bioinformatics PhD graduates: 25% women. The disparity begins at the application stage.
+- 18% of Computer Science degrees are awarded to women.
+- U-M Bioinformatics PhD graduates: 25% women as of 2021.
 - Most of us (women in U-M Bioinformatics) didn't learn to code until college or later.
 
 :::{.fragment}
-**Solution:** start a Girls Who Code club focused on teaching coding for data science to high schoolers.
+**Solution:** start a Girls Who Code club focused on teaching coding for data
+science to high school students.
 
 ![](img/logo/gwc.png){width=475px fig-align="center"}
 :::
@@ -1014,8 +1087,6 @@ https://software-carpentry.org/lessons/
 :::
 
 :::{.notes}
-TODO revise text for succinctness
-
 - Software Carpentry is an international non-profit that teaches grad students, postdocs, and other researchers how to perform reproducible computational science via interactive coding workshops.
 - Over 34,000 learners have attended since 2010, ranging from biologists to physicists to engineers and economists.
 - U-M instance of Software Carpentry active since 2016.
@@ -1078,6 +1149,11 @@ Goals
 - Restructure our ML framework to improve reusability, scalability, & reproducibility.
 - Strike a balance between easy-to-use interface for beginners with reasonable default options,
   with enough flexibility for advanced users to customize options.
+- We implemented this as an R package and also included a snakemake workflow
+  demonstrating how to use the package in a high performance computing environment.
+  - We intend to use it alongside other software in the lab: mothur for processing
+    amplicon sequences and schtools -- schloss lab tools for reproducible microbiome research.
+  - But mikropml is applicable outside just the microbiome field. So we published it in the Journal of Open Source Software
 
 best practices in swe
 
@@ -1132,8 +1208,8 @@ conda-forge: ![](https://anaconda.org/conda-forge/r-mikropml/badges/downloads.sv
 
 ## Summary
 
-- Improved OTU clustering algorithms to enable ML for microbiome research.
-- Applied ML to predict severe CDIs, demonstrating similar performance as EHR models.
+- Improved OTU clustering algorithms to enable machine learning for microbiome research.
+- Applied machine learning to predict severe _C. difficile_ infections, demonstrating similar performance as models trained on Electronic Health Records.
 - Contributed to democratizing data science for three key audiences.
 
 :::{.column width="49%" .smaller-text .fragment}
@@ -1145,7 +1221,9 @@ Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)
 :::
 
 :::{.notes}
-three key audiences: high schoolers, researchers, and novice ML practitioners.
+- Improved OTU clustering algorithms to enable ML for microbiome research.
+- Applied ML to predict severe CDIs, demonstrating similar performance as EHR models.
+- Contributed to democratizing data science for three key audiences: high schoolers, researchers, and novice ML practitioners.
 :::
 
 ## Acknowledgements
@@ -1211,15 +1289,22 @@ NIH T32 GM070449 <br>
 NIH U01AI124255 <br>
 :::
 
-:::{.notes}
-schlabbies are wonderful people
-:::
-
 ## {}
 
 :::{.column width=70%}
 ![](projects/best-tally/figures/plot_blank-1.png)
 :::
+
+:::{.notes}
+I have one more plot to show you all.
+Early on in my PhD, my friends and I noticed that there was a particular phrase
+we kept saying fairly regularly.
+And not just us, but also colleagues and collaborators and others in our
+scientific circles.
+
+So I decided to keep a tally.
+:::
+
 ## {}
 
 :::{.column width=70%}
@@ -1235,6 +1320,20 @@ schlabbies are wonderful people
 - "Pat is a _delight_."
 - "Wow this is incredible. Pat is literally a hero!"
 - "Your PI is amazing"
+:::
+
+
+:::{.notes}
+That phrase is "Pat is the best".
+
+For the sake of completeness I also included similar phrases uttered such as
+"Pat is a delight", "Pat is literally a hero", and "Your PI is amazing".
+
+There were **so** many times throughout my PhD when Pat did or said something 
+that elicited this response.
+From his response to COVID, to his support of my work with Girls Who Code and
+other volunteer efforts, all the ups and downs of grad school...
+Pat even made an educational YouTube channel to teach people how to code.
 :::
 
 ## {}
@@ -1254,15 +1353,51 @@ schlabbies are wonderful people
 - "Your PI is amazing"
 :::
 
+:::{.notes}
+(This one is my favorite thumbnail from his videos.)
+
+Finally, Pat has persistently done a great job of assembling a lab.
+:::
+
 ## {background-image="img/acknowledgements-schlabbies.jpg" background-size="contain"}
+
+:::{.notes}
+I thanked members of the Schloss Lab earlier for your scientific contributions
+but now I'm thanking you again for being wonderful people because you are all
+just that special and played such a huge role in shaping me as a scientist.
+Many lab mates have come and gone over the years and every one I've interacted
+with has individually contributed to an awesome positive and supportive lab
+culture that I'm proud to be a part of.
+:::
 
 ## {background-image="img/acknowledgements-friends.svg" background-size="contain"}
 
+:::{.notes}
+Next I'd like to thank my friends.
+You all helped keep me sane during grad school.
+We made sure to have lots of fun and maintain a healthy work-life balance in
+this crazy chapter of life.
+:::
+
 ## {background-image="img/acknowledgements-family.svg" background-size="contain"}
+
+:::{.notes}
+Finally, I'd like to thank my family - my sisters Katie and Erika, my parents,
+and my boyfriend David.
+David has the uncanny ability to take any rainy day and turn it into a sunny one.
+My parents have been my cheerleaders from the very beginning, and they
+always encouraged me to pursue whatever I was interested in.
+Your support means everything to me.
+:::
 
 ## {visibility="uncounted"}
 
 ![](img/frontispiece.png){height=500px fig-align="center"}
+
+:::{.notes}
+Thank you all for your attention
+and I'll take any questions now
+:::
 
 ## Supplemental slides {visibility="uncounted"}
 
