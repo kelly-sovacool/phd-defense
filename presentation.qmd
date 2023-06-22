@@ -157,24 +157,46 @@ Adapted from: Lee (2019). [JOSE](https://astrobiomike.github.io/misc/amplicon_an
 :::
 
 :::{.notes}
-note different taxa: archaea, bacteria, fungi, protists, viruses
+to characterize the bacteria in a microbial community, the gene encoding the 16S
+ribosomal RNA subunit is commonly chosen as the target gene to amplify and
+sequence.
+after sequencing, the goal is to identify which bacteria are present and how
+abundant are they in each sample.
+then we can compare across samples to identify patterns that differentiate
+disease states or outcomes.
+ideally, for each sequence we would identify which species it came from, but
+that's not possible with amplicon sequencing.
 :::
 
 ## Difficulties in bacterial taxonomy
 
+:::{.column width="45%"}
 ![](img/biological-taxonomy.png){fig-align="center"}
+:::
+
+:::{.column width="45%"}
+- Inconsistent species concept for bacteria.
+- Bacteria that are difficult to culture are not well-characterized.
+- Multiple copies of target genes for amplicon sequencing in many bacteria.
+:::
 
 :::{.notes}
-TODO diagram / images to replace text. keep text to just main points.
 why OTUs?
 
-- inconsistent species concept for bacteria...
-- There is no consensus definition of a bacterial species.
+- Inconsistent species concept for bacteria.
+    - Binary fission - bacteria reproduce by cloning themselves.
+    - Horizontal gene transfer - bacteria can swap genes with each other.
 - Amplicon sequences do not contain enough information to identify bacteria at the species level.
 - Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.
-- Some bacteria have multiple copies of the 16S rRNA gene. Using every sequence (ASV level) as a feature would split them into separate taxonomic groups.
-- Database-independent clustering methods allow exploring microbial "dark matter".
-- Case study in classifying colorectal cancer patients: the OTU, genus, and family levels perform best.
+- Using every sequence (ASV level) as a feature would split them into separate taxonomic groups.
+- Bacteria that are difficult to culture are not well-characterized.
+    - So we have names assigned to many bacteria that grow easily in the lab,
+      but we're missing information for lots of bacteria that are hard to culture.
+    - This leaves holes in public reference databases.
+    - Database-independent clustering methods allow exploring microbial "dark matter".
+
+Solution: cluster amplicon sequences into operational taxonomic units (OTU).
+OTUs can generally be identified down to the genus level.
 :::
 
 ::: footer
@@ -509,7 +531,7 @@ Sovacool _et al._ (2022). [mSphere](https://doi.org/10.1128/msphere.00916-21)
 
 ## OptiFit improves reference-based clustering {background-image="img/logo/mothur_RGB.png" background-size="120px" background-position="top 20px right 20px"}
 
-- Allows use of _de novo_ OTUs as a reference.
+- New method: use _de novo_ OTUs as a reference for new sequences.
 - Clusters sequences at the same quality as _de novo_ methods.
 - Outperforms other reference-based methods in terms of quality.
 - Trade-off: longer run time.
