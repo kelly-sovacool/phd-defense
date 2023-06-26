@@ -319,9 +319,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="presentation_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="presentation_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="presentation_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
   
   <script src="presentation_files/libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="presentation_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
@@ -346,29 +343,60 @@ Kelly Sovacool
 </section>
 <section id="what-is-a-microbiome" class="slide level2">
 <h2>What is a microbiome?</h2>
-<p>Community of microorganisms that inhabit a shared ecosystem</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/microbiome-definition.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Berg <em>et al.</em> (2020). <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00875-0">Microbiome</a></p>
+</div>
 </section>
 <section id="the-human-gut-microbiome-changes-during-diseases" class="slide level2">
 <h2>The human gut microbiome changes during diseases</h2>
-<div class="smaller">
 <ul>
 <li>Irritable bowel diseases</li>
 <li>Colorectal cancer</li>
 <li><em>Clostridioides difficile</em> infection</li>
 </ul>
+<div class="fragment">
+<!-- -->
+<h5 id="open-problems-and-opportunities">Open problems and opportunities</h5>
+<ul>
+<li>Understand the mechanistic role of the gut microbiome in gut diseases.</li>
+<li>Identify biomarkers to improve diagnostic and prognostic tools.</li>
+</ul>
 </div>
 <aside class="notes">
 <ul>
-<li><p>Changes in the taxonomic composition and metabolic activity of human microbiomes have been observed in several diseases including colorectal cancer (CRC) and Clostridioides difficile infection (CDI).</p></li>
-<li><p><strong>CRC</strong> - enrichment for bacteria that produce enterotoxins in CRC gut microbiomes.</p></li>
-<li><p><strong>CDI</strong> - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing <em>C. diff</em> to colonize the gut.</p></li>
-<li><p>For depictions of gut microbiome:</p>
+<li>Changes in the taxonomic composition and metabolic activity of human microbiomes have been observed in several diseases including colorectal cancer (CRC) and Clostridioides difficile infection (CDI).</li>
+<li><strong>CRC</strong> - enrichment for bacteria that produce enterotoxins in CRC gut microbiomes.</li>
+<li><strong>CDI</strong> - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing <em>C. diff</em> to colonize the gut.</li>
+</ul>
+<p>Possible causative role of the microbiome in disease etiology. mechanisms are not entirely understood. not always clear whether the disease causes the microbiome to change, the change in the microbiome causes the disease, or some combination.</p>
 <ul>
-<li>https://norgenbiotek.com/blog/gut-microbiome-and-its-effects-human-health</li>
-<li>https://commonfund.nih.gov/sites/default/files/Vector%20intestines%20with%20bacteria%2C%20germs%20and%20magnifier%20-467885302.jpg</li>
-<li>https://medicalxpress.com/news/2019-10-commonly-drugs-profoundly-affecting-gut.html</li>
+<li><p>CDI: antibiotics disrupts the community and allows cdiff to colonize, but what causes some people to develop severe outcomes vs clear the infection easily?</p>
+<ul>
+<li>Bile acids metabolized by the gut bacteria can inhibit C. difficile growth and affect toxin production (4, 10, 11). Bacteria in the gut also can compete more directly with C. difficile through antibiotic production or nutrient consumption</li>
 </ul></li>
-<li><p>ML models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.</p></li>
+<li><p>CRC: some CRC patients have strains of <em>E. coli</em> that produce enterotoxins, but not all.</p>
+<ul>
+<li>FIT cartridge sensitivity (true pos rate): 70% (early stage) to 80% (late stage)</li>
+<li>colonoscopy sensitivity: 78% to 93%</li>
+<li>detecting CRC early improves prognosis, but colonoscopies are invasive.</li>
+</ul></li>
+<li><p>Baxter et al: “The microbiota-based random forest model detected 91.7 % of cancers and 45.5 % of adenomas while FIT alone detected 75.0 % and 15.7 %, respectively. Of the colonic lesions missed by FIT, the model detected 70.0 % of cancers and 37.7 % of adenomas. We confirmed known associations of Porphyromonas assaccharolytica, Peptostreptococcus stomatis, Parvimonas micra, and Fusobacterium nucleatum with CRC. Yet, we found that the loss of potentially beneficial organisms, such as members of the Lachnospiraceae, was more predictive for identifying patients with adenomas when used in combination with FIT.”</p></li>
+<li><p>However, these changes are not universal across individuals or datasets.</p></li>
+<li><p>Mouse experiments indicate a possible causative role of the microbiome.</p>
+<ul>
+<li>fecal matter transplant from susceptible to germ-free mice</li>
+<li>predict colonization following Cdiff challenge</li>
+</ul></li>
+<li><p>Open problems, and opportunities:</p>
+<ul>
+<li>Understand the mechanistic role of the gut microbiome in gut diseases.</li>
+<li>Identify biomarkers to improve diagnostic and prognostic tools.</li>
+</ul></li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -384,20 +412,14 @@ Kelly Sovacool
 </section>
 <section id="the-human-gut-microbiome-changes-during-c.-difficile-infection" class="slide level2">
 <h2>The human gut microbiome changes during <em>C. difficile</em> infection</h2>
-<p><img data-src="img/cdiff-infection.png"></p>
 
+<img data-src="img/cdiff-infection.png" class="r-stretch"><div class="footer">
+<p>Created with <a href="biorender.com" data-fig-align="center">BioRender</a></p>
+</div>
 <aside class="notes">
 <ul>
-<li><p>Changes in the taxonomic composition and metabolic activity of human microbiomes have been observed in several diseases including colorectal cancer (CRC) and Clostridioides difficile infection (CDI).</p></li>
-<li><p><strong>CRC</strong> - enrichment for bacteria that produce enterotoxins in CRC gut microbiomes.</p></li>
-<li><p><strong>CDI</strong> - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing <em>C. diff</em> to colonize the gut.</p></li>
-<li><p>For depictions of gut microbiome:</p>
-<ul>
-<li>https://norgenbiotek.com/blog/gut-microbiome-and-its-effects-human-health</li>
-<li>https://commonfund.nih.gov/sites/default/files/Vector%20intestines%20with%20bacteria%2C%20germs%20and%20magnifier%20-467885302.jpg</li>
-<li>https://medicalxpress.com/news/2019-10-commonly-drugs-profoundly-affecting-gut.html</li>
-</ul></li>
-<li><p>ML models have the potential to improve the early detection of CRC, inform clinicians on which CDI patients may be most at risk of experiencing a severe case, or more generally contribute to our understanding of how the gut microbiome changes during disease states.</p></li>
+<li><strong>CDI</strong> - treatment with antibiotics alters the taxonomic composition of the gut microbiome, allowing <em>C. diff</em> to colonize the gut.</li>
+<li>mouse studies have found differences resistance to colonization, time to clearance, and severe outcomes based on the initial state of the gut microbiome.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -410,12 +432,6 @@ Kelly Sovacool
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<aside><div>
-<p>Created with <a href="biorender.com" data-fig-align="center">BioRender</a></p>
-</div></aside></section>
-<section id="machine-learning-for-health-care" class="slide level2">
-<h2>Machine learning for health care</h2>
-<p>diagnosis and prognosis</p>
 </section>
 <section id="how-to-study-the-gut-microbiome" class="slide level2">
 <h2>How to study the gut microbiome</h2>
@@ -424,9 +440,11 @@ Kelly Sovacool
 <p><img data-src="img/microbiome-research.png" height="600"></p>
 </figure>
 </div>
-
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
 <aside class="notes">
-<p>and do it all reproducibly</p>
+<p>analyze microbial sequences to determine which microbes are there and how abundant they are.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -438,9 +456,33 @@ Kelly Sovacool
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<aside><div>
-<p>Created with <a href="biorender.com">BioRender</a></p>
-</div></aside></section>
+</section>
+<section id="machine-learning-for-science-health-care" class="slide level2">
+<h2>Machine learning for science &amp; health care</h2>
+<p>Supervised machine learning (ML) - computational techniques that identify patterns in large datasets to classify samples or predict outcomes.</p>
+<h5 id="applications">Applications:</h5>
+<ul>
+<li>Diagnose colorectal cancer early and less invasively than colonoscopy.</li>
+<li>Identify COVID-19 patients at risk of clinical deterioration.</li>
+<li>Predict severe outcomes of <em>C. difficile</em> infections.</li>
+</ul>
+<aside class="notes">
+<p>Traditional microbial ecology methods aren’t sufficient to distinguish between disease states. individual microbes aren’t enough to explain it; something more complex is going on</p>
+<ul>
+<li>high dimensionality: 20k OTUs</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
 <div class="column" style="width:72%;">
@@ -451,68 +493,354 @@ Kelly Sovacool
 </ol>
 </div>
 </section>
-<section id="optifit" class="slide level2">
-<h2>OptiFit</h2>
-</section>
-<section id="characterize-taxonomic-composition" class="slide level2">
-<h2>Characterize taxonomic composition</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/amplicon-vs-metagenomics.png" height="600"></p>
-</figure>
-</div>
+<section id="how-to-characterize-microbiomes" class="slide level2">
+<h2>How to characterize microbiomes</h2>
+<p><br></p>
 
-<aside><div>
-<p><a href="https://astrobiomike.github.io/misc/amplicon_and_metagen">Lee (2019). JOSE</a></p>
-</div></aside></section>
+<img data-src="img/amplicon-vs-metagenomics_edited.png" class="r-stretch quarto-figure-center"><div class="footer">
+<p>Adapted from: Lee (2019). <a href="https://astrobiomike.github.io/misc/amplicon_and_metagen">JOSE</a></p>
+</div>
+<aside class="notes">
+<p>to characterize the bacteria in a microbial community, the gene encoding the 16S ribosomal RNA subunit is commonly chosen as the target gene to amplify and sequence. after sequencing, the goal is to identify which bacteria are present and how abundant are they in each sample. then we can compare across samples to identify patterns that differentiate disease states or outcomes. ideally, for each sequence we would identify which species it came from, but that’s not possible with amplicon sequencing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="difficulties-in-bacterial-taxonomy" class="slide level2">
 <h2>Difficulties in bacterial taxonomy</h2>
-<p>there is no consensus definition of a bacterial species</p>
-<p>amplicon sequences do not contain enough information to identify at the species level</p>
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/biological-taxonomy.png"></p>
+</figure>
+</div>
+</div>
+<div class="column smaller" style="width:45%;">
+<ul>
+<li>Inconsistent species concept for microbes.</li>
+<li>Most microbes are not easy to culture, thus are not well-characterized.</li>
+<li>Many bacteria have multiple copies of target genes for amplicon sequencing.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>why OTUs?</p>
+<ul>
+<li>Inconsistent species concept for bacteria.
+<ul>
+<li>Binary fission - bacteria reproduce by cloning themselves.</li>
+<li>Horizontal gene transfer - bacteria can swap genes with each other.</li>
+<li>Their phenotypic properties do not reveal common ancestry.</li>
+</ul></li>
+<li>Amplicon sequences do not contain enough information to identify bacteria at the species level.
+<ul>
+<li>16S highly conserved; 16S rRNA trees informed classifications at and above the rank of genus (https://www.nature.com/articles/s41396-021-00941-x).</li>
+</ul></li>
+<li>Many bacteria have multiple copies of the 16S rRNA gene, the most popular marker gene for amplicon sequencing bacterial communities.</li>
+<li>Using every sequence (ASV level) as a feature would split them into separate taxonomic groups.</li>
+<li>Bacteria that are difficult to culture are not well-characterized.
+<ul>
+<li>So we have names assigned to many bacteria that grow easily in the lab, but we’re missing information for lots of bacteria that are hard to culture.</li>
+<li>This leaves holes in public reference databases.</li>
+<li>Database-independent clustering methods allow exploring microbial “dark matter”.</li>
+</ul></li>
+</ul>
+<p>Solution: cluster the amplicon sequences into operational taxonomic units (OTU) based on how similar the sequences are to each other. OTUs can generally be identified down to the genus level.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
 </section>
-<section id="clustering-otus" class="slide level2">
-<h2>Clustering OTUs</h2>
-<p>make nice diagrams to explain otu clustering</p>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="de-novo-opticlust-algorithm"><em>De novo</em> OptiClust algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/de-novo-clustering-0.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
 </section>
-<section id="optifit-conclusions-follow-up-study" class="slide level2">
-<h2>optifit conclusions / follow-up study</h2>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus-1" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="de-novo-opticlust-algorithm-1"><em>De novo</em> OptiClust algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/de-novo-clustering-1.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+<div class="section-logo">
+<p><img data-src="img/hex/logo_mothur.png"></p>
+</div>
+</section>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus-2" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="de-novo-opticlust-algorithm-2"><em>De novo</em> OptiClust algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/de-novo-clustering-2.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+</section>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus-3" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="de-novo-opticlust-algorithm-3"><em>De novo</em> OptiClust algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/de-novo-clustering-3.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+<aside class="notes">
+<p>TODO highlight limitations here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus-4" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="reference-based-algorithm">Reference-based algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/reference-clustering-1.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+</section>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus-5" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="reference-based-algorithm-1">Reference-based algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/reference-clustering-2.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+</section>
+<section id="clustering-amplicon-sequences-into-operational-taxonomic-units-otus-6" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>Clustering amplicon sequences into Operational Taxonomic Units (OTUs)</h2>
+<h4 id="reference-based-algorithm-2">Reference-based algorithm</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/reference-clustering-3.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+<aside class="notes">
+<p>Limitations of existing clustering methods</p>
+<ul>
+<li><em>De novo</em> clustering results in inconsistent OTUs when adding new data.</li>
+<li>Reference-based clustering results in lower quality OTUs than <em>de novo</em>.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="optifit" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>OptiFit</h2>
+<h3 id="reference-based-clustering-to-de-novo-otus">reference-based clustering to <em>de novo</em> OTUs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/optifit-clustering-1.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+</section>
+<section id="optifit-1" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>OptiFit</h2>
+<h3 id="reference-based-clustering-to-de-novo-otus-1">reference-based clustering to <em>de novo</em> OTUs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/optifit-clustering-2.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+</section>
+<section id="optifit-2" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>OptiFit</h2>
+<h3 id="reference-based-clustering-to-de-novo-otus-2">reference-based clustering to <em>de novo</em> OTUs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/optifit-clustering-3.png" height="500"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Created with <a href="biorender.com">BioRender</a></p>
+</div>
+</section>
+<section id="optifit-benchmarking-results" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>OptiFit benchmarking results</h2>
+<div class="cell" data-hash="presentation_cache/revealjs/mcc_36cb0c10ec8c7db76bd2d8b1cf737997">
+<div class="cell-output-display">
+<p><img data-src="figures/mcc-1.png" width="1000" height="450"></p>
+</div>
+</div>
+<div class="footer">
+<p>Sovacool <em>et al.</em> (2022). <a href="https://doi.org/10.1128/msphere.00916-21">mSphere</a></p>
+</div>
+<aside class="notes">
+<p>so we benchmarked the optifit algorithm alongside a few other clustering strategies. We tested these algorithms with four public datasets from human gut, mouse gut, soil, and marine microbiome samples. For the sake of time I’m only showing the results from the human dataset here.</p>
+<p>we used the Matthews Correlation Coefficient (MCC) to measure how well each algorithm adhered to the distance threshold. The MCC ranges from -1 to 1, with 1 being perfect quality where all pairs of sequences that are within the distance threshold are in the same OTU and all pairs of sequences that are more dissimilar than the threshold are in different OTUs.</p>
+<p>on the y-axis we have each clustering strategy. first is <em>de novo</em> clustering with OptiClust and <em>de novo</em> clustering with another program called VSEARCH. we then tested OptiFit with a self-split strategy, where we clustered half of the sequences <em>de novo</em> then fit the remaining sequences to the <em>de novo</em> OTUs as a reference. the self-split strategy with OptiFit performed just as well as OptiClust in terms of MCC. Despite issues with public databases, traditional reference-based clustering to an external database is still fairly common, so we tested OptiFit’s ability to fit sequences to three databases: greengenes, silva, and the RDP. for database-depending clustering was highly dependent on the size of the database.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="optifit-benchmarking-results-1" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>OptiFit benchmarking results</h2>
+<div class="cell" data-hash="presentation_cache/revealjs/sec_b182ad83e7e7f83f5fbed767c9650c29">
+<div class="cell-output-display">
+<p><img data-src="figures/sec-1.png" width="1000" height="450"></p>
+</div>
+</div>
+<div class="footer">
+<p>Sovacool <em>et al.</em> (2022). <a href="https://doi.org/10.1128/msphere.00916-21">mSphere</a></p>
+</div>
+</section>
+<section id="optifit-improves-reference-based-clustering" class="slide level2" data-background-image="img/logo/mothur_RGB.png" data-background-size="120px" data-background-position="top 20px right 20px">
+<h2>OptiFit improves reference-based clustering</h2>
+<ul>
+<li>New method to use <em>de novo</em> OTUs as a reference for new sequences.</li>
+<li>Clusters sequences at the same quality as <em>de novo</em> methods.</li>
+<li>Outperforms other reference-based methods in terms of quality.
+<ul>
+<li>Trade-off: longer run time.</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Follow-up: OptiFit is suitable for machine learning.</li>
+</ul>
+</div>
+<div class="footer">
+<p>Armour <em>et al.</em> (2023). <a href="10.1101/2022.09.01.506299">bioRxiv</a> <br> Sovacool <em>et al.</em> (2022). <a href="https://doi.org/10.1128/msphere.00916-21">mSphere</a></p>
+</div>
+<aside class="notes">
+<p>So in conclusion for this project, we found that OptiFit is a new method that improves reference-based clustering.</p>
+<p>In a follow-up study, Courtney Armour demonstrated that you can use OptiFit to fit new data to existing OTUs and machine learning models tested with the new data performed just as well as if all of the data had been clustered <em>de novo</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overview-1" class="slide level2">
+<h2>Overview</h2>
+<div class="column" style="width:72%;">
+<ol type="1">
+<li>Improve methods for processing microbiome data.</li>
+<li><strong>Predict severe <em>C. difficile</em> infections from gut microbiome composition.</strong></li>
+<li>Contribute to democratizing data science.</li>
+</ol>
+</div>
 </section>
 <section id="c.-difficile-infection-cdi" class="slide level2">
 <h2><em>C. difficile</em> infection (CDI)</h2>
 <p><img data-src="img/Cdiff-Factsheet-P_impact-risk.png" height="500"></p>
-
-<aside><div>
+<div class="footer">
 <p><a href="https://www.cdc.gov/cdiff/">cdc.gov/cdiff</a></p>
-</div></aside></section>
-<section id="models-to-predict-severity" class="slide level2">
-<h2>Models to predict severity</h2>
-</section>
-<section id="section" class="slide level2">
-<h2></h2>
-<p><br></p>
-<div class="big-text">
-<p>Can we use the composition of the gut microbiome (OTUs) to predict CDI severity?</p>
 </div>
+<aside class="notes">
+<p><em>Clostridioides difficile</em> is a bacterium that causes infection.</p>
+<p>CDI has a mortality rate of about 8% and that risk is higher in older patients. CDI is a significant burden on the US health care system.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ehr-data-for-predicting-complicated-cdi" class="slide level2">
-<h2>EHR data for predicting complicated CDI</h2>
+<section id="clinical-data-predict-complicated-cdi" class="slide level2">
+<h2>Clinical data predict complicated CDI</h2>
 <div class="column" style="width:60%;">
 <p><img data-src="img/li_ehr_auroc.jpeg"></p>
 <div class="smaller-text">
-<p>Day of diagnosis</p>
 <p>median AUROC: <strong>0.69</strong></p>
 </div>
 </div>
 <div class="column smaller-text" style="width:35%;">
-<p><br></p>
 <ul>
+<li>Motivation: inform clinicians on which CDI patients may be most at risk of severe outcomes in order to tailor treatments.</li>
 <li>Electronic health record (EHR) data used as features to predict whether disease-related complications occurred.</li>
-<li>Motivation: inform clinicians on which CDI patients may be most at risk of severe CDI.</li>
 </ul>
 </div>
-
+<div class="footer">
+<p>Li <em>et al.</em> (2019). <a href="https://doi.org/10.1093/ofid/ofz186">OFID</a></p>
+</div>
 <aside class="notes">
-<p>Papers by Vince, Jenna, &amp; Krishna looking at EHR data to predict CDI complications.</p>
+<p>Area under the receiver-operator characteristic curve (AUROC) - given a randomly selected severe case and a not severe case, what is the probability that the model correctly ranks the severe case as having a higher risk.</p>
 <p>CDI treatment. Li et al.&nbsp;(2019). https://academic.oup.com/ofid/article/6/5/ofz186/5475497 “The development and validation of EHR-based risk stratification models for predicting complicated CDI could eventually help clinicians tailor treatments to individuals. On the day of CDI diagnosis, a patient’s estimated risk for complications could serve as an adjunct, easily obtainable resource for clinical decision support. Treatment decisions such as whether to use high-dose vancomycin or perform a loop ileostomy with antegrade vancomycin infusions [23] often do not occur until complicated CDI has already set in. In severe cases, early aggressive therapy can positively impact the course. However, invasive treatments such as enemas (fecal microbiota transplantation or vancomycin) and surgery are optimally used in only select patients, and such decisions lack the rigorous guidelines associated with initial treatment.”</p>
 <p>Would help clinicians tailor treatment options early on. Whether to go with an aggressive treatment plan or not.</p>
 <style type="text/css">
@@ -526,67 +854,16 @@ Kelly Sovacool
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<aside><div>
-<p><a href="https://doi.org/10.1093/ofid/ofz186">Li <em>et al.</em> (2019). OFID</a></p>
-</div></aside></section>
-<section id="how-to-define-cdi-severity" class="slide level2 smaller">
-<h2>How to define CDI severity</h2>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
 <p><br></p>
-<div class="cell" data-reveal="true">
-<div class="cell-output-display">
-<div>
-<div>
-
-<pre class="mermaid mermaid-js">flowchart TB
-    classDef outcome fill:#F7FBFF
-    subgraph invis1
-        direction TB
-
-        cases[(CDI cases)]
-
-        idsa_lab{{"Serum creatinine ≥ 1.5 mg/dL \n &amp; WBC count ≥ 15 k/μL"}}
-        idsa_lab --&gt; yes_idsa
-        idsa_lab --&gt; no_idsa
-        subgraph IDSA
-            yes_idsa[Yes]:::outcome
-            no_idsa[No]:::outcome
-        end
-
-        unattrib{{One of 3 adverse outcomes occurs within 30 days:\nICU admission, colectomy, or death}}
-        unattrib --&gt; yes_un
-        unattrib --&gt; no_un
-        subgraph All-cause
-            yes_un[Yes]:::outcome
-            no_un[No]:::outcome
-        end
-        All-cause --&gt; chart
-
-        chart{{physician chart review:\nthe adverse outcome was attributable to the CDI}}
-        chart --&gt; yes_at
-        chart --&gt; no_at
-        subgraph attrib[Attrib]
-            direction TB
-            yes_at[Yes]:::outcome
-            no_at[No]:::outcome
-        end
-
-        cases --&gt; unattrib
-        cases --&gt; idsa_lab
-    end
-    style IDSA fill:#bacbc6
-    style attrib fill:#bacbc6
-    style All-cause fill:#bacbc6
-    style invis1 fill:#FFFFFF,stroke:#FFFFFF,color:#FFFFFF
-</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute narrow-frame fragment" style="top: 70px; left: 300px; width: 35%; ">
-<p>1,257 CDI patient stool samples collected on the day of diagnosis</p>
+<div class="big-middle">
+<p>Can we use the composition of the gut microbiome to predict CDI severity?</p>
 </div>
 <aside class="notes">
-<p>What do physicians review when reviewing charts for non-severe outcomes? Is chart review important for those cases?</p>
+<p>Clinical factors have been used to predict CDI severity, and the initial state of the gut microbiome plays a role in colonization resistance and clearance.</p>
+<p>Our central question is: Can we use the composition of the gut microbiome to predict CDI severity?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -599,115 +876,39 @@ Kelly Sovacool
           display:block!important;
       }</style></aside>
 </section>
-<section id="defining-a-pragmatic-severity-definition" class="slide level2">
-<h2>Defining a “pragmatic” severity definition</h2>
-
-<img data-src="figures/alluvial_idsa_allcause-1.png" width="960" class="r-stretch"></section>
-<section id="defining-a-pragmatic-severity-definition-1" class="slide level2">
-<h2>Defining a “pragmatic” severity definition</h2>
-
-<img data-src="figures/alluvial_attrib-1.png" width="960" class="r-stretch"></section>
-<section id="defining-a-pragmatic-severity-definition-2" class="slide level2">
-<h2>Defining a “pragmatic” severity definition</h2>
-
-<img data-src="figures/alluvial_pragmatic-1.png" width="960" class="r-stretch"><div class="fragment filled-box absolute" style="left: 260px; ">
-<div class="cell">
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-size: 16px; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">IDSA</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Attrib</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">All-cause</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Pragmatic</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">n</td>
-<td style="text-align: right;">1,072.0</td>
-<td style="text-align: right;">1,178.0</td>
-<td style="text-align: right;">1,218.0</td>
-<td style="text-align: right;">1,218.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">% pos.</td>
-<td style="text-align: right;">34.2</td>
-<td style="text-align: right;">2.2</td>
-<td style="text-align: right;">7.1</td>
-<td style="text-align: right;">5.4</td>
-</tr>
-</tbody>
-</table>
-
-
+<section id="how-to-define-cdi-severity" class="slide level2 smaller">
+<h2>How to define CDI severity</h2>
+<p><br></p>
+<p><img data-src="projects/severe-cdi/figures/severity_flowchart.png" height="600"></p>
+<div class="absolute narrow-frame fragment" style="top: 70px; left: 180px; width: 35%; ">
+<p>1,257 CDI patient stool samples collected on the day of diagnosis</p>
 </div>
-</div>
-</div>
-</section>
-<section id="training-machine-learning-models" class="slide level2">
-<h2>Training machine learning models</h2>
-<p><img data-src="img/topcuoglu_framework.jpeg" height="600"></p>
-
-<aside><div>
-<p><a href="https://doi.org/10.1128/mBio.00434-20">Topçuoğlu <em>et al.</em> (2020). mBio</a></p>
-</div></aside></section>
-<section id="reproducible-ml-pipelines-with-mikropml" class="slide level2">
-<h2>Reproducible ML pipelines with mikropml</h2>
-<div class="column" style="width:75%;">
-<p><img data-src="img/mikropml-pipeline.png"></p>
-</div>
-<div class="column" style="width:20%;">
-<p><img data-src="img/mikropml-snakemake.png" height="400"></p>
-</div>
-
-<aside><div>
-<p><a href="https://doi.org/10.21105/joss.03073">Topçuoğlu<sup>*</sup>, Lapp<sup>*</sup>, Sovacool<sup>*</sup> <em>et al.</em> (2021). JOSS</a></p>
-</div></aside></section>
-<section id="model-performance" class="slide level2 smaller">
-<h2>Model performance</h2>
-<p>Random Forests trained on 100x train/test splits of each dataset</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="figures/auroc_full-1.png" width="960"></p>
-</div>
-</div>
-<div class="absolute medium-text frame-box fragment" style="left: 0px; bottom: 0px; width: 250px; height: 80px; ">
-<p>EHR-based models from Li <em>et al.</em></p>
-<p>Median AUROC: <strong>0.69</strong></p>
-</div>
-<div class="absolute filled-box fragment" style="bottom: 0px; right: 0px; ">
-<div class="cell">
+<div class="fragment filled-box absolute" style="top: 300px; left: 850px; ">
+<div class="cell" data-hash="presentation_cache/revealjs/sample_counts_3db2dbf20cec2c8615b80d3ef4bc03f5">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Severity</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">%pos.</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% severe</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">pragmatic</td>
-<td style="text-align: right;">1,218</td>
-<td style="text-align: right;">5.4</td>
+<td style="text-align: left;">IDSA</td>
+<td style="text-align: right;">1,072</td>
+<td style="text-align: right;">34.2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">attrib</td>
-<td style="text-align: right;">1,178</td>
-<td style="text-align: right;">2.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">allcause</td>
+<td style="text-align: left;">All-cause</td>
 <td style="text-align: right;">1,218</td>
 <td style="text-align: right;">7.1</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">idsa</td>
-<td style="text-align: right;">1,072</td>
-<td style="text-align: right;">34.2</td>
+<tr class="odd">
+<td style="text-align: left;">Attributable</td>
+<td style="text-align: right;">1,178</td>
+<td style="text-align: right;">2.2</td>
 </tr>
 </tbody>
 </table>
@@ -716,56 +917,36 @@ Kelly Sovacool
 </div>
 </div>
 </div>
-
-<aside><div>
-
-</div></aside></section>
-<section id="a-more-fair-comparison" class="slide level2 smaller">
-<h2>A more fair comparison?</h2>
-
-<img data-src="figures/auroc_facet-1.png" width="960" class="r-stretch"><div class="absolute color-ash" style="left: 100px; bottom: 5px; width: 40%; ">
-<p><strong>full</strong> - all samples available; different number of samples between outcomes.</p>
-</div>
-<div class="absolute color-ash" style="bottom: 5px; right: 50px; width: 40%; ">
-<p><strong>int</strong> - intersection, i.e.&nbsp;only samples that have all three outcome labels (n=993).</p>
-</div>
-</section>
-
-<section id="limitation-class-imbalance" class="slide level2">
-<h2>Limitation: class imbalance</h2>
-<ul>
-<li>Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).</li>
-<li>The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.</li>
-</ul>
-<div class="absolute" style="bottom: 5px; right: 2px; width: 45%; ">
-<p><img data-src="img/wiki-conf-mat.png"></p>
-</div>
-<div class="absolute filled-box" style="left: 2px; bottom: 200px; width: 52%; ">
-<div class="cell">
+<div class="fragment filled-box absolute" style="top: 300px; left: 850px; ">
+<div class="cell" data-hash="presentation_cache/revealjs/sample_counts_pragmatic_b6a631c85a9b70d0f6f8518ee6a17ab4">
 <div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-size: 22px; margin-left: auto; margin-right: auto;">
+<table class="table" data-quarto-postprocess="true" style="font-size: 20px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">IDSA</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Attrib</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">All-cause</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Pragmatic</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Severity</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% severe</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">n</td>
-<td style="text-align: right;">1,072.0</td>
-<td style="text-align: right;">1,178.0</td>
-<td style="text-align: right;">1,218.0</td>
-<td style="text-align: right;">1,218.0</td>
+<td style="text-align: left;">IDSA</td>
+<td style="text-align: right;">1,072</td>
+<td style="text-align: right;">34.2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">% pos.</td>
-<td style="text-align: right;">34.2</td>
-<td style="text-align: right;">2.2</td>
+<td style="text-align: left;">All-cause</td>
+<td style="text-align: right;">1,218</td>
 <td style="text-align: right;">7.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Attributable</td>
+<td style="text-align: right;">1,178</td>
+<td style="text-align: right;">2.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pragmatic</td>
+<td style="text-align: right;">1,218</td>
 <td style="text-align: right;">5.4</td>
 </tr>
 </tbody>
@@ -776,7 +957,679 @@ Kelly Sovacool
 </div>
 </div>
 <aside class="notes">
-<p>https://en.wikipedia.org/wiki/Confusion_matrix</p>
+<p>First we need to talk about how to define CDI severity. There are a number of ways to do it. Following this branch to the left, you can consider serum biomarkers like creatinine level and white blood cell count. The Infectious Diseases Society of America uses elevated creatinine and wbc count as a measure of CDI severity. It effectively tells clinicians “how sick is this patient right now”. These data are also relatively easy to obtain.</p>
+<p>On the other hand, we can look at the ultimate outcomes of the infection at 30 days since diagnosis.</p>
+<p>So for each patient sample collected on the day of diagnosis, we performed amplicon sequencing and clustered sequences into operational taxonomic units. We used the relative abundances of our OTUs as features for training machine learning models to predict severe CDI outcomes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="training-machine-learning-models" class="slide level2">
+<h2>Training machine learning models</h2>
+
+<img data-src="img/topcuoglu_framework.jpeg" class="r-stretch"><div class="footer">
+<p>Topçuoğlu <em>et al.</em> (2020). <a href="https://doi.org/10.1128/mBio.00434-20">mBio</a></p>
+</div>
+</section>
+<section id="model-performance" class="slide level2 smaller">
+<h2>Model performance</h2>
+<p>Random Forests trained on 100x train/test splits of each dataset</p>
+
+<img data-src="figures/roc_curves-1.png" style="width:100.0%" class="r-stretch"><aside class="notes">
+<p>ROC = trade-off between correctly predicting positive vs negative samples. The baseline is 0.5 for a model that performs no better than random.</p>
+<p>sensitivity/recall = <span class="math inline">\(TPR = \frac{TP}{TP + FN}\)</span></p>
+<p>Out of all positive samples, how many correctly predicted positive.</p>
+<p>specificity = <span class="math inline">\(TNR = \frac{TN}{TN + FP} = 1 - FPR\)</span></p>
+<p>Out of all negative samples, how many correctly predicted negative.</p>
+<p><span class="math inline">\(FPR = \frac{FP}{FP + TN}\)</span></p>
+<p>Out of all negative samples, how many incorrectly predicted positive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="model-performance-1" class="slide level2 smaller">
+<h2>Model performance</h2>
+<p>Random Forests trained on 100x train/test splits of each dataset</p>
+
+<img data-src="figures/auroc-1.png" width="960" class="r-stretch"><div class="absolute medium-text frame-box fragment" style="top: 20px; right: 100px; width: 250px; height: 80px; ">
+<p>EHR-based models from Li <em>et al.</em></p>
+<p>Median AUROC: <strong>0.69</strong></p>
+</div>
+<aside class="notes">
+<p>We can also summarize ROC curves with the area under the roc curve (AUROC).</p>
+<p>ROC = trade-off between correctly predicting positive vs negative samples.</p>
+<p>sensitivity/recall = <span class="math inline">\(TPR = \frac{TP}{TP + FN}\)</span></p>
+<p>Out of all positive samples, how many correctly predicted positive.</p>
+<p>specificity = <span class="math inline">\(TNR = \frac{TN}{TN + FP} = 1 - FPR\)</span></p>
+<p>Out of all negative samples, how many correctly predicted negative.</p>
+<p><span class="math inline">\(FPR = \frac{FP}{FP + TN}\)</span></p>
+<p>Out of all negative samples, how many incorrectly predicted positive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="model-performance-on-severe-cases" class="slide level2 smaller">
+<h2>Model performance on severe cases</h2>
+<p>Random Forests trained on 100x train/test splits of each dataset</p>
+
+<img data-src="figures/prc-1.png" width="960" class="r-stretch"><aside class="notes">
+<p>To ensure the AUROC isn’t artificially inflated due to the high proportion of negative samples in our dataset, we also plotted precision-recall curves.</p>
+<p>ROC = trade-off between correctly predicting positive vs negative samples.</p>
+<p>precision = <span class="math inline">\(PPV = \frac{TP}{TP + FP}\)</span></p>
+<p>Out of the samples that were predicted positive, how many were correctly predicted.</p>
+<p>sensitivity/recall = <span class="math inline">\(TPR = \frac{TP}{TP + FN}\)</span></p>
+<p>Out of all positive samples, how many correctly predicted.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="top-otus-contributing-to-model-performance" class="slide level2">
+<h2>Top OTUs contributing to model performance</h2>
+
+<img data-src="projects/severe-cdi/figures/feature-importance_full.png" class="r-stretch"><aside class="notes">
+<p>Each of the most important OTUs were more abundant in severe cases, and each have been associated with loss of colonization resistance or longer time to clearance in mouse studies of CDI. In particular, Enterococcus has been found to be associated with increased risk of severe outcomes in mouse studies.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="clinical-value-of-prediction-models" class="slide level2">
+<h2>Clinical value of prediction models</h2>
+<ul>
+<li>The pragmatic severity model performed just as well as an EHR-based model.</li>
+<li>The most important OTUs for model performance concord with prior studies.</li>
+<li>Open question: would deploying EHR or OTU-based models improve clinical outcomes?</li>
+</ul>
+<aside class="notes">
+<ul>
+<li>The pragmatic severity model performed just as well as an EHR-based model.</li>
+<li>The most important OTUs for model performance concord with prior studies.</li>
+<li>However, decent model performance is not enough to justify model deployment.</li>
+<li>Open question: would deploying EHR or OTU-based models improve clinical outcomes?
+<ul>
+<li>A better comparison would extract EHRs from this same dataset and compare performance for models trained on EHRs, OTUs, or both.</li>
+<li>Clinical value of prediction models is also highly dependent on treatment options available to help patients identified as high risk.</li>
+<li>To assess clinical value, we need to consider the trade-offs of the resources required to train and deploy these models versus the potential benefit gained for patients.</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overview-2" class="slide level2">
+<h2>Overview</h2>
+<div class="column" style="width:72%;">
+<ol type="1">
+<li>Improve methods for processing microbiome data.</li>
+<li>Predict severe <em>C. difficile</em> infections from gut microbiome composition.</li>
+<li><strong>Contribute to democratizing data science.</strong></li>
+</ol>
+</div>
+</section>
+<section id="democratizing-data-science" class="slide level2">
+<h2>Democratizing data science</h2>
+<ul>
+<li>Make data science tools more accessible to researchers from non-computational backgrounds.</li>
+<li>Disseminate user-friendly tools &amp; curricula with open source licenses.</li>
+<li>Promote diversity, equity, and inclusion in data science.</li>
+</ul>
+<aside class="notes">
+<p>To these ends, we developed resources targeting 3 key audiences. high schoolers, academic researchers, novice ML practitioners</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="addressing-the-gender-gap-in-stem" class="slide level2">
+<h2>Addressing the gender gap in STEM</h2>
+<ul>
+<li>18% of Computer Science degrees are awarded to women.</li>
+<li>U-M Bioinformatics PhD graduates: 25% women as of 2021.</li>
+<li>Most of us (women in U-M Bioinformatics) didn’t learn to code until college or later.</li>
+</ul>
+<div class="fragment">
+<p><strong>Solution:</strong> start a Girls Who Code club focused on teaching coding for data science to high school students.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/logo/gwc.png" width="475"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="intro-to-python-for-data-science" class="slide level2" data-background-image="img/logo/gwc.png" data-background-size="250px" data-background-position="top 20px right 20px">
+<h2>Intro to Python for Data Science</h2>
+<h3 id="for-girls-who-code-at-u-m-dcmb">for Girls Who Code at U-M DCMB</h3>
+
+<img data-src="projects/girls-who-code/paper/lesson-modules.png" class="r-stretch"><div class="footer">
+<p>Duda<sup>*</sup> and Sovacool<sup>*</sup> <em>et al.</em> (2021). <a href="https://doi.org/10.21105/jose.00138">JOSE</a></p>
+</div>
+<aside class="notes">
+<p>teach high schoolers the basics of coding in Python for data science. from knowing no programming to being able to analyze a data science and present findings at the end of the club.</p>
+<p>live coding. hands on lessons and practice notebooks. pivot to flipped format for pandemic.</p>
+<ol type="1">
+<li>Each lesson begins with a recapping of the relevant core skills presented in the previous lessons.</li>
+<li>All lessons are designed to be taught via 15-minute live-coding sessions. This method is used by The Carpentries and is demonstrated to be an effective method that engages learners (Nederbragt et al., 2020; Wilson, 2016) since learners must actively engage with the material and deal with errors and bugs as they arise.</li>
+<li>Each lesson ends with a summary of core skills presented within the material.</li>
+<li>Each short lesson is also accompanied by a subsequent 10-minute independent practice, providing further opportunity for practical experience implementing the coding skill at hand and testing learners’ understanding of the content.</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="impact-of-girls-who-code" class="slide level2" data-background-image="img/logo/gwc.png" data-background-size="250px" data-background-position="top 20px right 20px">
+<h2>Impact of Girls Who Code</h2>
+<ul>
+<li>135+ graduates of the club &amp; summer camp.</li>
+<li>Graduates improve skills in coding, problem solving, collaboration, and self-confidence.</li>
+</ul>
+<blockquote>
+<p>Because of GWC, I learned about bioinformatics. I was very interested in it, because it combined my interests in programming and research… I’m pretty certain I want to go into bioinformatics now.</p>
+</blockquote>
+<p><br></p>
+<blockquote>
+<p>I plan to go to college for Computer Science and get a robotics minor when my college offers it. GWC has inspired me to consider pursuing a Masters or PhD in CS as well as take some electives in Data Science.</p>
+</blockquote>
+</section>
+<section id="coding-for-reproducible-research" class="slide level2" data-background-image="img/logo/software-carpentry.png" data-background-size="200px" data-background-position="top 30px right 20px">
+<h2>Coding for Reproducible Research</h2>
+<ul>
+<li>34,000+ learners have attended Software Carpentry workshops worldwide since 2010.</li>
+<li>U-M instance of Software Carpentry active since 2016.</li>
+</ul>
+<div class="fragment">
+<p><img data-src="img/swc-lessons.png"></p>
+</div>
+<div class="footer">
+<p>https://software-carpentry.org/lessons/</p>
+</div>
+<aside class="notes">
+<ul>
+<li>Software Carpentry is an international non-profit that teaches grad students, postdocs, and other researchers how to perform reproducible computational science via interactive coding workshops.</li>
+<li>Over 34,000 learners have attended since 2010, ranging from biologists to physicists to engineers and economists.</li>
+<li>U-M instance of Software Carpentry active since 2016.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="integrated-workshop-curriculum" class="slide level2" data-background-image="img/logo/software-carpentry.png" data-background-size="200px" data-background-position="top 30px right 20px">
+<h2>Integrated workshop curriculum</h2>
+<h3 id="teaching-r-the-unix-shell-and-git">teaching R, the Unix shell, and Git</h3>
+
+<img data-src="projects/software-carpentry/paper/curriculum-overview.png" class="r-stretch"><div class="footer">
+<p>Lapp<sup>*</sup> and Sovacool<sup>*</sup> <em>et al.</em> (2022). <a href="https://doi.org/10.21105/jose.00144">JOSE</a></p>
+</div>
+</section>
+<section id="impact-of-software-carpentry" class="slide level2" data-background-image="img/logo/software-carpentry.png" data-background-size="200px" data-background-position="top 30px right 20px">
+<h2>Impact of Software Carpentry</h2>
+<h3 id="pilot-workshop-pre-post-survey">Pilot workshop pre &amp; post survey</h3>
+
+<img data-src="projects/software-carpentry/paper/survey-results.png" class="r-stretch"><div class="footer">
+<p>Lapp<sup>*</sup> and Sovacool<sup>*</sup> <em>et al.</em> (2022). <a href="https://doi.org/10.21105/jose.00144">JOSE</a></p>
+</div>
+<aside class="notes">
+<p>New curriculum used in 7 workshops to date.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reproducible-ml-pipelines-with-mikropml" class="slide level2" data-background-image="img/hex/logo_mikropml.png" data-background-size="150px" data-background-position="top 20px right 20px">
+<h2>Reproducible ML pipelines with mikropml</h2>
+<div class="absolute" style="top: 50px; right: 100px; ">
+<p><code>"meek-rope em el"</code></p>
+</div>
+<p><br></p>
+<div class="column" style="width:80%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/mikropml-pipeline_crop.png"></p>
+</figure>
+</div>
+</div>
+<div class="column fragment" style="width:19%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/mikropml-snakemake.png"></p>
+</figure>
+</div>
+</div>
+<div class="footer">
+<p>Topçuoğlu<sup>*</sup>, Lapp<sup>*</sup>, Sovacool<sup>*</sup> <em>et al.</em> (2021). <a href="https://doi.org/10.21105/joss.03073">JOSS</a></p>
+</div>
+<aside class="notes">
+<ul>
+<li>Typical microbiologist lacks ML expertise</li>
+<li>Many microbiologists have enough computational skills to be “dangerous”</li>
+<li>Common pitfalls
+<ul>
+<li>Lack of transparency in method implementation</li>
+<li>No separate held-out test data</li>
+<li>Not reporting variation in the predictive performance on different folds of cross-validation, or cross-validation vs.&nbsp;testing performances</li>
+</ul></li>
+</ul>
+<p>Goals</p>
+<ul>
+<li>Restructure our ML framework to improve reusability, scalability, &amp; reproducibility.</li>
+<li>Strike a balance between easy-to-use interface for beginners with reasonable default options, with enough flexibility for advanced users to customize options.</li>
+<li>We implemented this as an R package and also included a snakemake workflow demonstrating how to use the package in a high performance computing environment.
+<ul>
+<li>We intend to use it alongside other software in the lab: mothur for processing amplicon sequences and schtools – schloss lab tools for reproducible microbiome research.</li>
+<li>But mikropml is applicable outside just the microbiome field. So we published it in the Journal of Open Source Software</li>
+</ul></li>
+</ul>
+<p>best practices in swe</p>
+<ul>
+<li>GitFlow, issue tracking, peer review</li>
+<li>Unit tests + CI</li>
+<li>Document functions &amp; vignettes</li>
+<li>Semantic versioning, changelog</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mikropml-impact" class="slide level2 smaller" data-background-image="img/hex/logo_mikropml.png" data-background-size="150px" data-background-position="top 20px right 20px">
+<h2>mikropml impact</h2>
+<script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<script async="" src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+<div class="column" style="width:70%;">
+<p><img data-src="projects/pkg-downloads/figures/plot-downloads-time_no-badge-1.png" height="550"></p>
+</div>
+<div class="column" style="width:15%;">
+<p><br> <br></p>
+<p>CRAN: <img src="https://cranlogs.r-pkg.org/badges/grand-total/mikropml"></p>
+<p>conda-forge: <img data-src="https://anaconda.org/conda-forge/r-mikropml/badges/downloads.svg"></p>
+<p><span class="__dimensions_badge_embed__" data-doi="10.21105/joss.03073" data-hide-zero-citations="true" data-style="large_rectangle" data-legend="hover-right"></span></p>
+</div>
+<aside class="notes">
+<div class="column" style="width:48%;">
+<p><strong>In the lab</strong></p>
+<ul>
+<li>CRC classification across taxonimic levels</li>
+<li>Mouse <em>C. diff</em> colonization &amp; clearance</li>
+<li>Mouse models of colitis</li>
+</ul>
+</div>
+<div class="column" style="width:48%;">
+<p><strong>In the wild</strong></p>
+<ul>
+<li>Diet and antimicrobial resistance</li>
+<li>Evolution of grasses</li>
+<li>Psychology research</li>
+<li>Political science</li>
+</ul>
+</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li>Improved OTU clustering algorithms to enable machine learning for microbiome research.</li>
+<li>Applied machine learning to predict severe <em>C. difficile</em> infections, demonstrating similar performance as models trained on Electronic Health Records.</li>
+<li>Contributed to democratizing data science for three key audiences.</li>
+</ul>
+<div class="column smaller-text fragment" style="width:49%;">
+<!-- -->
+<h5 id="post-phd-plans">post-PhD plans</h5>
+<p>Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)</p>
+<p><img data-src="img/logo/fnlcr.png"></p>
+</div>
+<aside class="notes">
+<ul>
+<li>Improved OTU clustering algorithms to enable ML for microbiome research.</li>
+<li>Applied ML to predict severe CDIs, demonstrating similar performance as EHR models.</li>
+<li>Contributed to democratizing data science for three key audiences: high schoolers, researchers, and novice ML practitioners.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="acknowledgements" class="slide level2">
+<h2>Acknowledgements</h2>
+<div class="column large-text" style="width:30%;">
+<p><strong>Schloss Lab</strong> <br> Patrick Schloss <br> Megan Coden <br> Sarah Lucas <br> Courtney Armour <br> Allison Mason <br> Adena Collens</p>
+<p><strong>alumni</strong> <br> Nick Lesniak <br> Sarah Tomkovich <br> Sarah Westcott <br> Katie McBride <br> Jay Moltzau <br> Begüm Topçuoğlu <br> Joshua Stough <br> Will Close <br> Ada Hagan <br> Kaitlin Flynn <br></p>
+</div>
+<div class="column large-text" style="width:30%;">
+<p><strong>Curricula contributors</strong> <br> Marlena Duda <br> Zena Lapp <br> Brooke Wolford <br> Negar Farzaneh <br> Vy Nguyen <br> Sarah Haynes <br> Hayley Falk <br> Katie Furman <br> Logan Walker <br> Rucheng Diao <br> Morgan Oneka <br> Audrey Drotos <br> Gabrielle Dotson <br> April Kriebel <br> Lucy Meng <br> Stephanie Theide <br> Dana King <br> Catherine Barnier <br> Matthew Flickinger <br> Jule Krüger <br> Maya Lapp <br> Jason Tallant <br></p>
+</div>
+<div class="column large-text" style="width:30%;">
+<p><strong>Collaborators</strong> <br> <strong>&amp; Committee</strong> <br> Krishna Rao <br> Vince Young <br> Jenna Wiens <br> Greg Dick <br></p>
+<p><strong>Funding</strong> <br> NIH T32 GM070449 <br> NIH U01AI124255 <br></p>
+</div>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<div class="column" style="width:70%;">
+<p><img data-src="projects/best-tally/figures/plot_blank-1.png"></p>
+</div>
+<aside class="notes">
+<p>I have one more plot to show you all. Early on in my PhD, my friends and I noticed that there was a particular phrase we kept saying fairly regularly. And not just us, but also colleagues and collaborators and others in our scientific circles.</p>
+<p>So I decided to keep a tally.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<div class="column" style="width:70%;">
+<p><img data-src="projects/best-tally/figures/plot_line-1.png"></p>
+</div>
+<div class="column large-text fragment" style="width:25%;">
+<p><br></p>
+<h4 id="phrases-included">Phrases included</h4>
+<ul>
+<li>“Pat’s the best”</li>
+<li>“Pat is a <em>delight</em>.”</li>
+<li>“Wow this is incredible. Pat is literally a hero!”</li>
+<li>“Your PI is amazing”</li>
+</ul>
+</div>
+<aside class="notes">
+<p>That phrase is “Pat is the best”.</p>
+<p>For the sake of completeness I also included similar phrases uttered such as “Pat is a delight”, “Pat is literally a hero”, and “Your PI is amazing”.</p>
+<p>There were <strong>so</strong> many times throughout my PhD when Pat did or said something that elicited this response. From his response to COVID, to his support of my work with Girls Who Code and other volunteer efforts, all the ups and downs of grad school… Pat even made an educational YouTube channel to teach people how to code.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-3" class="slide level2">
+<h2></h2>
+<div class="column" style="width:70%;">
+<p><img data-src="projects/best-tally/figures/plot_line_dry-1.png"></p>
+</div>
+<div class="column large-text" style="width:25%;">
+<p><br></p>
+<h4 id="phrases-included-1">Phrases included</h4>
+<ul>
+<li>“Pat’s the best”</li>
+<li>“Pat is a <em>delight</em>.”</li>
+<li>“Wow this is incredible. Pat is literally a hero!”</li>
+<li>“Your PI is amazing”</li>
+</ul>
+</div>
+<aside class="notes">
+<p>(This one is my favorite thumbnail from his videos.)</p>
+<p>Finally, Pat has persistently done a great job of assembling a lab.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-4" class="slide level2" data-background-image="img/acknowledgements-schlabbies.jpg" data-background-size="contain">
+<h2></h2>
+<aside class="notes">
+<p>I thanked members of the Schloss Lab earlier for your scientific contributions but now I’m thanking you again for being wonderful people because you are all just that special and played such a huge role in shaping me as a scientist. Many lab mates have come and gone over the years and every one I’ve interacted with has individually contributed to an awesome positive and supportive lab culture that I’m proud to be a part of.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-5" class="slide level2" data-background-image="img/acknowledgements-friends.svg" data-background-size="contain">
+<h2></h2>
+<aside class="notes">
+<p>Next I’d like to thank my friends. You all helped keep me sane during grad school. We made sure to have lots of fun and maintain a healthy work-life balance in this crazy chapter of life.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-6" class="slide level2" data-background-image="img/acknowledgements-family.svg" data-background-size="contain">
+<h2></h2>
+<aside class="notes">
+<p>Finally, I’d like to thank my family - my sisters Katie and Erika, my parents, and my boyfriend David. David has the uncanny ability to take any rainy day and turn it into a sunny one. My parents have been my cheerleaders from the very beginning, and they always encouraged me to pursue whatever I was interested in. Your support means everything to me.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-7" class="slide level2" data-visibility="uncounted">
+<h2></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/frontispiece.png" height="500"></p>
+</figure>
+</div>
+<aside class="notes">
+<p>Thank you all for your attention and I’ll take any questions now</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="supplemental-slides" class="slide level2" data-visibility="uncounted">
+<h2>Supplemental slides</h2>
+</section>
+<section id="fold-cross-validation" class="slide level2" data-visibility="uncounted">
+<h2>5-fold cross validation</h2>
+<p><img data-src="img/grid_search_cross_validation.png" height="500"></p>
+<div class="footer">
+<p>sklearn docs: <a href="https://scikit-learn.org/stable/modules/cross_validation.html" class="uri">https://scikit-learn.org/stable/modules/cross_validation.html</a></p>
+</div>
+</section>
+<section id="decision-trees" class="slide level2" data-visibility="uncounted">
+<h2>Decision trees</h2>
+
+<img data-src="img/decision-trees.png" class="r-stretch"></section>
+<section id="random-forest" class="slide level2" data-visibility="uncounted">
+<h2>Random forest</h2>
+
+<img data-src="img/random-forest.png" class="r-stretch"></section>
+<section id="a-more-fair-comparison" class="slide level2 smaller" data-visibility="uncounted">
+<h2>A more fair comparison?</h2>
+
+<img data-src="figures/auroc_facet-1.png" width="960" class="r-stretch"><div class="absolute color-ash" style="left: 100px; bottom: 5px; width: 40%; ">
+<p><strong>full</strong> - all samples available; different number of samples between outcomes.</p>
+</div>
+<div class="absolute color-ash" style="bottom: 5px; right: 50px; width: 40%; ">
+<p><strong>int</strong> - intersection, i.e.&nbsp;only samples that have all three outcome labels (n=993).</p>
+</div>
+</section>
+<section id="limitation-class-imbalance" class="slide level2" data-visibility="uncounted">
+<h2>Limitation: class imbalance</h2>
+<ul>
+<li>Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).</li>
+<li>The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.</li>
+</ul>
+<p><br></p>
+<div class="absolute filled-box" style="left: 50px; bottom: 150px; width: 40%; ">
+<div class="cell" data-hash="presentation_cache/revealjs/positives_9e92926f9979ef6908ee7ef8ea942e2a">
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 22px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Severity</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% severe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">IDSA</td>
+<td style="text-align: right;">1,072</td>
+<td style="text-align: right;">34.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">All-cause</td>
+<td style="text-align: right;">1,218</td>
+<td style="text-align: right;">7.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Attributable</td>
+<td style="text-align: right;">1,178</td>
+<td style="text-align: right;">2.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pragmatic</td>
+<td style="text-align: right;">1,218</td>
+<td style="text-align: right;">5.4</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<div class="absolute" style="bottom: 1px; right: 1px; width: 48%; ">
+<p><img data-src="img/wiki-conf-mat.png"></p>
+</div>
+<aside class="notes">
 <p>precision: out of samples predicted to be positive, how many are correct</p>
 <p>recall: out of positively labelled samples, how many are predicted positive</p>
 <style type="text/css">
@@ -791,9 +1644,8 @@ Kelly Sovacool
           display:block!important;
       }</style></aside>
 </section>
-<section id="solution-calculate-the-balanced-precision" class="slide level2">
+<section id="solution-calculate-the-balanced-precision" class="slide level2" data-visibility="uncounted">
 <h2>Solution: calculate the balanced precision</h2>
-<p>Introduced by <a href="https://doi.org/10.1016/j.ajhg.2021.08.012">Wu <em>et al.</em> (2021). AJHG.</a> Improved pathogenicity prediction for rare human missense variants.</p>
 <p><br></p>
 <h4 id="equation-7">Equation 7</h4>
 <p><span class="math display">\[
@@ -801,9 +1653,11 @@ AUBPRC = \frac{AUPRC \times (1 - prior)}
 {AUPRC \times (1 - prior) + (1 - AUPRC) \times prior}
 \]</span></p>
 
+<div class="footer">
+<p>Wu <em>et al.</em> (2021). <a href="https://doi.org/10.1016/j.ajhg.2021.08.012">AJHG</a></p>
+</div>
 <aside class="notes">
 <p>https://en.wikipedia.org/wiki/Bayes%27_theorem</p>
-<p>TODO: how to interpret precision and recall vs roc</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -819,84 +1673,19 @@ AUBPRC = \frac{AUPRC \times (1 - prior)}
 <p><em>prior</em> = frequency of positives</p>
 <p><em>AUBPRC</em> = area under the <strong>balanced precision</strong>-recall curve</p>
 </div></aside></section>
-<section id="balanced-precision" class="slide level2">
+<section id="balanced-precision" class="slide level2 smaller" data-visibility="uncounted">
 <h2>Balanced Precision</h2>
-<div class="cell">
+<p>Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset</p>
+<div class="cell" data-hash="presentation_cache/revealjs/aubprc_box_8ff8f29e0bf36438afbec7ad831e2f08">
 <div class="cell-output-display">
 <p><img data-src="figures/aubprc_box-1.png" width="960"></p>
 </div>
 </div>
+<p><img src="img/block_m-hex.png" class="slide-logo"></p>
+<div class="footer footer-default">
 
-<aside><div>
-<p>Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset</p>
-</div></aside></section>
-
-
-<section id="performance-for-otu-vs-ehr-models" class="slide level2">
-<h2>Performance for OTU vs EHR models</h2>
-<div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="figures/auroc_facet_ehr-1.png" width="960"></p>
-</div>
-</div>
-</div>
-<div class="absolute medium-text frame-box fragment" style="left: 0px; bottom: 0px; width: 250px; height: 80px; ">
-<p>EHR-based models from Li <em>et al.</em></p>
-<p>Median AUROC: <strong>0.69</strong></p>
 </div>
 </section>
-<section id="conclusions" class="slide level2">
-<h2>Conclusions</h2>
-<div class="fragment">
-<h3 id="future-work">Future work</h3>
-</div>
-</section>
-<section id="democratizing-reproducible-data-science" class="slide level2">
-<h2>Democratizing reproducible data science</h2>
-<ul>
-<li>Make data science tools more accessible to researchers from non-computational backgrounds.</li>
-<li>Disseminate user-friendly tools &amp; curricula with OSI-approved licenses.</li>
-<li>Promote diversity, equity, and inclusion in data science.</li>
-</ul>
-<p>gwc, swc, mikropml</p>
-</section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
-</section>
-<section id="post-phd-plans" class="slide level2">
-<h2>post-PhD plans</h2>
-<p>Bioinformatics Software Engineer for Frederick National Lab (NIH/NCI)</p>
-</section>
-<section id="acknowledgements" class="slide level2">
-<h2>Acknowledgements</h2>
-</section>
-<section id="congratulations" class="slide level2">
-<h2>Congratulations! &nbsp; 🎉</h2>
-<div class="big-center">
-<p><em>You’ve unlocked the backup slides</em></p>
-</div>
-</section>
-<section id="fold-cross-validation" class="slide level2">
-<h2>5-fold cross validation</h2>
-<p><img data-src="img/grid_search_cross_validation.png" height="500"></p>
-
-<aside><div>
-<p>sklearn docs: <a href="https://scikit-learn.org/stable/modules/cross_validation.html" class="uri">https://scikit-learn.org/stable/modules/cross_validation.html</a></p>
-</div></aside></section>
-<section id="decision-trees" class="slide level2">
-<h2>Decision trees</h2>
-
-<img data-src="img/decision-trees.png" class="r-stretch"></section>
-<section id="random-forest" class="slide level2">
-<h2>Random forest</h2>
-
-<img data-src="img/random-forest.png" class="r-stretch"></section>
-<section id="precision-recall-without-balancing" class="slide level2">
-<h2>Precision-Recall without balancing</h2>
-
-<img data-src="figures/auprc_box-1.png" width="960" class="r-stretch"></section>
-
     </div>
   </div>
 
