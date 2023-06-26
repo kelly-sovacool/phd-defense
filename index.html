@@ -1552,140 +1552,14 @@ Kelly Sovacool
           display:block!important;
       }</style></aside>
 </section>
-<section id="supplemental-slides" class="slide level2" data-visibility="uncounted">
-<h2>Supplemental slides</h2>
-</section>
-<section id="fold-cross-validation" class="slide level2" data-visibility="uncounted">
-<h2>5-fold cross validation</h2>
-<p><img data-src="img/grid_search_cross_validation.png" height="500"></p>
-<div class="footer">
-<p>sklearn docs: <a href="https://scikit-learn.org/stable/modules/cross_validation.html" class="uri">https://scikit-learn.org/stable/modules/cross_validation.html</a></p>
-</div>
-</section>
-<section id="decision-trees" class="slide level2" data-visibility="uncounted">
-<h2>Decision trees</h2>
-
-<img data-src="img/decision-trees.png" class="r-stretch"></section>
-<section id="random-forest" class="slide level2" data-visibility="uncounted">
-<h2>Random forest</h2>
-
-<img data-src="img/random-forest.png" class="r-stretch"></section>
-<section id="a-more-fair-comparison" class="slide level2 smaller" data-visibility="uncounted">
-<h2>A more fair comparison?</h2>
-
-<img data-src="figures/auroc_facet-1.png" width="960" class="r-stretch"><div class="absolute color-ash" style="left: 100px; bottom: 5px; width: 40%; ">
-<p><strong>full</strong> - all samples available; different number of samples between outcomes.</p>
-</div>
-<div class="absolute color-ash" style="bottom: 5px; right: 50px; width: 40%; ">
-<p><strong>int</strong> - intersection, i.e.&nbsp;only samples that have all three outcome labels (n=993).</p>
-</div>
-</section>
-<section id="limitation-class-imbalance" class="slide level2" data-visibility="uncounted">
-<h2>Limitation: class imbalance</h2>
-<ul>
-<li>Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).</li>
-<li>The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.</li>
-</ul>
-<p><br></p>
-<div class="absolute filled-box" style="left: 50px; bottom: 150px; width: 40%; ">
-<div class="cell" data-hash="presentation_cache/revealjs/positives_9e92926f9979ef6908ee7ef8ea942e2a">
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-size: 22px; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Severity</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">% severe</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">IDSA</td>
-<td style="text-align: right;">1,072</td>
-<td style="text-align: right;">34.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">All-cause</td>
-<td style="text-align: right;">1,218</td>
-<td style="text-align: right;">7.1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Attributable</td>
-<td style="text-align: right;">1,178</td>
-<td style="text-align: right;">2.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Pragmatic</td>
-<td style="text-align: right;">1,218</td>
-<td style="text-align: right;">5.4</td>
-</tr>
-</tbody>
-</table>
 
 
-</div>
-</div>
-</div>
-<div class="absolute" style="bottom: 1px; right: 1px; width: 48%; ">
-<p><img data-src="img/wiki-conf-mat.png"></p>
-</div>
-<aside class="notes">
-<p>precision: out of samples predicted to be positive, how many are correct</p>
-<p>recall: out of positively labelled samples, how many are predicted positive</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-calculate-the-balanced-precision" class="slide level2" data-visibility="uncounted">
-<h2>Solution: calculate the balanced precision</h2>
-<p><br></p>
-<h4 id="equation-7">Equation 7</h4>
-<p><span class="math display">\[
-AUBPRC = \frac{AUPRC \times (1 - prior)}
-{AUPRC \times (1 - prior) + (1 - AUPRC) \times prior}
-\]</span></p>
 
-<div class="footer">
-<p>Wu <em>et al.</em> (2021). <a href="https://doi.org/10.1016/j.ajhg.2021.08.012">AJHG</a></p>
-</div>
-<aside class="notes">
-<p>https://en.wikipedia.org/wiki/Bayes%27_theorem</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<aside><div>
-<p><em>prior</em> = frequency of positives</p>
-<p><em>AUBPRC</em> = area under the <strong>balanced precision</strong>-recall curve</p>
-</div></aside></section>
-<section id="balanced-precision" class="slide level2 smaller" data-visibility="uncounted">
-<h2>Balanced Precision</h2>
-<p>Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset</p>
-<div class="cell" data-hash="presentation_cache/revealjs/aubprc_box_8ff8f29e0bf36438afbec7ad831e2f08">
-<div class="cell-output-display">
-<p><img data-src="figures/aubprc_box-1.png" width="960"></p>
-</div>
-</div>
-<p><img src="img/block_m-hex.png" class="slide-logo"></p>
-<div class="footer footer-default">
 
-</div>
-</section>
+
+
+
+
     </div>
   </div>
 
