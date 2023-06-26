@@ -1399,9 +1399,9 @@ Thank you all for your attention
 and I'll take any questions now
 :::
 
-## Supplemental slides {visibility="uncounted"}
+## Supplemental slides {visibility="hidden"}
 
-## 5-fold cross validation {visibility="uncounted"}
+## 5-fold cross validation {visibility="hidden"}
 
 ![](img/grid_search_cross_validation.png){height=500px}
 
@@ -1409,15 +1409,15 @@ and I'll take any questions now
 sklearn docs: <https://scikit-learn.org/stable/modules/cross_validation.html>
 :::
 
-## Decision trees {visibility="uncounted"}
+## Decision trees {visibility="hidden"}
 
 ![](img/decision-trees.png)
 
-## Random forest {visibility="uncounted"}
+## Random forest {visibility="hidden"}
 
 ![](img/random-forest.png)
 
-## A more fair comparison? {.smaller visibility="uncounted"}
+## A more fair comparison? {.smaller visibility="hidden"}
 
 ```{r auroc_facet}
 auroc_facet_plot <- perf_dat %>%
@@ -1464,7 +1464,7 @@ ncases_int <- read_csv('projects/severe-cdi/data/process/cases_int_metadata.csv'
 :::
 
 
-## Limitation: class imbalance {visibility="uncounted"}
+## Limitation: class imbalance {visibility="hidden"}
 
 - Imbalanced classes with many negatives can inflate the ROC (sensitivity vs 1-specificity).
 - The baseline PRC (precision vs recall) depends on the frequency of positives, but the severity definitions each have different frequencies of positives.
@@ -1489,7 +1489,7 @@ precision: out of samples predicted to be positive, how many are correct
 recall: out of positively labelled samples, how many are predicted positive
 :::
 
-## Solution: calculate the balanced precision {visibility="uncounted"}
+## Solution: calculate the balanced precision {visibility="hidden"}
 
 <br>
 
@@ -1514,7 +1514,7 @@ Wu _et al._ (2021). [AJHG](https://doi.org/10.1016/j.ajhg.2021.08.012)
 https://en.wikipedia.org/wiki/Bayes%27_theorem
 :::
 
-## Balanced Precision {.smaller visibility="uncounted"}
+## Balanced Precision {.smaller visibility="hidden"}
 Performance on the test set for Random Forest models trained on 100x train/test splits of each dataset
 
 ```{r aubprc_box}
